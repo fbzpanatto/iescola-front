@@ -1,20 +1,41 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatSidenavModule} from "@angular/material/sidenav";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatTooltipModule } from "@angular/material/tooltip";
+
 import { BreakpointObserver, MediaMatcher } from "@angular/cdk/layout";
+
+import { animate, style, transition, trigger } from "@angular/animations";
+import { CommonModule } from "@angular/common";
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 
 @Component({
   standalone: true,
-  imports: [MatToolbarModule, MatSidenavModule, MatIconModule, MatButtonModule, MatTooltipModule],
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    RouterLinkActive,
+    RouterLink
+  ],
+  animations: [
+    trigger('simpleFade', [
+      transition('*=>1', [
+        style({ opacity:0 }), animate(350)
+        ])
+      ])
+  ],
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements OnInit, AfterViewInit{
+export class NavigationComponent implements OnInit {
 
   opened = false;
   isLargeScreen = false;
@@ -25,6 +46,7 @@ export class NavigationComponent implements OnInit, AfterViewInit{
 
   constructor(
     private responsive: BreakpointObserver,
+    private router: Router,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
   ) {
@@ -38,8 +60,6 @@ export class NavigationComponent implements OnInit, AfterViewInit{
 
     this.setBreakpointObserver();
   }
-
-  ngAfterViewInit() {}
 
   setBreakpointObserver() {
 

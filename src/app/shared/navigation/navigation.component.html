@@ -11,7 +11,8 @@
 <mat-sidenav-container>
 
   <mat-sidenav [fixedInViewport]="mobileQuery.matches" [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="opened">
-
+    <p routerLink="/home">Início</p>
+    <p routerLink="/year">Anos Letivos</p>
   </mat-sidenav>
 
   <mat-sidenav-content>

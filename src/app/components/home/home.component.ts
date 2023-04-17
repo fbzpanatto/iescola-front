@@ -8,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 
+  static title: 'Home'
+  static url: 'home'
+
 }
