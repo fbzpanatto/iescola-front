@@ -11,6 +11,21 @@ import { BreakpointObserver, MediaMatcher } from "@angular/cdk/layout";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { CommonModule } from "@angular/common";
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
+import { MatListModule } from "@angular/material/list";
+import {MatLineModule, MatRippleModule} from "@angular/material/core";
+
+const MENU_TREE = [
+  {
+    title: 'Home',
+    url: 'home',
+    icon: 'home',
+  },
+  {
+    title: 'Year',
+    url: 'year',
+    icon: 'calendar_today',
+  }
+]
 
 @Component({
   standalone: true,
@@ -22,7 +37,10 @@ import { Router, RouterLink, RouterLinkActive } from "@angular/router";
     MatButtonModule,
     MatTooltipModule,
     RouterLinkActive,
-    RouterLink
+    RouterLink,
+    MatListModule,
+    MatRippleModule,
+    MatLineModule
   ],
   animations: [
     trigger('simpleFade', [
@@ -78,4 +96,6 @@ export class NavigationComponent implements OnInit {
         this.opened = this.isLargeScreen;
       });
   }
+
+  protected readonly MENU_TREE = MENU_TREE;
 }

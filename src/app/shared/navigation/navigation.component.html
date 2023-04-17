@@ -11,12 +11,22 @@
 <mat-sidenav-container>
 
   <mat-sidenav [fixedInViewport]="mobileQuery.matches" [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="opened">
-    <p routerLink="/home">Início</p>
-    <p routerLink="/year">Anos Letivos</p>
+
+    <mat-list>
+
+      <mat-list-item matRipple *ngFor="let menu of MENU_TREE" routerLinkActive="active" [routerLink]="menu.url">
+        <mat-icon>{{menu.icon}}</mat-icon>
+        <span matLine >{{menu.title}}</span>
+      </mat-list-item>
+
+    </mat-list>
+
   </mat-sidenav>
 
   <mat-sidenav-content>
+
     <ng-content></ng-content>
+
   </mat-sidenav-content>
 
 </mat-sidenav-container>
