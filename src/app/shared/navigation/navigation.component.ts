@@ -12,16 +12,16 @@ import { animate, style, transition, trigger } from "@angular/animations";
 import { CommonModule } from "@angular/common";
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { MatListModule } from "@angular/material/list";
-import {MatLineModule, MatRippleModule} from "@angular/material/core";
+import { MatLineModule, MatRippleModule } from "@angular/material/core";
 
 const MENU_TREE = [
   {
-    title: 'Home',
+    title: 'Ínicio',
     url: 'home',
     icon: 'home',
   },
   {
-    title: 'Year',
+    title: 'Anos Letivos',
     url: 'year',
     icon: 'calendar_today',
   }

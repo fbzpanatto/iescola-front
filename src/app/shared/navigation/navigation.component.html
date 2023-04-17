@@ -14,10 +14,11 @@
 
     <mat-list>
 
-      <mat-list-item matRipple *ngFor="let menu of MENU_TREE" routerLinkActive="active" [routerLink]="menu.url">
-        <mat-icon>{{menu.icon}}</mat-icon>
-        <span matLine >{{menu.title}}</span>
+      <mat-list-item matRipple *ngFor="let menu of MENU_TREE" routerLinkActive="active" [routerLink]="menu.url" >
+        <mat-icon id="menu-color-icon" matListItemIcon>{{ menu.icon }}</mat-icon>
+        <div matListItemTitle>{{menu.title}}</div>
       </mat-list-item>
+
 
     </mat-list>
 
