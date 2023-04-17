@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+
+  <div class="menu">
+    <button (click)="opened = !opened" mat-icon-button matTooltip="Menu">
+      <mat-icon svgIcon="menu"></mat-icon>
+    </button>
+  </div>
+
+</mat-toolbar>
+
+<mat-sidenav-container>
+
+  <mat-sidenav [fixedInViewport]="mobileQuery.matches" [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="opened">
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
