@@ -2,6 +2,13 @@
   color: #cccccc;
 }
 
+.second-mat-toolbar {
+  height: 40px;
+  position: sticky;
+  top: 0;
+
+}
+
 mat-toolbar {
   height: 56px;
 }
@@ -10,9 +17,13 @@ mat-sidenav {
   width: 300px;
 }
 
-mat-sidenav-content {
+mat-sidenav-container {
   height: calc(100vh - 56px);
 }
+
+mat-sidenav {}
+
+mat-sidenav-content {}
 
 #menu-color-icon {
   color: #333;

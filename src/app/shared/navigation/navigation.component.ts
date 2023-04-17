@@ -62,6 +62,8 @@ export class NavigationComponent implements OnInit {
   mobileQuery!: MediaQueryList;
   private readonly _mobileQueryListener: () => void;
 
+  private _title: string = 'Ínicio';
+
   constructor(
     private responsive: BreakpointObserver,
     private router: Router,
@@ -98,4 +100,19 @@ export class NavigationComponent implements OnInit {
   }
 
   protected readonly MENU_TREE = MENU_TREE;
+
+  setToolbarInfo(menu: {title: string, url: string, icon: string}) {
+
+    this.title = menu.title;
+
+    this.router.navigate([menu.url]);
+  }
+
+  get title() {
+    return this._title;
+  }
+
+  set title(value: string) {
+    this._title = value;
+  }
 }

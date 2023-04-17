@@ -14,7 +14,7 @@
 
     <mat-list>
 
-      <mat-list-item matRipple *ngFor="let menu of MENU_TREE" routerLinkActive="active" [routerLink]="menu.url" >
+      <mat-list-item matRipple *ngFor="let menu of MENU_TREE" routerLinkActive="active" (click)="setToolbarInfo(menu)">
         <mat-icon id="menu-color-icon" matListItemIcon>{{ menu.icon }}</mat-icon>
         <div matListItemTitle>{{menu.title}}</div>
       </mat-list-item>
@@ -25,6 +25,10 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+
+    <mat-toolbar class="second-mat-toolbar mat-elevation-z1">
+      <h2 style="margin-bottom: 0">{{ title }}</h2>
+    </mat-toolbar>
 
     <ng-content></ng-content>
 
