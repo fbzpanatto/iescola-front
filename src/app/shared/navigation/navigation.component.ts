@@ -62,6 +62,8 @@ export class NavigationComponent implements OnInit {
   mobileQuery!: MediaQueryList;
   private readonly _mobileQueryListener: () => void;
 
+  protected readonly MENU_TREE = MENU_TREE;
+
   private _title: string = 'Ínicio';
 
   constructor(
@@ -99,17 +101,13 @@ export class NavigationComponent implements OnInit {
       });
   }
 
-  protected readonly MENU_TREE = MENU_TREE;
-
   setToolbarInfo(menu: {title: string, url: string, icon: string}) {
 
-    this.title = menu.title;
-
-    this.router.navigate([menu.url]);
+    this.title = menu.title.toUpperCase();
   }
 
   get title() {
-    return this._title;
+    return this._title.toUpperCase();
   }
 
   set title(value: string) {
