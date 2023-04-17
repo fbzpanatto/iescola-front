@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule} from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
-import { NavigationComponent } from "./shared/navigation/navigation.component";
+import { NavigationComponent } from "./shared/components/navigation/navigation.component";
 
 import { MatIconRegistry } from "@angular/material/icon";
 import { registerLocaleData } from "@angular/common";
