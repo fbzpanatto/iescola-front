@@ -3,12 +3,8 @@ import { FetchDataService } from "src/app/shared/services/fetch-data.service";
 import { NavigationService } from "src/app/shared/services/navigation.service";
 import { CommonModule } from "@angular/common";
 import { Subscription } from "rxjs";
-
-interface Year {
-  id: number,
-  name: number,
-  active: boolean
-}
+import { FormBuilder, Validators } from "@angular/forms";
+import { Year } from "src/app/shared/interfaces/interfaces";
 
 @Component({
   standalone: true,
@@ -29,9 +25,15 @@ export class YearComponent implements OnInit, OnDestroy {
   private _years: Year[] = []
   private _subscription: Subscription = new Subscription()
 
+  form = this.fb.group({
+    name: [null, [Validators.required]],
+    active: [null, [Validators.required]]
+  })
+
   constructor(
     private fetchData: FetchDataService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
