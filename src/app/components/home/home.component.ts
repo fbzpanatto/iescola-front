@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
 
   static title = 'Início'
   static url = 'home'
+  static icon = 'home'
 
   constructor(private navigationService: NavigationService) {}
 

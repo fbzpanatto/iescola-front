@@ -10,24 +10,28 @@ import { MatLineModule, MatRippleModule } from "@angular/material/core";
 
 import { BreakpointObserver, MediaMatcher } from "@angular/cdk/layout";
 import { CommonModule } from "@angular/common";
+
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 
 import { NavigationService } from "src/app/shared/services/navigation.service";
-
 import { ActiveComponent } from "src/app/shared/services/navigation.service";
 
-import {map, tap} from "rxjs";
+import { map, tap } from "rxjs";
 
+import { HomeComponent } from "src/app/components/home/home.component";
+import { YearComponent } from "src/app/components/year/year.component";
+
+// TODO: flat tree like aero
 const MENU_TREE = [
   {
-    title: 'Ínicio',
-    url: 'home',
-    icon: 'home',
+    title: HomeComponent.title,
+    url: HomeComponent.url,
+    icon: HomeComponent.icon,
   },
   {
-    title: 'Anos Letivos',
-    url: 'year',
-    icon: 'calendar_today',
+    title: YearComponent.title,
+    url: YearComponent.url,
+    icon: YearComponent.icon,
   }
 ]
 
@@ -76,13 +80,8 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit() {
 
-    this.navigationService.activeComponent$
-      .pipe(
-        tap((activeComponent: ActiveComponent) => {
-          console.log(activeComponent)
-        })
-      )
-      .subscribe()
+    this.navigationService.activeComponent$.subscribe()
+
     this.setBreakpointObserver();
   }
 

@@ -12,6 +12,7 @@ export class YearComponent implements OnInit {
 
   static title = 'Anos Letivos'
   static url = 'year'
+  static icon = 'calendar_today'
 
   constructor(
     private fetchData: FetchDataService,
