@@ -5,16 +5,19 @@ import { MatSidenavModule} from "@angular/material/sidenav";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatTooltipModule } from "@angular/material/tooltip";
-
-import { BreakpointObserver, MediaMatcher } from "@angular/cdk/layout";
-
-import { animate, style, transition, trigger } from "@angular/animations";
-import { CommonModule } from "@angular/common";
-import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { MatListModule } from "@angular/material/list";
 import { MatLineModule, MatRippleModule } from "@angular/material/core";
 
-// TODO: import STRING service from @azul. Do same thing with mat-tree (.npmrc on aero)
+import { BreakpointObserver, MediaMatcher } from "@angular/cdk/layout";
+import { CommonModule } from "@angular/common";
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
+
+import { NavigationService } from "src/app/shared/services/navigation.service";
+
+import { ActiveComponent } from "src/app/shared/services/navigation.service";
+
+import {map, tap} from "rxjs";
+
 const MENU_TREE = [
   {
     title: 'Ínicio',
@@ -43,13 +46,6 @@ const MENU_TREE = [
     MatRippleModule,
     MatLineModule
   ],
-  animations: [
-    trigger('simpleFade', [
-      transition('*=>1', [
-        style({ opacity:0 }), animate(350)
-        ])
-      ])
-  ],
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
@@ -65,11 +61,10 @@ export class NavigationComponent implements OnInit {
 
   protected readonly MENU_TREE = MENU_TREE;
 
-  private _title: string = 'Ínicio';
-
   constructor(
     private responsive: BreakpointObserver,
     private router: Router,
+    private navigationService: NavigationService,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
   ) {
@@ -81,6 +76,13 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit() {
 
+    this.navigationService.activeComponent$
+      .pipe(
+        tap((activeComponent: ActiveComponent) => {
+          console.log(activeComponent)
+        })
+      )
+      .subscribe()
     this.setBreakpointObserver();
   }
 
@@ -102,16 +104,10 @@ export class NavigationComponent implements OnInit {
       });
   }
 
-  setToolbarInfo(menu: {title: string, url: string, icon: string}) {
-
-    this.title = menu.title.toUpperCase();
-  }
-
-  get title() {
-    return this._title.toUpperCase();
-  }
-
-  set title(value: string) {
-    this._title = value;
+  get title$() {
+    return this.navigationService.activeComponent$
+      .pipe(
+        map((activeComponent: ActiveComponent) => activeComponent.title)
+      )
   }
 }

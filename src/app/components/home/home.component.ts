@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NavigationService } from "../../shared/services/navigation.service";
 
 @Component({
   standalone: true,
@@ -6,9 +7,14 @@ import { Component } from '@angular/core';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  static title: 'Home'
-  static url: 'home'
+  static title = 'Início'
+  static url = 'home'
 
+  constructor(private navigationService: NavigationService) {}
+
+  ngOnInit(): void {
+    this.navigationService.setActiveComponent({title: HomeComponent.title, url: HomeComponent.url});
+  }
 }
