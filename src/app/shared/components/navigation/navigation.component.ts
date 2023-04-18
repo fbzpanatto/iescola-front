@@ -20,6 +20,7 @@ import { map, tap } from "rxjs";
 
 import { HomeComponent } from "src/app/components/home/home.component";
 import { YearComponent } from "src/app/components/year/year.component";
+import { TestComponent } from "src/app/components/test/test.component";
 
 // TODO: flat tree like aero
 const MENU_TREE = [
@@ -32,6 +33,11 @@ const MENU_TREE = [
     title: YearComponent.title,
     url: YearComponent.url,
     icon: YearComponent.icon,
+  },
+  {
+    title: TestComponent.title,
+    url: TestComponent.url,
+    icon: TestComponent.icon,
   }
 ]
 

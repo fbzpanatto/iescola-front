@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { map, shareReplay } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ export class FetchDataService {
 
   constructor(private http: HttpClient) { }
 
-  getAllData<T>() {
-    return this.http.get<T>('http://localhost:3333/year');
+  getAllData<T>(resource: string) {
+    return this.http.get('http://localhost:3333/' + resource)
+      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T[]}))
   }
 }
