@@ -14,6 +14,7 @@ import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { MatListModule } from "@angular/material/list";
 import { MatLineModule, MatRippleModule } from "@angular/material/core";
 
+// TODO: import STRING service from @azul. Do same thing with mat-tree (.npmrc on aero)
 const MENU_TREE = [
   {
     title: 'Ínicio',
