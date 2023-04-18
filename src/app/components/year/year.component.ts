@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FetchDataService } from "../../shared/services/fetch-data.service";
-import { NavigationService } from "../../shared/services/navigation.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FetchDataService } from "src/app/shared/services/fetch-data.service";
+import { NavigationService } from "src/app/shared/services/navigation.service";
 import { CommonModule } from "@angular/common";
-import { tap } from "rxjs";
+import { Subscription, tap } from "rxjs";
 
 interface Year {
   id: number,
@@ -19,7 +19,7 @@ interface Year {
   ],
   styleUrls: ['./year.component.scss']
 })
-export class YearComponent implements OnInit {
+export class YearComponent implements OnInit, OnDestroy {
 
   static title = 'Anos Letivos'
   static url = 'year'
@@ -27,6 +27,7 @@ export class YearComponent implements OnInit {
   static resource = 'year'
 
   private _years: Year[] = []
+  private _subscription: Subscription = new Subscription()
 
   constructor(
     private fetchData: FetchDataService,
@@ -37,9 +38,13 @@ export class YearComponent implements OnInit {
 
     this.navigationService.setActiveComponent({title: YearComponent.title, url: YearComponent.url});
 
-    return this.fetchData.getAllData<Year>(YearComponent.resource)
+    this._subscription = this.fetchData.getAllData<Year>(YearComponent.resource)
       .pipe(tap((years) => this._years = years))
       .subscribe()
+  }
+
+  ngOnDestroy() {
+    this._subscription.unsubscribe()
   }
 
   get years() {
