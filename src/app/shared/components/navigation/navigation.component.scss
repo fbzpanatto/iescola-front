@@ -3,10 +3,11 @@
 }
 
 .second-mat-toolbar {
+  display: flex;
+  justify-content: end;
   height: 40px;
-  position: sticky;
-  top: 0;
-
+  z-index: 99;
+  border-bottom: solid 1px rgba(0,0,0,.12)
 }
 
 mat-toolbar {
@@ -18,7 +19,7 @@ mat-sidenav {
 }
 
 mat-sidenav-container {
-  height: calc(100vh - 56px);
+  height: calc(100vh - 96px);
 }
 
 mat-sidenav {}

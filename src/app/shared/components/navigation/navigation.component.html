@@ -8,6 +8,10 @@
 
 </mat-toolbar>
 
+<mat-toolbar class="second-mat-toolbar">
+  <h3 style="margin-bottom: 0">{{ title$ | async }}</h3>
+</mat-toolbar>
+
 <mat-sidenav-container>
 
   <mat-sidenav [fixedInViewport]="mobileQuery.matches" [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="opened">
@@ -24,10 +28,6 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-
-    <mat-toolbar class="second-mat-toolbar mat-elevation-z1">
-      <h3 style="margin-bottom: 0">{{ title$ | async }}</h3>
-    </mat-toolbar>
 
     <ng-content></ng-content>
 

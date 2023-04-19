@@ -38,11 +38,15 @@ export class TestComponent {
   }
 
   formatData(response: any) {
+
     let dataToFront = []
+
     for (let test of response) {
+
+      let tests = []
+
       for(let testClass of test.testClasses) {
         let data = {
-          id: test.id,
           name: test.name,
           classroom: testClass.classroom.name,
           year: test.year.name,
@@ -51,14 +55,14 @@ export class TestComponent {
           teacher: test.teacher.person.name,
           discipline: test.discipline.name,
         }
-        dataToFront.push(data)
+        tests.push(data)
       }
+      dataToFront.push({ 'id': test.id, tests: tests })
     }
     return dataToFront
   }
 
-  get tests() {
+  get dataList() {
     return this._dataToFront
   }
-
 }

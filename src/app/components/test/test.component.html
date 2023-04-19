@@ -1,14 +1,30 @@
-<ng-container *ngFor="let test of tests">
-  <div>
-    <td>{{ test.id }}</td>
-    <td>{{ test.classroom }}</td>
-    <td>{{ test.year }}</td>
-    <td>{{ test.bimester }}</td>
-    <td>{{ test.category }}</td>
-    <td>{{ test.name }}</td>
-    <td>{{ test.teacher }}</td>
-    <td>{{ test.discipline }}</td>
-    <hr>
-
-  </div>
-</ng-container>
+<table>
+  <thead class="mat-elevation-z1">
+    <tr>
+      <th>Id</th>
+      <th>SALA</th>
+      <th>ANO</th>
+      <th>BIMESTRE</th>
+      <th>CATEGORIA</th>
+      <th>NOME</th>
+      <th>PROFESSOR</th>
+      <th>MATÉRIA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let data of dataList">
+      <tr class="trid">
+        <td [attr.rowspan]="data.tests.length + 1">{{data.id}}</td>
+      </tr>
+      <tr *ngFor="let test of data.tests;" class="clickable">
+        <td>{{ test.classroom }}</td>
+        <td>{{ test.year }}</td>
+        <td>{{ test.bimester }}</td>
+        <td>{{ test.category }}</td>
+        <td>{{ test.name }}</td>
+        <td>{{ test.teacher }}</td>
+        <td>{{ test.discipline }}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
