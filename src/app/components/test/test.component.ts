@@ -19,8 +19,9 @@ export class TestComponent {
   static icon = 'quiz'
   static resource = 'test'
 
-  private _tests: Test[] = []
   private _subscription: Subscription = new Subscription()
+
+  private _dataToFront: any[] = []
 
   constructor(
     private fetchData: FetchDataService,
@@ -31,11 +32,33 @@ export class TestComponent {
     this.navigationService.setActiveComponent({title: TestComponent.title, url: TestComponent.url});
 
     this._subscription = this.fetchData.getAllData<Test>(TestComponent.resource)
-      .subscribe((tests) => this._tests = tests)
+      .subscribe((tests) => {
+        this._dataToFront = this.formatData(tests)
+      })
+  }
+
+  formatData(response: any) {
+    let dataToFront = []
+    for (let test of response) {
+      for(let testClass of test.testClasses) {
+        let data = {
+          id: test.id,
+          name: test.name,
+          classroom: testClass.classroom.name,
+          year: test.year.name,
+          bimester: test.bimester.name,
+          category: test.category.name,
+          teacher: test.teacher.person.name,
+          discipline: test.discipline.name,
+        }
+        dataToFront.push(data)
+      }
+    }
+    return dataToFront
   }
 
   get tests() {
-    return this._tests
+    return this._dataToFront
   }
 
 }

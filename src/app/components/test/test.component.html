@@ -1,3 +1,14 @@
 <ng-container *ngFor="let test of tests">
-  <span>{{test.teacher.person.name}}</span>
+  <div>
+    <td>{{ test.id }}</td>
+    <td>{{ test.classroom }}</td>
+    <td>{{ test.year }}</td>
+    <td>{{ test.bimester }}</td>
+    <td>{{ test.category }}</td>
+    <td>{{ test.name }}</td>
+    <td>{{ test.teacher }}</td>
+    <td>{{ test.discipline }}</td>
+    <hr>
+
+  </div>
 </ng-container>
