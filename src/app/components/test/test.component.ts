@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationService } from "src/app/shared/services/navigation.service";
-import { Subscription } from "rxjs";
+import { Subscription} from "rxjs";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { CommonModule } from "@angular/common";
-import { Test } from "src/app/shared/interfaces/interfaces";
+import { Test, TestClasses } from "src/app/shared/interfaces/interfaces";
 
 @Component({
   standalone: true,
@@ -12,16 +12,18 @@ import { Test } from "src/app/shared/interfaces/interfaces";
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
 })
-export class TestComponent {
+export class TestComponent implements OnInit, OnDestroy {
 
   static title = 'Testes'
   static url = 'test'
   static icon = 'quiz'
-  static resource = 'test'
 
-  private _subscription: Subscription = new Subscription()
+  registerAnswersFlag: boolean = false
+  response: any = {}
 
-  private _dataToFront: any[] = []
+  private _listSubscription: Subscription = new Subscription()
+  private _dataToFront: { testId: number, classes: TestClasses[] }[] = []
+
 
   constructor(
     private fetchData: FetchDataService,
@@ -31,23 +33,29 @@ export class TestComponent {
   ngOnInit(): void {
     this.navigationService.setActiveComponent({title: TestComponent.title, url: TestComponent.url});
 
-    this._subscription = this.fetchData.getAllData<Test>(TestComponent.resource)
+    this._listSubscription = this.fetchData.getAllData<Test>(TestComponent.url)
       .subscribe((tests) => {
         this._dataToFront = this.formatData(tests)
       })
   }
 
+  ngOnDestroy() {
+    this._listSubscription.unsubscribe()
+  }
+
   formatData(response: any) {
 
-    let dataToFront = []
+    let dataToFront: { testId: number, classes: TestClasses[] }[] = []
 
     for (let test of response) {
 
-      let tests = []
+      let tests: TestClasses[] = []
 
       for(let testClass of test.testClasses) {
         let data = {
           name: test.name,
+          school: testClass.classroom.school.name,
+          classroomId: testClass.classroom.id,
           classroom: testClass.classroom.name,
           year: test.year.name,
           bimester: test.bimester.name,
@@ -57,12 +65,20 @@ export class TestComponent {
         }
         tests.push(data)
       }
-      dataToFront.push({ 'id': test.id, tests: tests })
+      dataToFront.push({ testId: test.id, classes: tests })
     }
     return dataToFront
   }
 
-  get dataList() {
+  get data() {
     return this._dataToFront
+  }
+
+  registerAnswers(param: {testId: number, classId: number}) {
+    this.fetchData.getQueryData('student/register-answers', 'classroom=' + param.classId + '&' + 'test=' + param.testId)
+      .subscribe((payload) => {
+        this.response = payload
+        this.registerAnswersFlag = true
+      })
   }
 }

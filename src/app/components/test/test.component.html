@@ -1,8 +1,9 @@
-<table>
+<table *ngIf="!registerAnswersFlag; else template">
   <thead class="mat-elevation-z1">
     <tr>
       <th>Id</th>
       <th>SALA</th>
+      <th>ESCOLA</th>
       <th>ANO</th>
       <th>BIMESTRE</th>
       <th>CATEGORIA</th>
@@ -12,19 +13,48 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let data of dataList">
+    <ng-container *ngFor="let item of data">
       <tr class="trid">
-        <td [attr.rowspan]="data.tests.length + 1">{{data.id}}</td>
+        <td [attr.rowspan]="item.classes.length + 1">{{item.testId}}</td>
       </tr>
-      <tr *ngFor="let test of data.tests;" class="clickable">
-        <td>{{ test.classroom }}</td>
-        <td>{{ test.year }}</td>
-        <td>{{ test.bimester }}</td>
-        <td>{{ test.category }}</td>
-        <td>{{ test.name }}</td>
-        <td>{{ test.teacher }}</td>
-        <td>{{ test.discipline }}</td>
+      <tr *ngFor="let object of item.classes;" class="clickable" (click)="registerAnswers({testId: item.testId, classId: object.classroomId})">
+        <td>{{ object.classroom }}</td>
+        <td>{{ object.school }}</td>
+        <td>{{ object.year }}</td>
+        <td>{{ object.bimester }}</td>
+        <td>{{ object.category }}</td>
+        <td>{{ object.name }}</td>
+        <td>{{ object.teacher }}</td>
+        <td>{{ object.discipline }}</td>
       </tr>
     </ng-container>
   </tbody>
 </table>
+<ng-template #template>
+  <table>
+    <thead class="mat-elevation-z1">
+    <tr>
+      <th>GABARITO</th>
+      <th *ngFor="let question of response.test.questions">
+        {{ question.answer }}
+    </tr>
+      <tr>
+        <th>QUESTÕES</th>
+        <th *ngFor="let question of response.test.questions">
+          {{ question.id }}
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let student of response.students">
+        <td>{{ student.person.name }}</td>
+        <ng-container *ngFor="let answer of student.studentTests">
+          <ng-container *ngFor="let element of answer.studentAnswers">
+            <td>{{ element.answer }}</td>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

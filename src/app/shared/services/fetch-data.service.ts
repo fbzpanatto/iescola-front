@@ -13,4 +13,14 @@ export class FetchDataService {
     return this.http.get('http://localhost:3333/' + resource)
       .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T[]}))
   }
+
+  getOneData<T>(resource: string, id: number, relation?: string) {
+    return this.http.get('http://localhost:3333/' + resource + '/' + id + '/' + relation)
+      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T}))
+  }
+
+  getQueryData<T>(resource: string, query: string) {
+    return this.http.get('http://localhost:3333/' + resource + '?' + query)
+      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T[]}))
+  }
 }
