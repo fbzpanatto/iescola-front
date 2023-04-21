@@ -107,24 +107,24 @@ export class TestComponent implements OnInit, OnDestroy {
     this._school = param
   }
 
-  updateAnswers(answer: any, arrayOfAnswers: { id: number, answer: string }[], element: { id: number, answer: string }) {
+  updateAnswers(studentTest: any, arrayOfAnswers: { id: number, answer: string }[], element: { id: number, answer: string }) {
 
-    console.log(answer.id, answer.studentId, answer.testId)
+    console.log(studentTest.id, studentTest.studentId, studentTest.testId)
 
     let index = arrayOfAnswers.findIndex((answer) => answer.id == element.id)
     arrayOfAnswers[index] = element
 
     let body = {
       student: {
-        id: answer.studentId
+        id: studentTest.studentId
       },
       test: {
-        id: answer.testId
+        id: studentTest.testId
       },
       studentAnswers: arrayOfAnswers
     }
 
-    this.fetchData.updateOneData('student-answers', answer.id, body)
+    this.fetchData.updateOneData('student-answers', studentTest.id, body)
       .subscribe((payload) => {
         console.log('payload', payload)
       })
