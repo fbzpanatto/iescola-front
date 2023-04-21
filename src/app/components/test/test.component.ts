@@ -109,8 +109,6 @@ export class TestComponent implements OnInit, OnDestroy {
 
   updateAnswers(studentTest: any, arrayOfAnswers: { id: number, answer: string }[], element: { id: number, answer: string }) {
 
-    console.log(studentTest.id, studentTest.studentId, studentTest.testId)
-
     let index = arrayOfAnswers.findIndex((answer) => answer.id == element.id)
     arrayOfAnswers[index] = element
 
@@ -125,8 +123,11 @@ export class TestComponent implements OnInit, OnDestroy {
     }
 
     this.fetchData.updateOneData('student-answers', studentTest.id, body)
-      .subscribe((payload) => {
-        console.log('payload', payload)
+      .subscribe({
+        next: (response) => {
+          this._currentArrayOfAnswers = response['studentAnswers'] as { id: number, answer: string }[]
+        },
+        complete: () => {}
       })
   }
 }
