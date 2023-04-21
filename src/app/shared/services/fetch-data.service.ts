@@ -23,4 +23,9 @@ export class FetchDataService {
     return this.http.get('http://localhost:3333/' + resource + '?' + query)
       .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T[]}))
   }
+
+  updateOneData<T>(resource: string, id: number, data: T) {
+    return this.http.put('http://localhost:3333/' + resource + '/' + id, data)
+      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T}))
+  }
 }

@@ -29,11 +29,11 @@ const MENU_TREE = [
     url: HomeComponent.url,
     icon: HomeComponent.icon,
   },
-  {
+  /*{
     title: YearComponent.title,
     url: YearComponent.url,
     icon: YearComponent.icon,
-  },
+  },*/
   {
     title: TestComponent.title,
     url: TestComponent.url,

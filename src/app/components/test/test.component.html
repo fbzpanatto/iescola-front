@@ -1,14 +1,14 @@
 <table *ngIf="!registerAnswersFlag; else template">
   <thead class="mat-elevation-z1">
     <tr>
-      <th>Id</th>
+      <th>ID</th>
       <th>SALA</th>
       <th>ESCOLA</th>
       <th>ANO</th>
       <th>BIMESTRE</th>
       <th>CATEGORIA</th>
       <th>NOME</th>
-      <th>PROFESSOR</th>
+      <th>CRIADOR</th>
       <th>MATÉRIA</th>
     </tr>
   </thead>
@@ -17,7 +17,7 @@
       <tr class="trid">
         <td [attr.rowspan]="item.classes.length + 1">{{item.testId}}</td>
       </tr>
-      <tr *ngFor="let object of item.classes;" class="clickable" (click)="registerAnswers({testId: item.testId, classId: object.classroomId})">
+      <tr *ngFor="let object of item.classes;" class="clickable" (click)="registerAnswers({testId: item.testId, classId: object.classroomId, classroom: object.classroom, school: object.school})">
         <td>{{ object.classroom }}</td>
         <td>{{ object.school }}</td>
         <td>{{ object.year }}</td>
@@ -33,14 +33,28 @@
 <ng-template #template>
   <table>
     <thead class="mat-elevation-z1">
-    <tr>
-      <th>GABARITO</th>
-      <th *ngFor="let question of response.test.questions">
-        {{ question.answer }}
-    </tr>
       <tr>
-        <th>QUESTÕES</th>
-        <th *ngFor="let question of response.test.questions">
+        <th class="school" [attr.colspan]="100">{{school}}</th>
+      </tr>
+      <tr>
+        <th>
+          <div>
+            <span>SALA: {{classroom}}</span>
+            <span>GABARITO:</span>
+          </div>
+        </th>
+        <th class="question" *ngFor="let question of response.test.questions">
+          {{ question.answer }}
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <div>
+            <span>ALUNOS</span>
+            <span>QUESTÕES:</span>
+          </div>
+        </th>
+        <th class="question" *ngFor="let question of response.test.questions">
           {{ question.id }}
         </th>
       </tr>
@@ -48,10 +62,10 @@
 
     <tbody>
       <tr *ngFor="let student of response.students">
-        <td>{{ student.person.name }}</td>
+        <td class="name">{{ student.person.name }}</td>
         <ng-container *ngFor="let answer of student.studentTests">
           <ng-container *ngFor="let element of answer.studentAnswers">
-            <td>{{ element.answer }}</td>
+            <td class="answer"><input #input (blur)="updateAnswers(answer, answer.studentAnswers, { id: element.id, answer: input.value})" maxlength="1" type="text" [value]="element.answer"></td>
           </ng-container>
         </ng-container>
       </tr>

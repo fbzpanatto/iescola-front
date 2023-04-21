@@ -24,6 +24,11 @@ export class TestComponent implements OnInit, OnDestroy {
   private _listSubscription: Subscription = new Subscription()
   private _dataToFront: { testId: number, classes: TestClasses[] }[] = []
 
+  private _classroom: string = ''
+  private _school: string = ''
+
+  private _currentArrayOfAnswers?: { id: number, answer: string }[]
+
 
   constructor(
     private fetchData: FetchDataService,
@@ -70,15 +75,58 @@ export class TestComponent implements OnInit, OnDestroy {
     return dataToFront
   }
 
-  get data() {
-    return this._dataToFront
-  }
+  registerAnswers(param: {testId: number, classId: number, classroom: string, school: string}) {
 
-  registerAnswers(param: {testId: number, classId: number}) {
+    this.classroom = param.classroom
+    this.school = param.school
+
     this.fetchData.getQueryData('student/register-answers', 'classroom=' + param.classId + '&' + 'test=' + param.testId)
       .subscribe((payload) => {
         this.response = payload
         this.registerAnswersFlag = true
+      })
+  }
+
+  get data() {
+    return this._dataToFront
+  }
+
+  get classroom() {
+    return this._classroom
+  }
+
+  set classroom(param: string) {
+    this._classroom = param
+  }
+
+  get school() {
+    return this._school.toUpperCase()
+  }
+
+  set school(param: string) {
+    this._school = param
+  }
+
+  updateAnswers(answer: any, arrayOfAnswers: { id: number, answer: string }[], element: { id: number, answer: string }) {
+
+    console.log(answer.id, answer.studentId, answer.testId)
+
+    let index = arrayOfAnswers.findIndex((answer) => answer.id == element.id)
+    arrayOfAnswers[index] = element
+
+    let body = {
+      student: {
+        id: answer.studentId
+      },
+      test: {
+        id: answer.testId
+      },
+      studentAnswers: arrayOfAnswers
+    }
+
+    this.fetchData.updateOneData('student-answers', answer.id, body)
+      .subscribe((payload) => {
+        console.log('payload', payload)
       })
   }
 }
