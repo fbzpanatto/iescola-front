@@ -149,4 +149,15 @@ export class TestComponent implements OnInit, OnDestroy {
 
     return empty === totalQuestions ? 'Nulo' : total
   }
+
+  color(runtimeQuestion: { id: number, answer: string }) {
+
+    let index = this.response.test.questions.findIndex((question: { id: number }) => question.id === runtimeQuestion.id)
+
+    const question = this.response.test.questions[index]
+
+    if(runtimeQuestion.answer === '') return '#ffffff'
+
+    return question.answer === runtimeQuestion.answer ? '#74e5ff' : '#ff7a7a'
+  }
 }
