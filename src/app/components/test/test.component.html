@@ -46,6 +46,7 @@
         <th class="question" *ngFor="let question of response.test.questions">
           {{ question.answer }}
         </th>
+        <th class="question" [attr.rowspan]="2">TOTAL</th>
       </tr>
       <tr>
         <th>
@@ -65,9 +66,10 @@
         <td class="name">{{ student.person.name }}</td>
         <ng-container *ngFor="let answer of student.studentTests">
           <ng-container *ngFor="let element of answer.studentAnswers">
-            <td class="answer"><input #input (blur)="updateAnswers(answer, answer.studentAnswers, { id: element.id, answer: input.value})" maxlength="1" type="text" [value]="element.answer"></td>
+            <td class="answer"><input #input (blur)="updateAnswers(answer, answer.studentAnswers, { id: element.id, answer: input.value.toUpperCase()})" maxlength="1" type="text" [value]="element.answer.toUpperCase()"></td>
           </ng-container>
         </ng-container>
+        <td class="answer">{{ studentTotal(student.studentTests[0].studentAnswers) }}</td>
       </tr>
     </tbody>
   </table>

@@ -129,4 +129,24 @@ export class TestComponent implements OnInit, OnDestroy {
       this.fetchData.updateOneData('student-answers', studentTest.id, body).subscribe()
     }
   }
+
+  studentTotal(studentAnswers: any) {
+
+    let total = 0
+    let empty = 0
+    let totalQuestions = this.response.test.questions.length
+
+    for (let [index, answer] of studentAnswers.entries()) {
+
+      if(answer.answer === '') {
+        empty++
+      }
+
+      if(answer.answer === this.response.test.questions[index].answer) {
+        total++
+      }
+    }
+
+    return empty === totalQuestions ? 'Nulo' : total
+  }
 }
