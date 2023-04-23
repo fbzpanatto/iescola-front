@@ -27,9 +27,6 @@ export class TestComponent implements OnInit, OnDestroy {
   private _classroom: string = ''
   private _school: string = ''
 
-  private _currentArrayOfAnswers?: { id: number, answer: string }[]
-
-
   constructor(
     private fetchData: FetchDataService,
     private navigationService: NavigationService,
@@ -48,13 +45,13 @@ export class TestComponent implements OnInit, OnDestroy {
     this._listSubscription.unsubscribe()
   }
 
-  formatData(response: any) {
+  formatData(tests: any) {
 
     let dataToFront: { testId: number, classes: TestClasses[] }[] = []
 
-    for (let test of response) {
+    for (let test of tests) {
 
-      let tests: TestClasses[] = []
+      let testClasses: TestClasses[] = []
 
       for(let testClass of test.testClasses) {
         let data = {
@@ -68,9 +65,9 @@ export class TestComponent implements OnInit, OnDestroy {
           teacher: test.teacher.person.name,
           discipline: test.discipline.name,
         }
-        tests.push(data)
+        testClasses.push(data)
       }
-      dataToFront.push({ testId: test.id, classes: tests })
+      dataToFront.push({ testId: test.id, classes: testClasses })
     }
     return dataToFront
   }
