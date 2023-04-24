@@ -3,11 +3,12 @@ import { NavigationService } from "src/app/shared/services/navigation.service";
 import { Subscription} from "rxjs";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { CommonModule } from "@angular/common";
-import { Test, TestClasses } from "src/app/shared/interfaces/interfaces";
+import { TestClasses } from "src/app/shared/interfaces/interfaces";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   selector: 'app-test',
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
@@ -22,7 +23,7 @@ export class TestComponent implements OnInit, OnDestroy {
   response: any = {}
 
   private _listSubscription: Subscription = new Subscription()
-  private _dataToFront: { testId: number, classes: TestClasses[] }[] = []
+  private _tests: TestClasses[] = []
 
   private _classroom: string = ''
   private _school: string = ''
@@ -35,41 +36,14 @@ export class TestComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.navigationService.setActiveComponent({title: TestComponent.title, url: TestComponent.url});
 
-    this._listSubscription = this.fetchData.getAllData<Test>(TestComponent.url)
+    this._listSubscription = this.fetchData.getAllData<TestClasses>(TestComponent.url)
       .subscribe((tests) => {
-        this._dataToFront = this.formatData(tests)
+        this._tests = tests
       })
   }
 
   ngOnDestroy() {
     this._listSubscription.unsubscribe()
-  }
-
-  formatData(tests: any) {
-
-    let dataToFront: { testId: number, classes: TestClasses[] }[] = []
-
-    for (let test of tests) {
-
-      let testClasses: TestClasses[] = []
-
-      for(let testClass of test.testClasses) {
-        let data = {
-          name: test.name,
-          school: testClass.classroom.school.name,
-          classroomId: testClass.classroom.id,
-          classroom: testClass.classroom.name,
-          year: test.year.name,
-          bimester: test.bimester.name,
-          category: test.category.name,
-          teacher: test.teacher.person.name,
-          discipline: test.discipline.name,
-        }
-        testClasses.push(data)
-      }
-      dataToFront.push({ testId: test.id, classes: testClasses })
-    }
-    return dataToFront
   }
 
   registerAnswers(param: {testId: number, classId: number, classroom: string, school: string}) {
@@ -84,8 +58,8 @@ export class TestComponent implements OnInit, OnDestroy {
       })
   }
 
-  get data() {
-    return this._dataToFront
+  get tests() {
+    return this._tests
   }
 
   get classroom() {
@@ -155,6 +129,6 @@ export class TestComponent implements OnInit, OnDestroy {
 
     if(runtimeQuestion.answer === '') return '#ffffff'
 
-    return question.answer === runtimeQuestion.answer ? '#74e5ff' : '#ff7a7a'
+    return question.answer === runtimeQuestion.answer.toUpperCase() ? '#74e5ff' : '#ff7a7a'
   }
 }

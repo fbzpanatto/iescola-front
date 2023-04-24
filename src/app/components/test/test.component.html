@@ -13,19 +13,19 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let item of data">
+    <ng-container *ngFor="let test of tests">
       <tr class="trid">
-        <td [attr.rowspan]="item.classes.length + 1">{{item.testId}}</td>
+        <td [attr.rowspan]="test.classes.length + 1">{{test.testId}}</td>
       </tr>
-      <tr *ngFor="let object of item.classes;" class="clickable" (click)="registerAnswers({testId: item.testId, classId: object.classroomId, classroom: object.classroom, school: object.school})">
-        <td>{{ object.classroom }}</td>
-        <td>{{ object.school }}</td>
-        <td>{{ object.year }}</td>
-        <td>{{ object.bimester }}</td>
-        <td>{{ object.category }}</td>
-        <td>{{ object.name }}</td>
-        <td>{{ object.teacher }}</td>
-        <td>{{ object.discipline }}</td>
+      <tr *ngFor="let el of test.classes;" class="clickable" (click)="registerAnswers({testId: test.testId, classId: el.classroomId, classroom: el.classroom, school: el.school})">
+        <td>{{ el.classroom }}</td>
+        <td>{{ el.school }}</td>
+        <td>{{ el.year }}</td>
+        <td>{{ el.bimester }}</td>
+        <td>{{ el.category }}</td>
+        <td>{{ el.name }}</td>
+        <td>{{ el.teacher }}</td>
+        <td>{{ el.discipline }}</td>
       </tr>
     </ng-container>
   </tbody>
@@ -74,7 +74,7 @@
                 maxlength="1"
                 type="text"
                 [value]="element.answer.toUpperCase()"
-                [ngStyle]="{ 'background-color': color({ id: element.id, answer: input.value.toUpperCase()}) }"
+                [ngStyle]="{ 'background-color': color({ id: element.id, answer: input.value}) }"
               >
             </td>
           </ng-container>
