@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationService } from "src/app/shared/services/navigation.service";
-import { Subscription} from "rxjs";
+import { Subscription } from "rxjs";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { CommonModule } from "@angular/common";
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
@@ -27,6 +27,8 @@ export class TestComponent implements OnInit, OnDestroy {
 
   private _classroom: string = ''
   private _school: string = ''
+
+  totalPerQuestion: { [key: number]: number } = {}
 
   constructor(
     private fetchData: FetchDataService,
@@ -55,27 +57,8 @@ export class TestComponent implements OnInit, OnDestroy {
       .subscribe((payload) => {
         this.response = payload
         this.registerAnswersFlag = true
+        this.totalizerPerQuestion()
       })
-  }
-
-  get tests() {
-    return this._tests
-  }
-
-  get classroom() {
-    return this._classroom
-  }
-
-  set classroom(param: string) {
-    this._classroom = param
-  }
-
-  get school() {
-    return this._school.toUpperCase()
-  }
-
-  set school(param: string) {
-    this._school = param
   }
 
   updateAnswers(studentTest: any, arrayOfAnswers: { id: number, answer: string }[], runtimeQuestion: { id: number, answer: string }) {
@@ -97,7 +80,12 @@ export class TestComponent implements OnInit, OnDestroy {
         studentAnswers: arrayOfAnswers
       }
 
-      this.fetchData.updateOneData('student-answers', studentTest.id, body).subscribe()
+      this.fetchData.updateOneData('student-answers', studentTest.id, body)
+        .subscribe({
+          next: (payload) => {
+            this.totalizerPerQuestion()
+          }
+        })
     }
   }
 
@@ -131,4 +119,58 @@ export class TestComponent implements OnInit, OnDestroy {
 
     return question.answer === runtimeQuestion.answer.toUpperCase() ? '#74e5ff' : '#ff7a7a'
   }
+
+  totalizerPerQuestion(){
+
+    this.totalPerQuestion = {}
+
+    for (let student of this.response['students']) {
+
+      for (let answer of student['studentTests'][0]['studentAnswers']) {
+
+        let index = this.response.test.questions.findIndex((question: any) => question.id === answer.id)
+        let comparsion = this.response.test.questions[index].answer === answer.answer
+        if(comparsion) {
+          if (this.totalPerQuestion[answer.id]) {
+            this.totalPerQuestion[answer.id]++
+          } else {
+            this.totalPerQuestion[answer.id] = 1
+          }
+        } else {
+          if (!this.totalPerQuestion[answer.id]) {
+            this.totalPerQuestion[answer.id] = 0
+          }
+        }
+      }
+    }
+  }
+
+  get tests() {
+    return this._tests
+  }
+
+  get classroom() {
+    return this._classroom
+  }
+
+  set classroom(param: string) {
+    this._classroom = param
+  }
+
+  get school() {
+    return this._school.toUpperCase()
+  }
+
+  set school(param: string) {
+    this._school = param
+  }
+
+  get mapToArray() {
+    // SET 0 IF EMPTY
+    return Object.entries(this.totalPerQuestion).map(([question, answer]) => ({key: question, value: answer}))
+  }
+
+  // get rate() {
+  //
+  // }
 }

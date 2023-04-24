@@ -34,30 +34,19 @@
   <table>
     <thead class="mat-elevation-z1">
       <tr>
-        <th class="school" [attr.colspan]="100">{{school}}</th>
+        <th [attr.colspan]="100">{{school}}</th>
       </tr>
       <tr>
         <th>
           <div>
             <span>SALA: {{classroom}}</span>
-            <span>GABARITO:</span>
-          </div>
-        </th>
-        <th style="background-color: #3f92ff" class="question" *ngFor="let question of response.test.questions">
-          {{ question.answer }}
-        </th>
-        <th class="question" [attr.rowspan]="2">TOTAL</th>
-      </tr>
-      <tr>
-        <th>
-          <div>
-            <span>ALUNOS</span>
             <span>QUESTÕES:</span>
           </div>
         </th>
-        <th style="background-color: #3f92ff" class="question" *ngFor="let question of response.test.questions">
+        <th class="question" *ngFor="let question of response.test.questions">
           {{ question.id }}
         </th>
+        <th class="question total" [attr.rowspan]="2">TOTAL</th>
       </tr>
     </thead>
 
@@ -69,6 +58,7 @@
 
             <td class="answer">
               <input
+                style="background-color: inherit"
                 #input
                 (blur)="updateAnswers(studentTest, studentTest.studentAnswers, { id: element.id, answer: input.value.toUpperCase()})"
                 maxlength="1"
@@ -80,6 +70,11 @@
           </ng-container>
         </ng-container>
         <td class="answer">{{ studentTotal(student.studentTests[0].studentAnswers) }}</td>
+      </tr>
+      <tr>
+        <td class="right" style="font-weight: 600">TOTAL ACERTOS: </td>
+        <td class="answer" *ngFor="let question of mapToArray">{{ question.value }}</td>
+        <td class="answer">-</td>
       </tr>
     </tbody>
   </table>
