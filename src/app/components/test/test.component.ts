@@ -5,10 +5,11 @@ import {FetchDataService} from "../../shared/services/fetch-data.service";
 import {CommonModule} from "@angular/common";
 import {TestClasses} from "src/app/shared/interfaces/interfaces";
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatTooltipModule],
   selector: 'app-test',
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']

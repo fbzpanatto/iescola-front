@@ -46,7 +46,7 @@
         <th class="question" *ngFor="let question of response.test.questions">
           {{ question.id }}
         </th>
-        <th class="question total" [attr.rowspan]="2">TOTAL</th>
+        <th class="question total" [attr.rowspan]="2">TOT ALUNO</th>
       </tr>
     </thead>
 
@@ -74,22 +74,13 @@
       <tr>
         <td>
           <div>
-            <span style="font-weight: 600">PROVAS FEITAS: {{ completed }}</span>
-            <span style="font-weight: 600">ACERTOS:</span>
+            <span style="font-weight: 600" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ completed }}</span>
+            <span style="font-weight: 600" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
           </div>
         </td>
         <td class="answer" *ngFor="let question of mapToArray">{{ question.value }}</td>
         <td class="answer">-</td>
       </tr>
-      <!--tr>
-        <td class="right" style="font-weight: 600">TOTAL ACERTOS: </td>
-        <td class="answer" *ngFor="let question of mapToArray">{{ question.value }}</td>
-        <td class="answer">-</td>
-      </tr>
-      <tr>
-        <td>PROVAS REALIZADAS:</td>
-        <td>{{ completed }}</td>
-      </tr-->
     </tbody>
   </table>
 </ng-template>
