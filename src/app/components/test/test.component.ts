@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationService } from "src/app/shared/services/navigation.service";
-import { Subscription } from "rxjs";
-import { FetchDataService } from "../../shared/services/fetch-data.service";
-import { CommonModule } from "@angular/common";
-import { TestClasses } from "src/app/shared/interfaces/interfaces";
-import { FormsModule } from "@angular/forms";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {NavigationService} from "src/app/shared/services/navigation.service";
+import {Subscription} from "rxjs";
+import {FetchDataService} from "../../shared/services/fetch-data.service";
+import {CommonModule} from "@angular/common";
+import {TestClasses} from "src/app/shared/interfaces/interfaces";
+import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   selector: 'app-test',
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
@@ -28,6 +28,8 @@ export class TestComponent implements OnInit, OnDestroy {
   private _classroom: string = ''
   private _school: string = ''
 
+  completed: number = 0
+
   totalPerQuestion: { [key: number]: number } = {}
 
   constructor(
@@ -36,6 +38,7 @@ export class TestComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+
     this.navigationService.setActiveComponent({title: TestComponent.title, url: TestComponent.url});
 
     this._listSubscription = this.fetchData.getAllData<TestClasses>(TestComponent.url)
@@ -56,6 +59,11 @@ export class TestComponent implements OnInit, OnDestroy {
     this.fetchData.getQueryData('student/register-answers', 'classroom=' + param.classId + '&' + 'test=' + param.testId)
       .subscribe((payload) => {
         this.response = payload
+
+        for(let student of this.response.students) {
+          this.completed += student.studentTests[0].completed ? 1 : 0
+        }
+
         this.registerAnswersFlag = true
         this.totalizerPerQuestion()
       })
@@ -70,6 +78,8 @@ export class TestComponent implements OnInit, OnDestroy {
 
       arrayOfAnswers[index].answer = runtimeQuestion.answer
 
+      const completed = arrayOfAnswers.every((answer) => answer.answer === '')
+
       let body = {
         student: {
           id: studentTest.studentId
@@ -77,14 +87,14 @@ export class TestComponent implements OnInit, OnDestroy {
         test: {
           id: studentTest.testId
         },
-        studentAnswers: arrayOfAnswers
+        studentAnswers: arrayOfAnswers,
+        completed: !completed
       }
 
       this.fetchData.updateOneData('student-answers', studentTest.id, body)
-        .subscribe({
-          next: (payload) => {
-            this.totalizerPerQuestion()
-          }
+        .subscribe((payload: any) => {
+          this.completed = payload
+          this.totalizerPerQuestion()
         })
     }
   }
@@ -169,8 +179,4 @@ export class TestComponent implements OnInit, OnDestroy {
     // SET 0 IF EMPTY
     return Object.entries(this.totalPerQuestion).map(([question, answer]) => ({key: question, value: answer}))
   }
-
-  // get rate() {
-  //
-  // }
 }
