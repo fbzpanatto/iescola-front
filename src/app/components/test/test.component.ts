@@ -59,12 +59,11 @@ export class TestComponent implements OnInit, OnDestroy {
 
     this.fetchData.getQueryData('student/register-answers', 'classroom=' + param.classId + '&' + 'test=' + param.testId)
       .subscribe((payload) => {
-        console.log('linkStudentsWithTests: ', payload)
         this.response = payload
 
-        /* for(let student of this.response.students) {
-          this.completed += student.studentTests[0].completed ? 1 : 0
-        } */
+         for(let element of this.response.studentTests) {
+          this.completed += element.student.test.completed ? 1 : 0
+        }
 
         this.registerAnswersFlag = true
         this.totalizerPerQuestion()
