@@ -72,6 +72,16 @@
         <td class="answer">{{ studentTotal(student.studentTests[0].studentAnswers) }}</td>
       </tr>
       <tr>
+        <td>
+          <div>
+            <span style="font-weight: 600">PROVAS FEITAS: {{ completed }}</span>
+            <span style="font-weight: 600">ACERTOS:</span>
+          </div>
+        </td>
+        <td class="answer" *ngFor="let question of mapToArray">{{ question.value }}</td>
+        <td class="answer">-</td>
+      </tr>
+      <!--tr>
         <td class="right" style="font-weight: 600">TOTAL ACERTOS: </td>
         <td class="answer" *ngFor="let question of mapToArray">{{ question.value }}</td>
         <td class="answer">-</td>
@@ -79,7 +89,7 @@
       <tr>
         <td>PROVAS REALIZADAS:</td>
         <td>{{ completed }}</td>
-      </tr>
+      </tr-->
     </tbody>
   </table>
 </ng-template>
