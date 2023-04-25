@@ -87,7 +87,7 @@ export class TestComponent implements OnInit, OnDestroy {
           id: studentTest.student.id
         },
         test: {
-          id: studentTest.id
+          id: this.response.test.id
         },
         studentAnswers: arrayOfAnswers,
         completed: !completed
