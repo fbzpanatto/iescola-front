@@ -178,7 +178,6 @@ export class TestComponent implements OnInit, OnDestroy {
   }
 
   get mapToArray() {
-    // SET 0 IF EMPTY
     return Object.entries(this.totalPerQuestion).map(([question, answer]) => ({key: question, value: answer}))
   }
 }
