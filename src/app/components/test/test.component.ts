@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NavigationService} from "src/app/shared/services/navigation.service";
-import {Subscription} from "rxjs";
-import {FetchDataService} from "../../shared/services/fetch-data.service";
-import {CommonModule} from "@angular/common";
-import {TestClasses} from "src/app/shared/interfaces/interfaces";
-import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationService } from "src/app/shared/services/navigation.service";
+import { Subscription } from "rxjs";
+import { FetchDataService } from "../../shared/services/fetch-data.service";
+import { CommonModule } from "@angular/common";
+import { TestClasses } from "src/app/shared/interfaces/interfaces";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
   standalone: true,
@@ -59,11 +59,12 @@ export class TestComponent implements OnInit, OnDestroy {
 
     this.fetchData.getQueryData('student/register-answers', 'classroom=' + param.classId + '&' + 'test=' + param.testId)
       .subscribe((payload) => {
+        console.log('linkStudentsWithTests: ', payload)
         this.response = payload
 
-        for(let student of this.response.students) {
+        /* for(let student of this.response.students) {
           this.completed += student.studentTests[0].completed ? 1 : 0
-        }
+        } */
 
         this.registerAnswersFlag = true
         this.totalizerPerQuestion()
@@ -83,10 +84,10 @@ export class TestComponent implements OnInit, OnDestroy {
 
       let body = {
         student: {
-          id: studentTest.studentId
+          id: studentTest.student.id
         },
         test: {
-          id: studentTest.testId
+          id: studentTest.id
         },
         studentAnswers: arrayOfAnswers,
         completed: !completed
@@ -122,22 +123,23 @@ export class TestComponent implements OnInit, OnDestroy {
 
   color(runtimeQuestion: { id: number, answer: string }) {
 
+
     let index = this.response.test.questions.findIndex((question: { id: number }) => question.id === runtimeQuestion.id)
 
     const question = this.response.test.questions[index]
 
     if(runtimeQuestion.answer === '') return '#ffffff'
 
-    return question.answer === runtimeQuestion.answer.toUpperCase() ? '#74e5ff' : '#ff7a7a'
+    return question.answer === runtimeQuestion.answer.toUpperCase() ? '#80e5ff' : '#ff7f7f'
   }
 
   totalizerPerQuestion(){
 
-    this.totalPerQuestion = {}
+     this.totalPerQuestion = {}
 
-    for (let student of this.response['students']) {
+    for (let studentTest of this.response['studentTests']) {
 
-      for (let answer of student['studentTests'][0]['studentAnswers']) {
+      for (let answer of studentTest.student.test.answers) {
 
         let index = this.response.test.questions.findIndex((question: any) => question.id === answer.id)
         let comparsion = this.response.test.questions[index].answer === answer.answer

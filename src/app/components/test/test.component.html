@@ -51,27 +51,21 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let student of response.students">
-        <td class="name">{{ student.person.name }}</td>
-        <ng-container *ngFor="let studentTest of student.studentTests">
-          <ng-container *ngFor="let element of studentTest.studentAnswers">
-
-            <td class="answer">
-              <input
-                style="background-color: inherit"
-                #input
-                (blur)="updateAnswers(studentTest, studentTest.studentAnswers, { id: element.id, answer: input.value.toUpperCase()})"
-                maxlength="1"
-                type="text"
-                [value]="element.answer.toUpperCase()"
-                [ngStyle]="{ 'background-color': color({ id: element.id, answer: input.value}) }"
-              >
-            </td>
-          </ng-container>
-        </ng-container>
-        <td class="answer">{{ studentTotal(student.studentTests[0].studentAnswers) }}</td>
+      <tr *ngFor="let studentTest of response.studentTests">
+        <td class="name">{{ studentTest.student.person.name }}</td>
+        <td class="answer" *ngFor="let question of studentTest.student.test.answers">
+          <input
+            style="background-color: inherit"
+            #input
+            (blur)="updateAnswers(studentTest, studentTest.student.test.answers, { id: question.id, answer: input.value.toUpperCase()})"
+            maxlength="1"
+            type="text"
+            [value]="question.answer.toUpperCase()"
+            [ngStyle]="{ 'background-color': color({ id: question.id, answer: input.value}) }"
+          >
+        <td class="answer">{{ studentTotal(studentTest.student.test.answers) }}</td>
       </tr>
-      <tr>
+      <tr class="mat-elevation-z1">
         <td>
           <div>
             <span style="font-weight: 600" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ completed }}</span>
