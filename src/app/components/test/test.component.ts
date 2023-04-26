@@ -122,14 +122,14 @@ export class TestComponent implements OnInit, OnDestroy {
 
   color(runtimeQuestion: { id: number, answer: string }) {
 
-
-    let index = this.response.test.questions.findIndex((question: { id: number }) => question.id === runtimeQuestion.id)
+    let index = this.response.test.questions.findIndex((question: { id: number }) => question.id === Number(runtimeQuestion.id))
 
     const question = this.response.test.questions[index]
 
     if(runtimeQuestion.answer === '') return '#ffffff'
 
     return question.answer === runtimeQuestion.answer.toUpperCase() ? '#80e5ff' : '#ff7f7f'
+
   }
 
   totalizerPerQuestion(){
@@ -140,7 +140,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
       for (let answer of studentTest.student.test.answers) {
 
-        let index = this.response.test.questions.findIndex((question: any) => question.id === answer.id)
+        let index = this.response.test.questions.findIndex((question: any) => question.id === Number(answer.id))
         let comparsion = this.response.test.questions[index].answer === answer.answer
         if(comparsion) {
           if (this.totalPerQuestion[answer.id]) {
