@@ -76,6 +76,14 @@ table {
         &.name {
           width: 200px;
           overflow: hidden;
+          padding-right: 0;
+        }
+
+        &.no {
+          width: 16px;
+          text-align: center;
+          padding-right: 0;
+          font-weight: 500;
         }
 
         &.answer {

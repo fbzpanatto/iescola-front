@@ -37,7 +37,7 @@
         <th [attr.colspan]="100">{{school}}</th>
       </tr>
       <tr>
-        <th>
+        <th style="padding-right: 0" [attr.colspan]="2">
           <div>
             <span>SALA: {{classroom}}</span>
             <span>QUESTÕES:</span>
@@ -52,6 +52,7 @@
 
     <tbody>
       <tr *ngFor="let studentTest of response.studentTests">
+        <td class="no">{{ studentTest.student.no }}</td>
         <td class="name">{{ studentTest.student.person.name }}</td>
         <td class="answer" *ngFor="let question of studentTest.student.test.answers">
           <input
@@ -66,7 +67,7 @@
         <td class="answer">{{ studentTotal(studentTest.student.test.answers) }}</td>
       </tr>
       <tr class="mat-elevation-z1">
-        <td>
+        <td [attr.colspan]="2">
           <div>
             <span style="font-weight: 600" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ completed }}</span>
             <span style="font-weight: 600" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
