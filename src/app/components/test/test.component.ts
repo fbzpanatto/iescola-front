@@ -68,6 +68,7 @@ export class TestComponent implements OnInit, OnDestroy {
         this.test = test
         this.studentTests = studentTests
 
+         // TODO: verificar após a implementação do método studentScore() no Back.
          for(let element of this.studentTests) {
           this.completed += element.student.test.completed ? 1 : 0
         }
@@ -141,28 +142,21 @@ export class TestComponent implements OnInit, OnDestroy {
 
   totalizerPerQuestion(){
 
-     this.totalPerQuestion = {}
-
-    for (let studentTest of this.studentTests) {
-
-      for (let answer of studentTest.student.test.answers) {
-
-        let index = this.test.questions.findIndex((question: any) => question.id === Number(answer.id))
-        let comparsion = this.test.questions[index].answer === answer.answer
-        if(comparsion) {
-          if (this.totalPerQuestion[answer.id]) {
-            this.totalPerQuestion[answer.id]++
-          } else {
-            console.log('acontecendo?')
-            this.totalPerQuestion[answer.id] = 1
+    return this.test.questions.map((question: { id: number, answer: string }) => {
+      return {
+        id: question.id,
+        total: this.studentTests.reduce((acc: number, curr: { student: { test: { answers: { id: number, answer: string }[] } } }) => {
+          const index = curr.student.test.answers.findIndex((studentQuestion: { id: number }) => Number(studentQuestion.id) === question.id)
+          if (index !== -1) {
+            const studentAnswer = curr.student.test.answers[index]
+            if (studentAnswer.answer === question.answer) {
+              return acc + 1
+            }
           }
-        } else {
-          if (!this.totalPerQuestion[answer.id]) {
-            this.totalPerQuestion[answer.id] = 0
-          }
-        }
+          return acc
+        }, 0)
       }
-    }
+    })
   }
 
   get tests() {
@@ -199,9 +193,5 @@ export class TestComponent implements OnInit, OnDestroy {
 
   set studentTests(studentTest: any) {
     this._studentTests = studentTest
-  }
-
-  get mapToArray() {
-    return Object.entries(this.totalPerQuestion).map(([question, answer]) => ({key: question, value: answer}))
   }
 }
