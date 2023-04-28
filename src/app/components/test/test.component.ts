@@ -23,7 +23,6 @@ export class TestComponent implements OnInit, OnDestroy {
   static icon = 'quiz'
 
   registerAnswersFlag: boolean = false
-  response: any = {}
 
   private _listSubscription: Subscription = new Subscription()
   private _tests: TestClasses[] = []
@@ -34,9 +33,9 @@ export class TestComponent implements OnInit, OnDestroy {
   private _classroom: string = ''
   private _school: string = ''
 
-  completed: number = 0
+  private _totalByQuestion: any
 
-  totalPerQuestion: { [key: number]: number } = {}
+  completed: number = 0
 
   constructor(
     private fetchData: FetchDataService,
@@ -63,10 +62,11 @@ export class TestComponent implements OnInit, OnDestroy {
     this.fetchData.getQueryData('student/register-answers', 'classroom=' + param.classId + '&' + 'test=' + param.testId)
       .subscribe((payload: any) => {
 
-        const { test, studentTests } = payload
+        const { test, studentTests, totalByQuestion } = payload
 
         this.test = test
         this.studentTests = studentTests
+        this.totalByQuestion = totalByQuestion
 
          // TODO: verificar após a implementação do método studentScore() no Back.
          for(let element of this.studentTests) {
@@ -74,7 +74,6 @@ export class TestComponent implements OnInit, OnDestroy {
         }
 
         this.registerAnswersFlag = true
-        this.totalizerPerQuestion()
       })
   }
 
@@ -101,18 +100,16 @@ export class TestComponent implements OnInit, OnDestroy {
       }
 
       this.fetchData.updateOneData('student-answers', studentTest.id, body)
-        .subscribe((payload: any) => {
-          this.completed = payload
-
-          console.log(payload)
-
-          this.totalizerPerQuestion()
-        })
+        .subscribe((payload: any) => { this.totalByQuestion = payload })
     }
   }
 
   // TODO: Se quiser que o retorno seja feito no Back, tem q usar o método abaixo a cada PUT de alternativa.
-  studentScore(studentAnswers: { answer: string; id: number | string; }[]): number | string {
+  studentScore(studentAnswers: { answer: string; id: number | string; }[], scoreUptated?: number): number | string {
+
+    if(scoreUptated) {
+      return scoreUptated
+    }
 
     const notCompleted = studentAnswers.every((question) => question.answer === '')
 
@@ -138,25 +135,6 @@ export class TestComponent implements OnInit, OnDestroy {
 
     return question.answer === runtimeQuestion.answer.toUpperCase() ? '#80e5ff' : '#ff7f7f'
 
-  }
-
-  totalizerPerQuestion(): { id: number, total: number }[]{
-
-    return this.test.questions.map((question: { id: number, answer: string }) => {
-      return {
-        id: question.id,
-        total: this.studentTests.reduce((acc: number, curr: { student: { test: { answers: { id: number, answer: string }[] } } }) => {
-          const index = curr.student.test.answers.findIndex((studentQuestion: { id: number }) => Number(studentQuestion.id) === question.id)
-          if (index !== -1) {
-            const studentAnswer = curr.student.test.answers[index]
-            if (studentAnswer.answer === question.answer) {
-              return acc + 1
-            }
-          }
-          return acc
-        }, 0)
-      }
-    })
   }
 
   get tests() {
@@ -193,5 +171,13 @@ export class TestComponent implements OnInit, OnDestroy {
 
   set studentTests(studentTest: any) {
     this._studentTests = studentTest
+  }
+
+  get totalByQuestion() {
+    return this._totalByQuestion
+  }
+
+  set totalByQuestion(param: any) {
+    this._totalByQuestion = param
   }
 }

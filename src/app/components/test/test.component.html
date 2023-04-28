@@ -73,7 +73,7 @@
             <span style="font-weight: 600" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
           </div>
         </td>
-        <td class="answer" *ngFor="let question of totalizerPerQuestion()">{{ question.total }}</td>
+        <td class="answer" *ngFor="let question of totalByQuestion">{{ question.total }}</td>
         <td class="answer">-</td>
       </tr>
     </tbody>
