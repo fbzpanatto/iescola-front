@@ -105,11 +105,7 @@ export class TestComponent implements OnInit, OnDestroy {
   }
 
   // TODO: Se quiser que o retorno seja feito no Back, tem q usar o método abaixo a cada PUT de alternativa.
-  studentScore(studentAnswers: { answer: string; id: number | string; }[], scoreUptated?: number): number | string {
-
-    if(scoreUptated) {
-      return scoreUptated
-    }
+  studentScore(studentAnswers: { answer: string; id: number | string; }[]): number | string {
 
     const notCompleted = studentAnswers.every((question) => question.answer === '')
 
