@@ -140,7 +140,7 @@ export class TestComponent implements OnInit, OnDestroy {
 
   }
 
-  totalizerPerQuestion(){
+  totalizerPerQuestion(): { id: number, total: number }[]{
 
     return this.test.questions.map((question: { id: number, answer: string }) => {
       return {
