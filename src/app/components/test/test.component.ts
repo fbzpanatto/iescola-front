@@ -62,16 +62,12 @@ export class TestComponent implements OnInit, OnDestroy {
     this.fetchData.getQueryData('student/register-answers', 'classroom=' + param.classId + '&' + 'test=' + param.testId)
       .subscribe((payload: any) => {
 
-        const { test, studentTests, totalByQuestion } = payload
+        const { test, studentTests, totalByQuestion, totalTestCompleted } = payload
 
         this.test = test
         this.studentTests = studentTests
         this.totalByQuestion = totalByQuestion
-
-         // TODO: verificar após a implementação do método studentScore() no Back.
-         for(let element of this.studentTests) {
-          this.completed += element.student.test.completed ? 1 : 0
-        }
+        this.completed = totalTestCompleted
 
         this.registerAnswersFlag = true
       })
@@ -100,7 +96,14 @@ export class TestComponent implements OnInit, OnDestroy {
       }
 
       this.fetchData.updateOneData('student-answers', studentTest.id, body)
-        .subscribe((payload: any) => { this.totalByQuestion = payload })
+        .subscribe((payload: any) => {
+
+          const { totalByQuestion, totalTestCompleted } = payload
+
+          this.totalByQuestion = totalByQuestion
+          this.completed = totalTestCompleted
+
+        })
     }
   }
 
