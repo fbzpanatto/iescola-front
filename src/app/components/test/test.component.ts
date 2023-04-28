@@ -28,6 +28,9 @@ export class TestComponent implements OnInit, OnDestroy {
   private _listSubscription: Subscription = new Subscription()
   private _tests: TestClasses[] = []
 
+  private _test: { [key: string]: any } = {}
+  private _studentTests: { [key: string]: any }[] = []
+
   private _classroom: string = ''
   private _school: string = ''
 
@@ -45,9 +48,7 @@ export class TestComponent implements OnInit, OnDestroy {
     this.navigationService.setActiveComponent({title: TestComponent.title, url: TestComponent.url});
 
     this._listSubscription = this.fetchData.getAllData<TestClasses>(TestComponent.url)
-      .subscribe((tests) => {
-        this._tests = tests
-      })
+      .subscribe((tests) => { this._tests = tests })
   }
 
   ngOnDestroy() {
@@ -60,10 +61,14 @@ export class TestComponent implements OnInit, OnDestroy {
     this.school = param.school
 
     this.fetchData.getQueryData('student/register-answers', 'classroom=' + param.classId + '&' + 'test=' + param.testId)
-      .subscribe((payload) => {
-        this.response = payload
+      .subscribe((payload: any) => {
 
-         for(let element of this.response.studentTests) {
+        const { test, studentTests } = payload
+
+        this.test = test
+        this.studentTests = studentTests
+
+         for(let element of this.studentTests) {
           this.completed += element.student.test.completed ? 1 : 0
         }
 
@@ -88,7 +93,7 @@ export class TestComponent implements OnInit, OnDestroy {
           id: studentTest.student.id
         },
         test: {
-          id: this.response.test.id
+          id: this.test.id
         },
         studentAnswers: arrayOfAnswers,
         completed: !completed
@@ -97,36 +102,36 @@ export class TestComponent implements OnInit, OnDestroy {
       this.fetchData.updateOneData('student-answers', studentTest.id, body)
         .subscribe((payload: any) => {
           this.completed = payload
+
+          console.log(payload)
+
           this.totalizerPerQuestion()
         })
     }
   }
 
-  studentTotal(studentAnswers: any) {
+  // TODO: Se quiser que o retorno seja feito no Back, tem q usar o método abaixo a cada PUT de alternativa.
+  studentScore(studentAnswers: { answer: string; id: number | string; }[]): number | string {
 
-    let total = 0
-    let empty = 0
-    let totalQuestions = this.response.test.questions.length
+    const notCompleted = studentAnswers.every((question) => question.answer === '')
 
-    for (let [index, answer] of studentAnswers.entries()) {
-
-      if(answer.answer === '') {
-        empty++
-      }
-
-      if(answer.answer === this.response.test.questions[index].answer) {
-        total++
-      }
+    if(!notCompleted) {
+      return studentAnswers.reduce((acc: number, curr: { answer: any; id: any; }) => {
+        if (curr.answer === this.test.questions.find((q: { id: number; }) => q.id === Number(curr.id))?.answer) {
+          return acc + 1
+        }
+        return acc
+      }, 0)
     }
 
-    return empty === totalQuestions ? 'Nulo' : total
+    return 'Nulo'
   }
 
   color(runtimeQuestion: { id: number, answer: string }) {
 
-    let index = this.response.test.questions.findIndex((question: { id: number }) => question.id === Number(runtimeQuestion.id))
+    let index = this.test.questions.findIndex((question: { id: number }) => question.id === Number(runtimeQuestion.id))
 
-    const question = this.response.test.questions[index]
+    const question = this.test.questions[index]
 
     if(runtimeQuestion.answer === '') return '#ffffff'
 
@@ -138,16 +143,17 @@ export class TestComponent implements OnInit, OnDestroy {
 
      this.totalPerQuestion = {}
 
-    for (let studentTest of this.response['studentTests']) {
+    for (let studentTest of this.studentTests) {
 
       for (let answer of studentTest.student.test.answers) {
 
-        let index = this.response.test.questions.findIndex((question: any) => question.id === Number(answer.id))
-        let comparsion = this.response.test.questions[index].answer === answer.answer
+        let index = this.test.questions.findIndex((question: any) => question.id === Number(answer.id))
+        let comparsion = this.test.questions[index].answer === answer.answer
         if(comparsion) {
           if (this.totalPerQuestion[answer.id]) {
             this.totalPerQuestion[answer.id]++
           } else {
+            console.log('acontecendo?')
             this.totalPerQuestion[answer.id] = 1
           }
         } else {
@@ -177,6 +183,22 @@ export class TestComponent implements OnInit, OnDestroy {
 
   set school(param: string) {
     this._school = param
+  }
+
+  get test() {
+    return this._test
+  }
+
+  set test(test: any) {
+    this._test = test
+  }
+
+  get studentTests() {
+    return this._studentTests
+  }
+
+  set studentTests(studentTest: any) {
+    this._studentTests = studentTest
   }
 
   get mapToArray() {

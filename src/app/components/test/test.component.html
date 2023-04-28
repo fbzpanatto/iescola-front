@@ -43,7 +43,7 @@
             <span>QUESTÕES:</span>
           </div>
         </th>
-        <th class="question" *ngFor="let question of response.test.questions">
+        <th class="question" *ngFor="let question of test.questions">
           {{ question.id }}
         </th>
         <th class="question total" [attr.rowspan]="2">TOT ALUNO</th>
@@ -51,20 +51,20 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let studentTest of response.studentTests">
-        <td class="no">{{ studentTest.student.no }}</td>
-        <td class="name">{{ studentTest.student.person.name }}</td>
-        <td class="answer" *ngFor="let question of studentTest.student.test.answers">
+      <tr *ngFor="let el of studentTests">
+        <td class="no">{{ el.student.no }}</td>
+        <td class="name">{{ el.student.person.name }}</td>
+        <td class="answer" *ngFor="let question of el.student.test.answers">
           <input
             style="background-color: inherit"
             #input
-            (blur)="updateAnswers(studentTest, studentTest.student.test.answers, { id: question.id, answer: input.value.toUpperCase()})"
+            (blur)="updateAnswers(el, el.student.test.answers, { id: question.id, answer: input.value.toUpperCase()})"
             maxlength="1"
             type="text"
             [value]="question.answer.toUpperCase()"
             [ngStyle]="{ 'background-color': color({ id: question.id, answer: input.value}) }"
           >
-        <td class="answer">{{ studentTotal(studentTest.student.test.answers) }}</td>
+        <td class="answer">{{ studentScore(el.student.test.answers) }}</td>
       </tr>
       <tr class="mat-elevation-z1">
         <td [attr.colspan]="2">
