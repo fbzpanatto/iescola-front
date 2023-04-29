@@ -6,8 +6,8 @@ import { CommonModule } from "@angular/common";
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   standalone: true,
@@ -25,17 +25,16 @@ export class TestComponent implements OnInit, OnDestroy {
   registerAnswersFlag: boolean = false
 
   private _listSubscription: Subscription = new Subscription()
-  private _tests: TestClasses[] = []
 
+  private _tests: TestClasses[] = []
   private _test: { [key: string]: any } = {}
   private _studentTests: { [key: string]: any }[] = []
-
   private _classroom: string = ''
   private _school: string = ''
-
   private _totalByQuestion: any
+  private _rateByQuestion: any
 
-  completed: number = 0
+  testsCompleted: number = 0
 
   constructor(
     private fetchData: FetchDataService,
@@ -62,12 +61,13 @@ export class TestComponent implements OnInit, OnDestroy {
     this.fetchData.getQueryData('student/register-answers', 'classroom=' + param.classId + '&' + 'test=' + param.testId)
       .subscribe((payload: any) => {
 
-        const { test, studentTests, totalByQuestion, totalTestCompleted } = payload
+        const { test, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
 
         this.test = test
         this.studentTests = studentTests
         this.totalByQuestion = totalByQuestion
-        this.completed = totalTestCompleted
+        this.testsCompleted = totalTestCompleted
+        this.rateByQuestion = rateByQuestion
 
         this.registerAnswersFlag = true
       })
@@ -98,10 +98,11 @@ export class TestComponent implements OnInit, OnDestroy {
       this.fetchData.updateOneData('student-answers', studentTest.id, body)
         .subscribe((payload: any) => {
 
-          const { totalByQuestion, totalTestCompleted } = payload
+          const { totalByQuestion, totalTestCompleted, rateByQuestion } = payload
 
           this.totalByQuestion = totalByQuestion
-          this.completed = totalTestCompleted
+          this.testsCompleted = totalTestCompleted
+          this.rateByQuestion = rateByQuestion
 
         })
     }
@@ -124,7 +125,7 @@ export class TestComponent implements OnInit, OnDestroy {
     return 'Nulo'
   }
 
-  color(runtimeQuestion: { id: number, answer: string }) {
+  correctAnswer(runtimeQuestion: { id: number, answer: string }) {
 
     let index = this.test.questions.findIndex((question: { id: number }) => question.id === Number(runtimeQuestion.id))
 
@@ -178,5 +179,30 @@ export class TestComponent implements OnInit, OnDestroy {
 
   set totalByQuestion(param: any) {
     this._totalByQuestion = param
+  }
+
+  get rateByQuestion() {
+    return this._rateByQuestion
+  }
+
+  set rateByQuestion(param: any) {
+    this._rateByQuestion = param
+  }
+
+  rateColor(rate: string) {
+
+    const newRate = Number(rate.replace('%', ''))
+    const colors = ['#FF7F7FFF', '#FF7F7FCC', '#FF7F7F99', '#FF7F7F66', '#FF7F7F33', '#C7FF7F33', '#99FF7F33', '#66FF7F33', '#33FF7F33', '#1EFF7F33'];
+    if(newRate >= 0 && newRate <= 10) return colors[0]
+    if(newRate > 10 && newRate <= 20) return colors[1]
+    if(newRate > 20 && newRate <= 30) return colors[2]
+    if(newRate > 30 && newRate <= 40) return colors[3]
+    if(newRate > 40 && newRate <= 50) return colors[4]
+    if(newRate > 50 && newRate <= 60) return colors[5]
+    if(newRate > 60 && newRate <= 70) return colors[6]
+    if(newRate > 70 && newRate <= 80) return colors[7]
+    if(newRate > 80 && newRate <= 90) return colors[8]
+    if(newRate > 90 && newRate <= 100) return colors[9]
+    return '#ffffff'
   }
 }

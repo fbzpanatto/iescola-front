@@ -62,19 +62,29 @@
             maxlength="1"
             type="text"
             [value]="question.answer.toUpperCase()"
-            [ngStyle]="{ 'background-color': color({ id: question.id, answer: input.value}) }"
+            [ngStyle]="{ 'background-color': correctAnswer({ id: question.id, answer: input.value}) }"
           >
-        <td class="answer">{{ studentScore(el.student.test.answers) }}</td>
+        <td class="answer" style="font-weight: 600">{{ studentScore(el.student.test.answers) }}</td>
       </tr>
-      <tr class="mat-elevation-z1">
+      <tr>
         <td [attr.colspan]="2">
           <div>
-            <span style="font-weight: 600" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ completed }}</span>
+            <span style="font-weight: 600" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ testsCompleted }}</span>
             <span style="font-weight: 600" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
           </div>
         </td>
-        <td class="answer" *ngFor="let question of totalByQuestion">{{ question.total }}</td>
+        <td style="font-weight: 600" class="answer" *ngFor="let question of totalByQuestion">{{ question.total }}</td>
         <td class="answer">-</td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600" class="right" [attr.colspan]="2">APROVEITAMENTO:</td>
+        <td class="answer" *ngFor="let question of rateByQuestion">
+          <input class="rate"
+                 style="font-weight: 600"
+            [value]=" question.rate" readonly
+            [ngStyle]="{ 'background-color': rateColor(question.rate) }"
+          >
+        </td>
       </tr>
     </tbody>
   </table>

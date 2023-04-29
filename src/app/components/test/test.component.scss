@@ -89,6 +89,12 @@ table {
         &.answer {
           width: 36px;
           text-align: center;
+
+          .rate {
+            user-select: none;
+            outline: none;
+          }
+
           input {
             width: 100%;
             min-width: 36px;
