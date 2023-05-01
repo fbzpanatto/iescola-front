@@ -4,7 +4,6 @@ import { CommonModule } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 import { map, switchMap } from "rxjs";
 import { FetchDataService } from "../../../shared/services/fetch-data.service";
-import { TestClasses } from "../../../shared/interfaces/interfaces";
 
 @Component({
   standalone: true,
