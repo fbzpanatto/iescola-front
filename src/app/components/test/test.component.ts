@@ -98,31 +98,17 @@ export class TestComponent implements OnInit, OnDestroy {
       this.fetchData.updateOneData('student-answers', studentTest.id, body)
         .subscribe((payload: any) => {
 
-          const { totalByQuestion, totalTestCompleted, rateByQuestion } = payload
+          const { test, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
 
+          // ESTOU PERDENDO O TAB APÓS ATUALIZAR A RESPOSTA
+          this.test = test
+          this.studentTests = studentTests
           this.totalByQuestion = totalByQuestion
           this.testsCompleted = totalTestCompleted
           this.rateByQuestion = rateByQuestion
 
         })
     }
-  }
-
-  // TODO: Se quiser que o retorno seja feito no Back, tem q usar o método abaixo a cada PUT de alternativa.
-  studentScore(studentAnswers: { answer: string; id: number | string; }[]): number | string {
-
-    const notCompleted = studentAnswers.every((question) => question.answer === '')
-
-    if(!notCompleted) {
-      return studentAnswers.reduce((acc: number, curr: { answer: any; id: any; }) => {
-        if (curr.answer === this.test.questions.find((q: { id: number; }) => q.id === Number(curr.id))?.answer) {
-          return acc + 1
-        }
-        return acc
-      }, 0)
-    }
-
-    return 'Nulo'
   }
 
   correctAnswer(runtimeQuestion: { id: number, answer: string }) {

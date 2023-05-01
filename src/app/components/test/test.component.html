@@ -64,7 +64,7 @@
             [value]="question.answer.toUpperCase()"
             [ngStyle]="{ 'background-color': correctAnswer({ id: question.id, answer: input.value}) }"
           >
-        <td class="answer" style="font-weight: 600">{{ studentScore(el.student.test.answers) }}</td>
+        <td class="answer" style="font-weight: 600">{{ el.student.test.completed ? el.student.test.score : 'Nulo' }}</td>
       </tr>
       <tr>
         <td [attr.colspan]="2">
