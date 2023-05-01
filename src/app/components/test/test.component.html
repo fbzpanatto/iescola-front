@@ -1,4 +1,4 @@
-<table *ngIf="!registerAnswersFlag; else template">
+<table>
   <thead class="mat-elevation-z1">
     <tr>
       <th>TESTE</th>
@@ -15,9 +15,9 @@
   <tbody>
     <ng-container *ngFor="let test of tests">
       <tr class="trid">
-        <td [attr.rowspan]="test.classes.length + 1">{{test.testId}}</td>
+        <td [attr.rowspan]="test.classes.length + 1" routerLink="{{test.testId}}">{{test.testId}}</td>
       </tr>
-      <tr *ngFor="let el of test.classes;" class="clickable" (click)="registerAnswers({testId: test.testId, classId: el.classroomId, classroom: el.classroom, school: el.school})">
+      <tr routerLink="{{test.testId}}/classroom/{{el.classroomId}}"  *ngFor="let el of test.classes;" class="clickable">
         <td>{{ el.classroom }}</td>
         <td>{{ el.school }}</td>
         <td>{{ el.year }}</td>
@@ -30,62 +30,3 @@
     </ng-container>
   </tbody>
 </table>
-<ng-template #template>
-  <table>
-    <thead class="mat-elevation-z1">
-      <tr>
-        <th [attr.colspan]="100">{{school}}</th>
-      </tr>
-      <tr>
-        <th style="padding-right: 0" [attr.colspan]="2">
-          <div>
-            <span>SALA: {{classroom}}</span>
-            <span>QUESTÕES:</span>
-          </div>
-        </th>
-        <th class="question" *ngFor="let question of test.questions">
-          {{ question.id }}
-        </th>
-        <th class="question total" [attr.rowspan]="2">TOT ALUNO</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let el of studentTests">
-        <td class="no">{{ el.student.no }}</td>
-        <td class="name">{{ el.student.person.name }}</td>
-        <td class="answer" *ngFor="let question of el.student.test.answers">
-          <input
-            style="background-color: inherit"
-            #input
-            (blur)="updateAnswers(el, el.student.test.answers, { id: question.id, answer: input.value.toUpperCase()})"
-            maxlength="1"
-            type="text"
-            [value]="question.answer.toUpperCase()"
-            [ngStyle]="{ 'background-color': correctAnswer({ id: question.id, answer: input.value}) }"
-          >
-        <td class="answer" style="font-weight: 600">{{ el.student.test.completed ? el.student.test.score : 'Nulo' }}</td>
-      </tr>
-      <tr>
-        <td [attr.colspan]="2">
-          <div>
-            <span style="font-weight: 600" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ testsCompleted }}</span>
-            <span style="font-weight: 600" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
-          </div>
-        </td>
-        <td style="font-weight: 600" class="answer" *ngFor="let question of totalByQuestion">{{ question.total }}</td>
-        <td class="answer">-</td>
-      </tr>
-      <tr>
-        <td style="font-weight: 600" class="right" [attr.colspan]="2">APROVEITAMENTO:</td>
-        <td class="answer" *ngFor="let question of rateByQuestion">
-          <input class="rate"
-                 style="font-weight: 600"
-            [value]=" question.rate" readonly
-            [ngStyle]="{ 'background-color': rateColor(question.rate) }"
-          >
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</ng-template>

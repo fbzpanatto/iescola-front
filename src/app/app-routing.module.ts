@@ -13,7 +13,7 @@ const routes: Routes = [
         path: ':id',
         children: [
           { path: '', loadComponent: () => import('./components/test/edit/edit-test.component').then(m => m.EditTest) },
-          { path: 'students', loadComponent: () => import('./components/test/test-students/test-students.component').then(m => m.TestStudentsComponent) }
+          { path: 'classroom/:id', loadComponent: () => import('./components/test/test-classroom/test-classroom.component').then(m => m.TestClassroom) }
         ]
       },
     ]
