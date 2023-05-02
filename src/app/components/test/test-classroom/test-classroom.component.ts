@@ -130,7 +130,19 @@ export class TestClassroom implements OnInit {
   rateColor(rate: string) {
 
     const newRate = Number(rate.replace('%', ''))
-    const colors = ['#FF7F7FFF', '#FF7F7FCC', '#FF7F7F99', '#FF7F7F66', '#FF7F7F33', '#C7FF7F33', '#99FF7F33', '#66FF7F33', '#33FF7F33', '#1EFF7F33'];
+    const colors = [
+      '#FF000080', // vermelho
+      '#FF330080',
+      '#FF660080',
+      '#FF990080',
+      '#FFCC0080',
+      '#FFFF0080', // amarelo
+      '#CCFF0080',
+      '#99FF0080',
+      '#66FF0080',
+      '#33FF0080'  // verde
+    ];
+
     if(newRate >= 0 && newRate <= 10) return colors[0]
     if(newRate > 10 && newRate <= 20) return colors[1]
     if(newRate > 20 && newRate <= 30) return colors[2]
