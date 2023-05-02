@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTooltipModule } from "@angular/material/tooltip";
-import { CommonModule } from "@angular/common";
-import { ActivatedRoute } from "@angular/router";
-import { map, switchMap } from "rxjs";
-import { FetchDataService } from "../../../shared/services/fetch-data.service";
+import {Component, OnInit} from '@angular/core';
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {CommonModule} from "@angular/common";
+import {ActivatedRoute} from "@angular/router";
+import {map, switchMap} from "rxjs";
+import {FetchDataService} from "../../../shared/services/fetch-data.service";
 
 @Component({
   standalone: true,
@@ -59,6 +59,10 @@ export class TestClassroom implements OnInit {
 
         const { test, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
 
+        for(let st of studentTests) {
+          if(!st.student.test.completed) {st.student.test.score = 'Nulo'}
+        }
+
         this.test = test
         this.studentTests = studentTests
         this.totalByQuestion = totalByQuestion
@@ -67,7 +71,7 @@ export class TestClassroom implements OnInit {
       })
   }
 
-  updateAnswers(studentTest: any, arrayOfAnswers: { id: number, answer: string }[], runtimeQuestion: { id: number, answer: string }) {
+  updateAnswers(studentTestHTML: any, arrayOfAnswers: { id: number, answer: string }[], runtimeQuestion: { id: number, answer: string }) {
 
     let index = arrayOfAnswers.findIndex((question) => question.id === runtimeQuestion.id)
     let result = arrayOfAnswers[index].answer === runtimeQuestion.answer
@@ -80,7 +84,7 @@ export class TestClassroom implements OnInit {
 
       let body = {
         student: {
-          id: studentTest.student.id
+          id: studentTestHTML.student.id
         },
         test: {
           id: this.test.id
@@ -89,14 +93,20 @@ export class TestClassroom implements OnInit {
         completed: !completed
       }
 
-      this.fetchData.updateOneData('student-answers', studentTest.id, body)
+      this.fetchData.updateOneData('student-answers', studentTestHTML.id, body)
         .subscribe((payload: any) => {
 
           const { test, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
 
-          // ESTOU PERDENDO O TAB APÓS ATUALIZAR A RESPOSTA
+          const index = studentTests.findIndex((st: any) => st.student.id === studentTestHTML.student.id)
+
+          if(studentTests[index].student.test.completed) {
+            this.studentTests[index].student.test.score = studentTests[index].student.test.score
+          } else {
+            this.studentTests[index].student.test.score = 'Nulo'
+          }
+
           this.test = test
-          this.studentTests = studentTests
           this.totalByQuestion = totalByQuestion
           this.testsCompleted = totalTestCompleted
           this.rateByQuestion = rateByQuestion
