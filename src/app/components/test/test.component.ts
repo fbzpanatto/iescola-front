@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
-import { BasicComponent, BasicImports } from "../basic/basic.component";
+import { BasicComponent, BasicImports } from "../../shared/components/basic/basic.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { NavigationService } from "../../shared/services/navigation.service";

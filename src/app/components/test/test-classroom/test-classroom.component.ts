@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import { map, switchMap } from "rxjs";
 import { FetchDataService } from "../../../shared/services/fetch-data.service";
 import { NavigationService } from "../../../shared/services/navigation.service";
-import { BasicComponent } from "../../basic/basic.component";
+import { BasicComponent } from "../../../shared/components/basic/basic.component";
 import { SetActiveComponentBarTitle } from "../../../shared/methods/activeComponent";
 
 const CONFIG = {

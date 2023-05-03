@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { FetchDataService } from "../../shared/services/fetch-data.service";
-import { NavigationService } from "../../shared/services/navigation.service";
+import { FetchDataService } from "../../services/fetch-data.service";
+import { NavigationService } from "../../services/navigation.service";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatTooltipModule } from "@angular/material/tooltip";
