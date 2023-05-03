@@ -9,7 +9,7 @@ const routes: Routes = [
     path: 'test',
     children: [
       { path: '', loadComponent: () => import('./components/test/test.component').then(m => m.TestComponent) },
-      { path: ':command', loadComponent: () => import('./shared/components/form/form.component').then(m => m.FormComponent) },
+      { path: ':command', loadComponent: () => import('./components/test/test.component').then(m => m.TestComponent) },
       { path: ':command/classroom/:classId', loadComponent: () => import('./components/test/test-classroom/test-classroom.component').then(m => m.TestClassroom) },
     ]
   },

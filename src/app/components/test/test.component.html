@@ -1,4 +1,4 @@
-<table>
+<table *ngIf="!isForm; else template">
   <thead class="mat-elevation-z1">
     <tr>
       <th>TESTE</th>
@@ -30,3 +30,6 @@
     </ng-container>
   </tbody>
 </table>
+<ng-template #template>
+  <app-form></app-form>
+</ng-template>

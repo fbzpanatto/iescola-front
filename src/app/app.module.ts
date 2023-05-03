@@ -14,6 +14,9 @@ import { NavigationComponent } from "./shared/components/navigation/navigation.c
 import { MatIconRegistry } from "@angular/material/icon";
 import { registerLocaleData } from "@angular/common";
 
+import { CustomReuseStrategy } from "./shared/methods/reuseStrategy";
+import { RouteReuseStrategy } from "@angular/router";
+
 @NgModule({
   declarations: [
     AppComponent
@@ -25,7 +28,9 @@ import { registerLocaleData } from "@angular/common";
     NavigationComponent,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: CustomReuseStrategy }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

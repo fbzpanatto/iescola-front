@@ -7,7 +7,6 @@ import { NavigationService } from "../../services/navigation.service";
 const CREATE = 'new'
 const COMMAND = 'command'
 
-
 @Component({
   standalone: true,
   selector: 'app-form',
@@ -25,6 +24,9 @@ export class FormComponent extends BasicComponent {
   override ngOnInit(): void {
 
     this.route.params.subscribe((params) => {
+
+      console.log(params)
+
       if(params[COMMAND] === CREATE) {
         this.isNew = !this.isNew
         console.log('new')

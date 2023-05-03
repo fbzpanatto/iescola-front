@@ -9,6 +9,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { Subscription } from "rxjs";
 
+const COMMAND = 'command'
+
 export const BasicImports = [
   CommonModule,
   FormsModule,
@@ -26,6 +28,7 @@ export const BasicImports = [
 })
 export class BasicComponent implements OnInit, OnDestroy {
 
+  isForm: boolean = false
   private _url: string = '';
   protected listSubscription: Subscription = new Subscription()
 
@@ -39,6 +42,13 @@ export class BasicComponent implements OnInit, OnDestroy {
     Object.assign(this, { title, url });
     this.url = url;
     this.setBarTitle({title: title, url: url})
+
+    this.route.params.subscribe((params) => {
+      if(params[COMMAND]) {
+        this.isForm = !this.isForm
+        return
+      }
+    })
   }
 
    ngOnInit(): void {}

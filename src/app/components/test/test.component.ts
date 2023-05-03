@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { BasicComponent, BasicImports } from "../../shared/components/basic/basic.component";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { NavigationService } from "../../shared/services/navigation.service";
 import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
+import {CommonModule} from "@angular/common";
+import {FormComponent} from "../../shared/components/form/form.component";
 
 const CONFIG = {
   title: 'Testes',
@@ -16,7 +18,7 @@ const CONFIG = {
 @Component({
   standalone: true,
   selector: 'app-test',
-  imports: BasicImports,
+  imports: [CommonModule, RouterModule, FormComponent],
   templateUrl: './test.component.html',
   styleUrls: ['../../shared/styles/table.scss']
 })
@@ -33,6 +35,8 @@ export class TestComponent extends BasicComponent {
   }
 
   override ngOnInit(): void {
+
+
 
     this.listSubscription = this.basicGetAll<TestClasses>()
       .subscribe((tests) => { this._tests = tests })
