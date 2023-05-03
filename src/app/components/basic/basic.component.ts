@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { NavigationService } from "../../shared/services/navigation.service";
 import { CommonModule } from "@angular/common";
@@ -30,6 +30,7 @@ export class BasicComponent implements OnInit, OnDestroy {
   protected listSubscription: Subscription = new Subscription()
 
   constructor(
+    protected router: Router,
     protected route: ActivatedRoute,
     protected fetchData: FetchDataService,
     protected navigationService: NavigationService

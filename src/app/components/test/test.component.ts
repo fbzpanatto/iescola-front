@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { BasicComponent, BasicImports } from "../basic/basic.component";
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { NavigationService } from "../../shared/services/navigation.service";
 import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
@@ -28,8 +28,8 @@ export class TestComponent extends BasicComponent {
 
   private _tests: TestClasses[] = []
 
-  constructor( route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
-    super(route, fetchData, navigationService);
+  constructor( router:Router, route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
+    super(router, route, fetchData, navigationService);
   }
 
   override ngOnInit(): void {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { CommonModule } from "@angular/common";
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { map, switchMap } from "rxjs";
 import { FetchDataService } from "../../../shared/services/fetch-data.service";
 import { NavigationService } from "../../../shared/services/navigation.service";
@@ -41,8 +41,8 @@ export class TestClassroom extends BasicComponent {
 
   testsCompleted: number = 0
 
-  constructor( route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
-    super(route, fetchData, navigationService);
+  constructor( router: Router, route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
+    super(router, route, fetchData, navigationService);
   }
 
   override ngOnInit(): void {
