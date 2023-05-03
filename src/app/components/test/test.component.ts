@@ -45,17 +45,15 @@ export class TestComponent extends BasicComponent {
   }
 
   get originalFormControls() {
-    return {
-      id: {
-        type: 'number',
+    return [
+      {
+        key: 'id',
+        formControlName: 'id',
         label: 'ID',
-        fieldName: 'id',
-        value: '',
         disabled: true,
         required: false,
         hidden: true
-      },
-    }
+      }
+    ]
   }
-
 }

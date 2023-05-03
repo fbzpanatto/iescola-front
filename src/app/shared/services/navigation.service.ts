@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 
 export interface ActiveComponent {
   title: string;
-  url: string;
+  url?: string;
 }
 
 @Injectable({

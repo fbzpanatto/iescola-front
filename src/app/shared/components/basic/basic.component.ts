@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { FetchDataService } from "../../services/fetch-data.service";
 import { NavigationService } from "../../services/navigation.service";
@@ -26,7 +26,7 @@ export const BasicImports = [
   templateUrl: './basic.component.html',
   imports: BasicImports,
 })
-export class BasicComponent implements OnInit, OnDestroy {
+export class BasicComponent implements OnInit, OnDestroy, AfterViewInit {
 
   isForm: boolean = false
   private _url: string = '';
@@ -61,7 +61,7 @@ export class BasicComponent implements OnInit, OnDestroy {
     this.router.navigate(commands, { relativeTo: this.route })
   }
 
-  protected setBarTitle(param: {title: string, url: string}) {
+  protected setBarTitle(param: {title: string, url?: string}) {
     this.navigationService.setActiveComponent(param);
   }
 
@@ -71,6 +71,10 @@ export class BasicComponent implements OnInit, OnDestroy {
 
   protected basicGetQueryData<T>(resource = this.url, query: string) {
     return this.fetchData.getQueryData<T>(resource, query);
+  }
+
+  protected basicGetOneData<T>(resource: string, id: number) {
+    return this.fetchData.getOneData<T>(resource, id);
   }
 
   protected basicUpdateOneData<T>(resource = this.url, id: number, data: T) {
@@ -83,6 +87,9 @@ export class BasicComponent implements OnInit, OnDestroy {
 
   set url(url: string) {
     this._url = url;
+  }
+
+  ngAfterViewInit(): void {
   }
 
 
