@@ -36,18 +36,17 @@
   <tr>
     <td [attr.colspan]="2">
       <div>
-        <span style="font-weight: 600" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ testsCompleted }}</span>
-        <span style="font-weight: 600" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
+        <span class="bold" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ testsCompleted }}</span>
+        <span class="bold" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
       </div>
     </td>
-    <td style="font-weight: 600" class="answer" *ngFor="let question of totalByQuestion">{{ question.total }}</td>
+    <td class="answer bold" *ngFor="let question of totalByQuestion">{{ question.total }}</td>
     <td class="answer">-</td>
   </tr>
   <tr>
-    <td style="font-weight: 600" class="right" [attr.colspan]="2">APROVEITAMENTO:</td>
+    <td class="right bold" [attr.colspan]="2">APROVEITAMENTO:</td>
     <td class="answer" *ngFor="let question of rateByQuestion">
-      <input class="rate"
-             style="font-weight: 600"
+      <input class="rate bold"
              [value]=" question.rate" readonly
              [ngStyle]="{ 'background-color': rateColor(question.rate) }"
       >

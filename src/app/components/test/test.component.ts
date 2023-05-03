@@ -1,47 +1,41 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationService } from "src/app/shared/services/navigation.service";
-import { Subscription } from "rxjs";
-import { FetchDataService } from "../../shared/services/fetch-data.service";
-import { CommonModule } from "@angular/common";
+import { Component } from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { MatTooltipModule } from "@angular/material/tooltip";
-import { MatButtonModule } from "@angular/material/button";
-import { MatIconModule } from "@angular/material/icon";
-import { RouterLink } from "@angular/router";
+import { BasicComponent, BasicImports } from "../basic/basic.component";
+import { ActivatedRoute } from "@angular/router";
+import { FetchDataService } from "../../shared/services/fetch-data.service";
+import { NavigationService } from "../../shared/services/navigation.service";
+import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
 
+const CONFIG = {
+  title: 'Testes',
+  url: 'test',
+  icon: 'quiz'
+}
+
+@SetActiveComponentBarTitle(CONFIG.title, CONFIG.url)
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatTooltipModule, MatButtonModule, MatIconModule, RouterLink],
   selector: 'app-test',
+  imports: BasicImports,
   templateUrl: './test.component.html',
   styleUrls: ['../../shared/styles/table.scss']
 })
-export class TestComponent implements OnInit, OnDestroy {
+export class TestComponent extends BasicComponent {
 
-  static title = 'Testes'
-  static url = 'test'
-  static icon = 'quiz'
-
-  private _listSubscription: Subscription = new Subscription()
+  static title = CONFIG.title
+  static url = CONFIG.url
+  static icon = CONFIG.icon
 
   private _tests: TestClasses[] = []
 
-  constructor(
-    private fetchData: FetchDataService,
-    private navigationService: NavigationService,
-  ) {}
-
-  ngOnInit(): void {
-
-    this.navigationService.setActiveComponent({title: TestComponent.title, url: TestComponent.url});
-
-    this._listSubscription = this.fetchData.getAllData<TestClasses>(TestComponent.url)
-      .subscribe((tests) => { this._tests = tests })
+  constructor( route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
+    super(route, fetchData, navigationService);
   }
 
-  ngOnDestroy() {
-    this._listSubscription.unsubscribe()
+  override ngOnInit(): void {
+
+    this.listSubscription = this.basicGetAll<TestClasses>()
+      .subscribe((tests) => { this._tests = tests })
   }
 
   get tests() {

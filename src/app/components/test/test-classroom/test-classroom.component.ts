@@ -1,11 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {MatTooltipModule} from "@angular/material/tooltip";
-import {CommonModule} from "@angular/common";
-import {ActivatedRoute} from "@angular/router";
-import {map, switchMap} from "rxjs";
-import {FetchDataService} from "../../../shared/services/fetch-data.service";
-import {NavigationService} from "../../../shared/services/navigation.service";
+import { Component } from '@angular/core';
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { CommonModule } from "@angular/common";
+import { ActivatedRoute } from "@angular/router";
+import { map, switchMap } from "rxjs";
+import { FetchDataService } from "../../../shared/services/fetch-data.service";
+import { NavigationService } from "../../../shared/services/navigation.service";
+import { BasicComponent } from "../../basic/basic.component";
+import { SetActiveComponentBarTitle } from "../../../shared/methods/activeComponent";
 
+const CONFIG = {
+  title: 'Teste / Sala de aula',
+  url: 'student-tests'
+}
+
+@SetActiveComponentBarTitle(CONFIG.title, CONFIG.url)
 @Component({
   standalone: true,
   selector: 'app-test-students',
@@ -16,10 +24,10 @@ import {NavigationService} from "../../../shared/services/navigation.service";
   ],
   styleUrls: ['../../../shared/styles/table.scss']
 })
-export class TestClassroom implements OnInit {
+export class TestClassroom extends BasicComponent {
 
-  static title = 'Teste / Sala de aula'
-  static url = 'student-tests'
+  static title = CONFIG.title
+  static url = CONFIG.url
 
   private _testId: string = ''
   private _classId: string = ''
@@ -28,20 +36,16 @@ export class TestClassroom implements OnInit {
   private _studentTests: { [key: string]: any }[] = []
   private _classroom: string = ''
   private _school: string = ''
-  private _totalByQuestion: any
-  private _rateByQuestion: any
+  private _totalByQuestion: { id: number, total: number }[] = []
+  private _rateByQuestion: { id: number, rate: string }[] = []
 
   testsCompleted: number = 0
 
-  constructor(
-    private route: ActivatedRoute,
-    private fetchData: FetchDataService,
-    private navigationService: NavigationService,
-  ) { }
+  constructor( route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
+    super(route, fetchData, navigationService);
+  }
 
-  ngOnInit(): void {
-
-    this.navigationService.setActiveComponent({title: TestClassroom.title, url: TestClassroom.url});
+  override ngOnInit(): void {
 
     this.start()
 
@@ -57,11 +61,11 @@ export class TestClassroom implements OnInit {
         this.classId = params['id']
         return { testId: this.testId, classId: this.classId }
       })
-    ).subscribe(params => this.fetchTestStudents(params));
+    ).subscribe(params => this.loadData(params));
   }
 
-  fetchTestStudents(params: {testId: string, classId: string}) {
-    this.fetchData.getQueryData(`${TestClassroom.url}/register-answers`, 'classroom=' + params.classId + '&' + 'test=' + params.testId)
+  loadData(params: {testId: string, classId: string}) {
+    this.basicGetQueryData(`${TestClassroom.url}/register-answers`, 'classroom=' + params.classId + '&' + 'test=' + params.testId)
       .subscribe((payload: any) => {
 
         const { test, classroom, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
@@ -104,7 +108,7 @@ export class TestClassroom implements OnInit {
         completed: !completed
       }
 
-      this.fetchData.updateOneData(TestClassroom.url, studentTestHTML.id, body)
+      this.basicUpdateOneData(TestClassroom.url, studentTestHTML.id, body)
         .subscribe((payload: any) => {
 
           const { test, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
