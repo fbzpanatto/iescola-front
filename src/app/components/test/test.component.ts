@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
-import { BasicComponent, BasicImports } from "../../shared/components/basic/basic.component";
-import {ActivatedRoute, Router, RouterModule} from "@angular/router";
+import { BasicComponent } from "../../shared/components/basic/basic.component";
+import { ActivatedRoute, Router, RouterModule} from "@angular/router";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { NavigationService } from "../../shared/services/navigation.service";
 import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
-import {CommonModule} from "@angular/common";
-import {FormComponent} from "../../shared/components/form/form.component";
+import { CommonModule } from "@angular/common";
+import { FormComponent } from "../../shared/components/form/form.component";
 
 const CONFIG = {
   title: 'Testes',
@@ -36,14 +36,26 @@ export class TestComponent extends BasicComponent {
 
   override ngOnInit(): void {
 
-
-
     this.listSubscription = this.basicGetAll<TestClasses>()
       .subscribe((tests) => { this._tests = tests })
   }
 
   get tests() {
     return this._tests
+  }
+
+  get originalFormControls() {
+    return {
+      id: {
+        type: 'number',
+        label: 'ID',
+        fieldName: 'id',
+        value: '',
+        disabled: true,
+        required: false,
+        hidden: true
+      },
+    }
   }
 
 }

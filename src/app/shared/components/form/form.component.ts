@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BasicComponent } from "../basic/basic.component";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FetchDataService } from "../../services/fetch-data.service";
@@ -16,6 +16,9 @@ const COMMAND = 'command'
 export class FormComponent extends BasicComponent {
 
   private isNew: boolean = false;
+  private _id: number | undefined
+
+  @Input() _originalControls: {} | undefined
 
   constructor( route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService, router: Router) {
     super(router, route, fetchData, navigationService);
@@ -25,17 +28,29 @@ export class FormComponent extends BasicComponent {
 
     this.route.params.subscribe((params) => {
 
-      console.log(params)
-
       if(params[COMMAND] === CREATE) {
         this.isNew = !this.isNew
-        console.log('new')
+        this.setBarTitle({title: 'Novo Teste', url: this.url})
         return
       }
-      console.log('edit')
+
+      this.id = params[COMMAND]
+      this.setBarTitle({title: 'Editar Teste', url: this.url})
 
     })
 
+  }
+
+  get originalControls() {
+    return this._originalControls
+  }
+
+  get id() {
+    return this._id
+  }
+
+  set id(id: number | undefined) {
+    this._id = id
   }
 
 }

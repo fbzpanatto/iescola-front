@@ -61,7 +61,7 @@ export class BasicComponent implements OnInit, OnDestroy {
     this.router.navigate(commands, { relativeTo: this.route })
   }
 
-  private setBarTitle(param: {title: string, url: string}) {
+  protected setBarTitle(param: {title: string, url: string}) {
     this.navigationService.setActiveComponent(param);
   }
 
