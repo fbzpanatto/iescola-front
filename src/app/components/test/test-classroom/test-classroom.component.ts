@@ -4,6 +4,7 @@ import {CommonModule} from "@angular/common";
 import {ActivatedRoute} from "@angular/router";
 import {map, switchMap} from "rxjs";
 import {FetchDataService} from "../../../shared/services/fetch-data.service";
+import {NavigationService} from "../../../shared/services/navigation.service";
 
 @Component({
   standalone: true,
@@ -16,6 +17,9 @@ import {FetchDataService} from "../../../shared/services/fetch-data.service";
   styleUrls: ['../../../shared/styles/table.scss']
 })
 export class TestClassroom implements OnInit {
+
+  static title = 'Teste / Sala de aula'
+  static url = 'student-tests'
 
   private _testId: string = ''
   private _classId: string = ''
@@ -32,9 +36,12 @@ export class TestClassroom implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fetchData: FetchDataService,
+    private navigationService: NavigationService,
   ) { }
 
   ngOnInit(): void {
+
+    this.navigationService.setActiveComponent({title: TestClassroom.title, url: TestClassroom.url});
 
     this.start()
 
@@ -54,16 +61,20 @@ export class TestClassroom implements OnInit {
   }
 
   fetchTestStudents(params: {testId: string, classId: string}) {
-    this.fetchData.getQueryData('student/register-answers', 'classroom=' + params.classId + '&' + 'test=' + params.testId)
+    this.fetchData.getQueryData(`${TestClassroom.url}/register-answers`, 'classroom=' + params.classId + '&' + 'test=' + params.testId)
       .subscribe((payload: any) => {
 
-        const { test, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
+        const { test, classroom, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
+
+        console.log(classroom)
 
         for(let st of studentTests) {
           if(!st.student.test.completed) {st.student.test.score = 'Nulo'}
         }
 
         this.test = test
+        this.classroom = classroom.name
+        this.school = classroom.school
         this.studentTests = studentTests
         this.totalByQuestion = totalByQuestion
         this.testsCompleted = totalTestCompleted
@@ -93,7 +104,7 @@ export class TestClassroom implements OnInit {
         completed: !completed
       }
 
-      this.fetchData.updateOneData('student-answers', studentTestHTML.id, body)
+      this.fetchData.updateOneData(TestClassroom.url, studentTestHTML.id, body)
         .subscribe((payload: any) => {
 
           const { test, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
