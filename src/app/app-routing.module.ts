@@ -9,14 +9,8 @@ const routes: Routes = [
     path: 'test',
     children: [
       { path: '', loadComponent: () => import('./components/test/test.component').then(m => m.TestComponent) },
-      { path: 'new', loadComponent: () => import('./components/form/form.component').then(m => m.FormComponent) },
-      {
-        path: ':id',
-        children: [
-          { path: '', loadComponent: () => import('./components/form/form.component').then(m => m.FormComponent) },
-          { path: 'classroom/:id', loadComponent: () => import('./components/test/test-classroom/test-classroom.component').then(m => m.TestClassroom) }
-        ]
-      },
+      { path: ':command', loadComponent: () => import('./components/form/form.component').then(m => m.FormComponent) },
+      { path: ':command/classroom/:classId', loadComponent: () => import('./components/test/test-classroom/test-classroom.component').then(m => m.TestClassroom) },
     ]
   },
 ];

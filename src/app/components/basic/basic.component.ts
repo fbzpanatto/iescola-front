@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { NavigationService } from "../../shared/services/navigation.service";
 import { CommonModule } from "@angular/common";
@@ -46,6 +46,10 @@ export class BasicComponent implements OnInit, OnDestroy {
    ngOnDestroy(): void {
      this.listSubscription.unsubscribe()
    }
+
+  navigateTo(commands: any[]) {
+    this.router.navigate(commands, { relativeTo: this.route })
+  }
 
   private setBarTitle(param: {title: string, url: string}) {
     this.navigationService.setActiveComponent(param);

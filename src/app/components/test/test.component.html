@@ -15,9 +15,9 @@
   <tbody>
     <ng-container *ngFor="let test of tests">
       <tr class="trid">
-        <td [attr.rowspan]="test.classes.length + 1" routerLink="{{test.testId}}">{{test.testId}}</td>
+        <td [attr.rowspan]="test.classes.length + 1" (click)="navigateTo([test.testId])">{{test.testId}}</td>
       </tr>
-      <tr routerLink="{{test.testId}}/classroom/{{el.classroomId}}"  *ngFor="let el of test.classes;" class="clickable">
+      <tr (click)="navigateTo([test.testId, 'classroom', el.classroomId])"  *ngFor="let el of test.classes;" class="clickable">
         <td>{{ el.classroom }}</td>
         <td>{{ el.school }}</td>
         <td>{{ el.year }}</td>

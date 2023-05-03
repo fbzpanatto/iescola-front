@@ -52,16 +52,14 @@ export class TestClassroom extends BasicComponent {
   }
 
   start() {
-    this.route.parent?.params.pipe(
-      switchMap(parentParams => {
-        this.testId = parentParams['id']
-        return this.route.params;
-      }),
-      map((params) => {
-        this.classId = params['id']
-        return { testId: this.testId, classId: this.classId }
-      })
-    ).subscribe(params => this.loadData(params));
+
+    this.route.params.subscribe((params) => {
+      const { command, classId } = params
+      this.classId = classId
+      this.testId = command
+
+      this.loadData({ testId: this.testId, classId: this.classId })
+    })
   }
 
   loadData(params: {testId: string, classId: string}) {
