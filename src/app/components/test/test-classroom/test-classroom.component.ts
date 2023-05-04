@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { CommonModule } from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -24,7 +24,7 @@ const CONFIG = {
   ],
   styleUrls: ['../../../shared/styles/table.scss']
 })
-export class TestClassroom extends BasicComponent {
+export class TestClassroom extends BasicComponent implements OnInit {
 
   static title = CONFIG.title
   static url = CONFIG.url
@@ -45,7 +45,7 @@ export class TestClassroom extends BasicComponent {
     super(router, route, fetchData, navigationService);
   }
 
-  override ngOnInit(): void {
+  ngOnInit(): void {
 
     this.start()
 

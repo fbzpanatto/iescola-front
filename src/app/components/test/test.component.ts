@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { BasicComponent } from "../../shared/components/basic/basic.component";
 import { ActivatedRoute, Router, RouterModule} from "@angular/router";
@@ -22,7 +22,7 @@ const CONFIG = {
   templateUrl: './test.component.html',
   styleUrls: ['../../shared/styles/table.scss']
 })
-export class TestComponent extends BasicComponent {
+export class TestComponent extends BasicComponent implements OnInit {
 
   static title = CONFIG.title
   static url = CONFIG.url
@@ -34,7 +34,7 @@ export class TestComponent extends BasicComponent {
     super(router, route, fetchData, navigationService);
   }
 
-  override ngOnInit(): void {
+  ngOnInit(): void {
 
     this.listSubscription = this.basicGetAll<TestClasses>()
       .subscribe((tests) => { this._tests = tests })
@@ -42,18 +42,5 @@ export class TestComponent extends BasicComponent {
 
   get tests() {
     return this._tests
-  }
-
-  get originalFormControls() {
-    return [
-      {
-        key: 'id',
-        formControlName: 'id',
-        label: 'ID',
-        disabled: true,
-        required: false,
-        hidden: true
-      }
-    ]
   }
 }

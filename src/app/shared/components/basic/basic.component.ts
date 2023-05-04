@@ -26,7 +26,7 @@ export const BasicImports = [
   templateUrl: './basic.component.html',
   imports: BasicImports,
 })
-export class BasicComponent implements OnInit, OnDestroy, AfterViewInit {
+export class BasicComponent {
 
   isForm: boolean = false
   private _url: string = '';
@@ -50,12 +50,6 @@ export class BasicComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     })
   }
-
-   ngOnInit(): void {}
-
-   ngOnDestroy(): void {
-     this.listSubscription.unsubscribe()
-   }
 
   navigateTo(commands: any[]) {
     this.router.navigate(commands, { relativeTo: this.route })
@@ -88,9 +82,4 @@ export class BasicComponent implements OnInit, OnDestroy, AfterViewInit {
   set url(url: string) {
     this._url = url;
   }
-
-  ngAfterViewInit(): void {
-  }
-
-
 }

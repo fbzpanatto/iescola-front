@@ -1,11 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { BasicComponent } from "../basic/basic.component";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FetchDataService } from "../../services/fetch-data.service";
 import { NavigationService } from "../../services/navigation.service";
-import {JsonPipe} from "@angular/common";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
+import { CommonModule, JsonPipe } from "@angular/common";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { MODELS } from "./models";
 
 const CREATE = 'new'
 const COMMAND = 'command'
@@ -17,24 +19,38 @@ const COMMAND = 'command'
   imports: [
     JsonPipe,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    CommonModule,
+    ReactiveFormsModule
   ],
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent extends BasicComponent {
+export class FormComponent extends BasicComponent implements OnInit, AfterViewInit {
 
   private isNew: boolean = false;
   private _id: number | undefined
-  private _element: any
+  element: any
 
-  @Input() _originalControls: {} | undefined
-  @Input() _formUrl: string = ''
+  form = new FormGroup({})
+  state:boolean = false;
 
-  constructor( route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService, router: Router) {
+  private _controls: any[] = []
+
+  formUrl: string = ''
+
+  constructor(
+    private fb: FormBuilder,
+    route: ActivatedRoute,
+    fetchData: FetchDataService,
+    navigationService: NavigationService,
+    router: Router
+  ) {
     super(router, route, fetchData, navigationService);
   }
 
-  override ngOnInit(): void {
+  ngOnInit(): void {
+
+    this.formUrl = this.route.parent?.snapshot.url[0].path as string
 
     this.route.params.subscribe((params) => {
 
@@ -52,29 +68,39 @@ export class FormComponent extends BasicComponent {
 
   }
 
-  override ngAfterViewInit() {
-    console.log(this.originalControls)
+  ngAfterViewInit() {
+    this.startForm().then(r => {
+      this.state = r
+    })
+  }
+
+  startForm() {
+
+    const {controls} = MODELS.find((model) => model.url === this.formUrl)!
+
+    return new Promise<boolean>((resolve) => {
+
+      this.form = new FormGroup({})
+
+      for(let element of controls!) {
+
+        const control = this.fb.control(element.value)
+        this.form.addControl(element.name, control)
+      }
+
+      this.controls = controls!
+
+      resolve(true)
+
+    })
   }
 
   getElement<T>() {
     this.basicGetOneData<T>(this.formUrl, Number(this.id))
-      .subscribe((data) => { this.element = data })
-  }
-
-  get originalControls() {
-    return this._originalControls
-  }
-
-  get element() {
-    return this._element
-  }
-
-  set element(element: any ) {
-    this._element = element
-  }
-
-  get formUrl() {
-    return this._formUrl
+      .subscribe((data) => {
+        this.element = data
+        this.form.patchValue(data as Partial<{}>)
+      })
   }
 
   get id() {
@@ -85,4 +111,11 @@ export class FormComponent extends BasicComponent {
     this._id = id
   }
 
+  get controls() {
+    return this._controls
+  }
+
+  set controls(controls) {
+    this._controls = controls
+  }
 }
