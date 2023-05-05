@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import {AfterContentInit, Component, OnInit} from '@angular/core';
 import { BasicComponent } from "../basic/basic.component";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FetchDataService } from "../../services/fetch-data.service";
@@ -8,6 +8,10 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormBuilder, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { MODELS } from "./models";
+import { MatSelectModule } from "@angular/material/select";
+import { MatIconModule } from "@angular/material/icon";
+import { PopupComponent } from "../popup/popup.component";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 
 const CREATE = 'new'
 const COMMAND = 'command'
@@ -21,11 +25,14 @@ const COMMAND = 'command'
     MatFormFieldModule,
     MatInputModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatIconModule,
+    MatDialogModule
   ],
   styleUrls: ['./form.component.scss']
 })
-export class FormComponent extends BasicComponent implements OnInit, AfterViewInit {
+export class FormComponent extends BasicComponent implements OnInit, AfterContentInit {
 
   private isNew: boolean = false;
   private _id: number | undefined
@@ -40,6 +47,7 @@ export class FormComponent extends BasicComponent implements OnInit, AfterViewIn
 
   constructor(
     private fb: FormBuilder,
+    public dialog: MatDialog,
     route: ActivatedRoute,
     fetchData: FetchDataService,
     navigationService: NavigationService,
@@ -59,19 +67,15 @@ export class FormComponent extends BasicComponent implements OnInit, AfterViewIn
         this.setBarTitle({title: 'Novo Teste'})
         return
       }
-
       this.id = params[COMMAND]
       this.setBarTitle({title: 'Editar Teste'})
       this.getElement()
 
     })
-
   }
 
-  ngAfterViewInit() {
-    this.startForm().then(r => {
-      this.state = r
-    })
+  ngAfterContentInit(): void {
+    this.startForm().then(r => {this.state = r})
   }
 
   startForm() {
@@ -85,7 +89,7 @@ export class FormComponent extends BasicComponent implements OnInit, AfterViewIn
       for(let element of controls!) {
 
         const control = this.fb.control(element.value)
-        this.form.addControl(element.name, control)
+        this.form.addControl(element.key, control)
       }
 
       this.controls = controls!
@@ -95,12 +99,25 @@ export class FormComponent extends BasicComponent implements OnInit, AfterViewIn
     })
   }
 
-  getElement<T>() {
-    this.basicGetOneData<T>(this.formUrl, Number(this.id))
-      .subscribe((data) => {
-        this.element = data
-        this.form.patchValue(data as Partial<{}>)
-      })
+  getElement(): Promise<boolean> {
+
+    return new Promise((resolve) => {
+
+      this.basicGetOneData(this.formUrl, Number(this.id))
+        .subscribe((data: any) => {
+          this.element = data
+
+          for(let prop in this.element) {
+            if(this.form.get(prop)) {
+              this.form.get(prop)?.setValue(this.element[prop])
+              if(this.element[prop].id) {
+                this.form.get(prop)?.setValue(this.element[prop].id)
+              }
+            }
+          }
+          resolve(true)
+        })
+    })
   }
 
   get id() {
@@ -117,5 +134,20 @@ export class FormComponent extends BasicComponent implements OnInit, AfterViewIn
 
   set controls(controls) {
     this._controls = controls
+  }
+
+  openDialog(control: {[key: string]: any}) {
+
+    const { url, headers } = control
+
+    const dialogRef = this.dialog.open(PopupComponent, {
+      width: '400px',
+      data: { url, headers },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+
   }
 }

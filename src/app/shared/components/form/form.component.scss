@@ -1,7 +1,28 @@
-.form-container {}
+.flex-break {
+  flex-basis: 100%;
+  height: 0;
+}
 
 form {
-  padding: 16px;
+  display: inline-flex;
+  flex-flow: row wrap;
   width: 100%;
-  background-color: #fdfdfd;
+  column-gap: 32px;
+  padding: 32px;
+  border-bottom: 1px solid #eaeaea;
+  background: #fff;
+
+  mat-form-field {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  form {
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    column-gap: 24px;
+  }
 }

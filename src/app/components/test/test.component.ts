@@ -7,6 +7,7 @@ import { NavigationService } from "../../shared/services/navigation.service";
 import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
 import { CommonModule } from "@angular/common";
 import { FormComponent } from "../../shared/components/form/form.component";
+import {MatDialogModule} from "@angular/material/dialog";
 
 const CONFIG = {
   title: 'Testes',
