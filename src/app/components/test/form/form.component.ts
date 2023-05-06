@@ -101,6 +101,11 @@ export class FormComponent implements OnInit {
       })
   }
 
+  addIdObject(event: any) {
+    console.log(event)
+    // this.form.get(formControlName)?.setValue({ id: event, test: '' })
+  }
+
   openDialog(formControlName: string, url: string) {
 
     const headers = [
