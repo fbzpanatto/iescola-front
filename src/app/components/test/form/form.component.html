@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nome</mat-label>
+    <input matInput formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Categoria</mat-label>
+    <mat-select formControlName="testCategory">
+      <mat-option *ngFor="let option of testCategories | async" [value]="option.id">
+        {{ option.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="flex-break no-gap"></div>
+
+  <mat-form-field appearance="outline" (click)="openDialog('teacher', 'teacher')">
+    <mat-label>Professor</mat-label>
+    <input required readonly matInput [value]="teacherName ?? ''">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Disciplina</mat-label>
+    <mat-select formControlName="discipline">
+      <mat-option *ngFor="let option of disciplines | async" [value]="option.id">
+        {{ option.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="flex-break no-gap"></div>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Bimestre</mat-label>
+    <mat-select formControlName="bimester">
+      <mat-option *ngFor="let option of bimesters | async" [value]="option.id">
+        {{ option.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Ano</mat-label>
+    <mat-select formControlName="year">
+      <mat-option *ngFor="let option of years | async" [value]="option.id">
+        {{ option.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</form>
+
+<pre>
+{{ form.value | json }}
+</pre>

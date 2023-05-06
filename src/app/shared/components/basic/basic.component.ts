@@ -60,7 +60,7 @@ export class BasicComponent {
   }
 
   protected basicGetAll<T>(resource = this.url) {
-    return this.fetchData.getAllData<T>(resource);
+    return this.fetchData.all<T>(resource);
   }
 
   protected basicGetQueryData<T>(resource = this.url, query: string) {

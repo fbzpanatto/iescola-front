@@ -26,13 +26,14 @@ export class PopupComponent implements OnInit {
   }
 
   getAllData(){
-    this.fetchDataService.getAllData(this.data.url).subscribe((response: any) => {
+    this.fetchDataService.all(this.data.url).subscribe((response: any) => {
       this.arrayOptions = response
 
     })
   }
 
   close(element: any) {
+    console.log(element)
     this.dialogRef.close(element);
   }
 

@@ -1,4 +1,5 @@
 export interface Discipline { id: number, name: string }
+export interface TestCategory { id: number, name: string }
 export interface Bimester { id: number, name: string }
 export interface Year { id: number, name: number }
 export interface Questions { id: number, answer: string }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { BasicComponent } from "../../shared/components/basic/basic.component";
 import { ActivatedRoute, Router, RouterModule} from "@angular/router";
@@ -6,8 +6,7 @@ import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { NavigationService } from "../../shared/services/navigation.service";
 import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
 import { CommonModule } from "@angular/common";
-import { FormComponent } from "../../shared/components/form/form.component";
-import {MatDialogModule} from "@angular/material/dialog";
+import { FormComponent } from "./form/form.component";
 
 const CONFIG = {
   title: 'Testes',
@@ -19,7 +18,7 @@ const CONFIG = {
 @Component({
   standalone: true,
   selector: 'app-test',
-  imports: [CommonModule, RouterModule, FormComponent],
+  imports: [CommonModule, RouterModule, FormComponent, ],
   templateUrl: './test.component.html',
   styleUrls: ['../../shared/styles/table.scss']
 })
@@ -44,4 +43,6 @@ export class TestComponent extends BasicComponent implements OnInit {
   get tests() {
     return this._tests
   }
+
+  protected readonly CONFIG = CONFIG;
 }

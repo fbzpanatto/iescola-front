@@ -40,7 +40,7 @@ export class YearComponent implements OnInit, OnDestroy {
 
     this.navigationService.setActiveComponent({title: YearComponent.title, url: YearComponent.url});
 
-    this._subscription = this.fetchData.getAllData<Year>(YearComponent.resource)
+    this._subscription = this.fetchData.all<Year>(YearComponent.resource)
       .subscribe((years) => this._years = years)
   }
 

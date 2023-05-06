@@ -9,7 +9,7 @@ export class FetchDataService {
 
   constructor(private http: HttpClient) { }
 
-  getAllData<T>(resource: string) {
+  all<T>(resource: string) {
     return this.http.get('http://localhost:3333/' + resource)
       .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T[]}))
   }
