@@ -16,7 +16,7 @@
 
   <div class="flex-break no-gap"></div>
 
-  <mat-form-field appearance="outline" (click)="openDialog('teacher', 'teacher')">
+  <mat-form-field appearance="outline" (click)="openOptions('teacher', 'teacher')">
     <mat-label>Professor</mat-label>
     <input required readonly matInput [value]="teacherName ?? ''">
   </mat-form-field>
@@ -48,6 +48,13 @@
         {{ option.name }}
       </mat-option>
     </mat-select>
+  </mat-form-field>
+
+  <div class="flex-break no-gap"></div>
+
+  <mat-form-field appearance="outline" (click)="openQuestions('questions')">
+    <mat-label>Questões</mat-label>
+    <input required readonly matInput placeholder="Clique para editar o gabarito">
   </mat-form-field>
 
 </form>

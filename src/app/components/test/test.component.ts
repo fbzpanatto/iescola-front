@@ -18,7 +18,7 @@ const CONFIG = {
 @Component({
   standalone: true,
   selector: 'app-test',
-  imports: [CommonModule, RouterModule, FormComponent, ],
+  imports: [CommonModule, RouterModule, FormComponent ],
   templateUrl: './test.component.html',
   styleUrls: ['../../shared/styles/table.scss']
 })

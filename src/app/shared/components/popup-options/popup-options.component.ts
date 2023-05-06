@@ -1,33 +1,36 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FetchDataService } from "../../services/fetch-data.service";
+import { GenericObjectArray } from "../../interfaces/interfaces";
 
 @Component({
-  selector: 'app-popup',
   standalone: true,
+  selector: 'app-popup',
   imports: [CommonModule],
-  templateUrl: './popup.component.html',
+  templateUrl: './popup-options.component.html',
   styleUrls: ['../../styles/table.scss']
 })
-export class PopupComponent implements OnInit {
+export class PopupOptionsComponent implements OnInit {
 
-  arrayOptions: any[] = []
-  headers: any[] = this.data.headers
+  userOptions: GenericObjectArray = []
+  headOptions: GenericObjectArray = this.data.headers
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<PopupComponent>,
+    public dialogRef: MatDialogRef<PopupOptionsComponent>,
     private fetchDataService: FetchDataService,
   ) {}
 
   ngOnInit(): void {
-    this.getAllData()
+    if(this.data.url) {
+      this.getAllData()
+    }
   }
 
   getAllData(){
     this.fetchDataService.all(this.data.url).subscribe((response: any) => {
-      this.arrayOptions = response
+      this.userOptions = response
 
     })
   }

@@ -16,6 +16,7 @@ import { registerLocaleData } from "@angular/common";
 
 import { CustomReuseStrategy } from "./shared/methods/reuseStrategy";
 import { RouteReuseStrategy } from "@angular/router";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { RouteReuseStrategy } from "@angular/router";
     AppRoutingModule,
     BrowserAnimationsModule,
     NavigationComponent,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: CustomReuseStrategy }

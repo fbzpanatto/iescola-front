@@ -5,17 +5,27 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
-import { PopupComponent } from "../../../shared/components/popup/popup.component";
-import { MatDialog, MatDialogModule } from "@angular/material/dialog";
-import { FetchDataService } from "../../../shared/services/fetch-data.service";
-import {combineLatest, map, Observable, of} from "rxjs";
-import { Bimester, Discipline, TestCategory, Year } from "../../../shared/interfaces/interfaces";
-import {ActivatedRoute} from "@angular/router";
+import { FetchDataService } from "src/app/shared/services/fetch-data.service";
+import { combineLatest, map, Observable } from "rxjs";
+import {Bimester, Discipline, PopupOptions, Questions, TestCategory, Year} from "src/app/shared/interfaces/interfaces";
+import { ActivatedRoute } from "@angular/router";
+import { PopupService } from "src/app/shared/services/popup.service";
+
+const HEADERS: { [key: string]: any } = {
+  teacher: [
+    { key: 'id', label: 'Id' },
+    { key: 'name', label: 'Professor' }
+  ],
+  questions: [
+    { key: 'id', label: 'Questão' },
+    { key: 'answer', label: 'Gabarito' }
+  ]
+}
 
 @Component({
   selector: 'app-test-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatDialogModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule],
   templateUrl: './form.component.html',
   styleUrls: ['../../../shared/styles/form.scss']
 })
@@ -36,12 +46,13 @@ export class FormComponent implements OnInit {
     testCategory: new FormControl('', [Validators.required]),
     bimester: new FormControl('', [Validators.required]),
     year: new FormControl('', [Validators.required]),
+    questions: new FormControl('', [Validators.required]),
   })
 
   constructor(
+    private popupService: PopupService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    public dialog: MatDialog,
     private fetch: FetchDataService,
   ) {}
 
@@ -49,10 +60,8 @@ export class FormComponent implements OnInit {
 
     this.startForm()
 
-    this.form.get('teacher')?.valueChanges.subscribe((value: any) => {
-      console.log(value)
-      this.teacherName = value.name ?? ''
-    })
+    this.form.get('teacher')?.valueChanges
+      .subscribe((value: any) => { this.teacherName = value.name ?? '' })
   }
 
   startForm() {
@@ -91,6 +100,7 @@ export class FormComponent implements OnInit {
           testCategory: data.category.id,
           discipline: data.discipline.id,
           year: data.year.id,
+          questions: data.questions,
           bimester: data.bimester.id,
           teacher: {
             id: data.teacherPerson.id,
@@ -101,21 +111,26 @@ export class FormComponent implements OnInit {
       })
   }
 
-  openDialog(formControlName: string, url: string) {
+  openOptions(formControlName: string, url?: string) {
 
-    const headers = [
-      { key: 'id', label: 'ID' },
-      { key: 'name', label: 'Professor' }
-    ]
+    const popupOptions: PopupOptions = { url: url, headers: HEADERS[formControlName] }
 
-    const dialogRef = this.dialog.open(PopupComponent, {
-      width: '400px',
-      data: { url, headers },
-    });
+    this.popupService.openOptionsPopup(popupOptions)
+      .afterClosed()
+      .subscribe((result: any) => {
+        if (result) { this.form.get(formControlName)?.setValue(result)}
+      })
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.form.get(formControlName)?.setValue(result)
-    });
+  openQuestions(formControlName: string) {
+
+    const questions = this.form.get(formControlName)?.value as Questions[]
+
+    this.popupService.openQuestionsPopup(questions)
+      .afterClosed()
+      .subscribe((result: any) => {
+        if (result) { this.form.get(formControlName)?.setValue(result)}
+      })
   }
 
   get id() {
@@ -165,5 +180,4 @@ export class FormComponent implements OnInit {
   set teacherName(value: string){
     this._teacherName = value
   }
-
 }
