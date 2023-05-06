@@ -23,7 +23,7 @@ export class FormComponent implements OnInit {
 
   private _id?: number
 
-  private _teacherName?: string
+  private _teacherName = ''
   private _disciplines?: Discipline[]
   private _testCategories?: TestCategory[]
   private _bimesters?: Bimester[]
@@ -101,11 +101,6 @@ export class FormComponent implements OnInit {
       })
   }
 
-  addIdObject(event: any) {
-    console.log(event)
-    // this.form.get(formControlName)?.setValue({ id: event, test: '' })
-  }
-
   openDialog(formControlName: string, url: string) {
 
     const headers = [
@@ -167,7 +162,7 @@ export class FormComponent implements OnInit {
     return this._teacherName
   }
 
-  set teacherName(value: string | undefined){
+  set teacherName(value: string){
     this._teacherName = value
   }
 

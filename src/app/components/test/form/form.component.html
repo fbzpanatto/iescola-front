@@ -34,7 +34,7 @@
 
   <mat-form-field appearance="outline">
     <mat-label>Bimestre</mat-label>
-    <mat-select [attr.bimester]="'bimester'" formControlName="bimester" (selectionChange)="addIdObject($event)">
+    <mat-select formControlName="bimester">
       <mat-option *ngFor="let option of bimesters" [value]="option.id">
         {{ option.name }}
       </mat-option>
