@@ -33,7 +33,6 @@ export class PopupComponent implements OnInit {
   }
 
   close(element: any) {
-    console.log(element)
     this.dialogRef.close(element);
   }
 
