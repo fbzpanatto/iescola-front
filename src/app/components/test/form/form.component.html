@@ -52,13 +52,48 @@
 
   <div class="flex-break no-gap"></div>
 
-  <mat-form-field appearance="outline" (click)="openQuestions('questions')">
-    <mat-label>Questões</mat-label>
-    <input required readonly matInput placeholder="Clique para editar o gabarito">
-  </mat-form-field>
+  <div style="display: flex; flex: 1">
+    <fieldset class="outside-fieldset" >
+      <legend>Gabarito*</legend>
+      <div class="questions-container" formArrayName="questions" *ngIf="questions.length">
 
+        <fieldset *ngFor="let question of questions.controls; let i = index">
+          <legend>Questão</legend>
+          <div class="question-form-row" [formGroupName]="i">
+
+            <mat-form-field class="no-field" appearance="fill">
+              <mat-label>No</mat-label>
+              <input matInput formControlName="id">
+            </mat-form-field>
+
+            <mat-form-field class="answer-field" appearance="fill">
+              <mat-label>Letra</mat-label>
+              <input matInput formControlName="answer">
+            </mat-form-field>
+
+            <button color="warn" mat-mini-fab (click)="removeQuestion(i)">
+              <mat-icon class="add-course-btn">remove</mat-icon>
+            </button>
+          </div>
+        </fieldset>
+      </div>
+
+      <div style="margin-top: 32px; display: flex; justify-content: flex-end">
+        <button [matTooltip]="'Adicionar questão'" color="primary" mat-mini-fab (click)="addQuestion()" style="margin-right: 16px">
+          <mat-icon class="add-course-btn">add</mat-icon>
+        </button>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="form-actions" style="display: flex; flex: 1">
+    <button mat-raised-button color="accent">
+      <mat-icon [svgIcon]="'delete'"></mat-icon>
+      Deletar
+    </button>
+    <button mat-raised-button color="primary">
+      <mat-icon [svgIcon]="'done'"></mat-icon>
+      Salvar
+    </button>
+  </div>
 </form>
-
-<pre>
-{{ form.value | json }}
-</pre>

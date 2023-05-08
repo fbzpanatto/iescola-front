@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatOptionModule } from "@angular/material/core";
@@ -10,6 +10,9 @@ import { combineLatest, map, Observable } from "rxjs";
 import {Bimester, Discipline, PopupOptions, Questions, TestCategory, Year} from "src/app/shared/interfaces/interfaces";
 import { ActivatedRoute } from "@angular/router";
 import { PopupService } from "src/app/shared/services/popup.service";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
@@ -25,7 +28,7 @@ const HEADERS: { [key: string]: any } = {
 @Component({
   selector: 'app-test-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatIconModule, MatButtonModule, MatTooltipModule],
   templateUrl: './form.component.html',
   styleUrls: ['../../../shared/styles/form.scss']
 })
@@ -40,13 +43,27 @@ export class FormComponent implements OnInit {
   private _years?: Year[]
 
   form = this.fb.group({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    teacher: new FormControl<{ id: number } | null>(null, [Validators.required]),
-    discipline: new FormControl('', [Validators.required]),
-    testCategory: new FormControl('', [Validators.required]),
-    bimester: new FormControl('', [Validators.required]),
-    year: new FormControl('', [Validators.required]),
-    questions: new FormControl('', [Validators.required]),
+    name: ['', {
+      validators: [Validators.required],
+    }],
+    testCategory: ['', {
+      validators: [Validators.required],
+    }],
+    discipline: ['', {
+      validators: [Validators.required],
+    }],
+    year: ['', {
+      validators: [Validators.required],
+    }],
+    bimester: ['', {
+      validators: [Validators.required],
+    }],
+    teacher: ['', {
+      validators: [Validators.required],
+    }],
+    questions: this.fb.array([], {
+      validators: [Validators.required],
+    })
   })
 
   constructor(
@@ -100,11 +117,9 @@ export class FormComponent implements OnInit {
           testCategory: data.category.id,
           discipline: data.discipline.id,
           year: data.year.id,
-          questions: data.questions,
           bimester: data.bimester.id,
-          teacher: {
-            id: data.teacherPerson.id,
-          },
+          teacher: data.teacherPerson.id,
+          questions: this.updateQuestions(data.questions)
         })
 
         this.teacherName = data.teacherPerson.person.name
@@ -115,22 +130,47 @@ export class FormComponent implements OnInit {
 
     const popupOptions: PopupOptions = { url: url, headers: HEADERS[formControlName] }
 
-    this.popupService.openOptionsPopup(popupOptions)
+    this.popupService.openPopup(popupOptions)
       .afterClosed()
       .subscribe((result: any) => {
         if (result) { this.form.get(formControlName)?.setValue(result)}
       })
   }
 
-  openQuestions(formControlName: string) {
+  updateQuestions(questions: Questions[]) {
+    return questions.map(question => {
+      this.addQuestion(question)
+      return question
+    })
+  }
 
-    const questions = this.form.get(formControlName)?.value as Questions[]
+  addQuestion(question?: Questions) {
 
-    this.popupService.openQuestionsPopup(questions)
-      .afterClosed()
-      .subscribe((result: any) => {
-        if (result) { this.form.get(formControlName)?.setValue(result)}
-      })
+    if(question) {
+      const questionForm = this.fb.group({
+        id: [question.id, Validators.required],
+        answer: [question.answer, Validators.required]
+      });
+
+      this.questions.push(questionForm);
+      return
+    }
+
+    const questionForm = this.fb.group({
+      id: ['', Validators.required],
+      answer: ['', Validators.required]
+    });
+
+    this.questions.push(questionForm);
+  }
+
+  removeQuestion(questionIndex: number) {
+
+    this.questions.removeAt(questionIndex);
+  }
+
+  get questions() {
+    return this.form.get('questions') as FormArray
   }
 
   get id() {

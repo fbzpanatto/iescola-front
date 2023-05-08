@@ -8,17 +8,17 @@ import { GenericObjectArray } from "../../interfaces/interfaces";
   standalone: true,
   selector: 'app-popup',
   imports: [CommonModule],
-  templateUrl: './popup-options.component.html',
+  templateUrl: './popup.component.html',
   styleUrls: ['../../styles/table.scss']
 })
-export class PopupOptionsComponent implements OnInit {
+export class PopupComponent implements OnInit {
 
   userOptions: GenericObjectArray = []
   headOptions: GenericObjectArray = this.data.headers
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<PopupOptionsComponent>,
+    public dialogRef: MatDialogRef<PopupComponent>,
     private fetchDataService: FetchDataService,
   ) {}
 

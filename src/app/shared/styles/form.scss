@@ -7,6 +7,7 @@ form {
   display: inline-flex;
   flex-flow: row wrap;
   width: 100%;
+  height: calc(100vh - 96px);
   column-gap: 32px;
   padding: 32px;
   border-bottom: 1px solid #eaeaea;
@@ -14,7 +15,55 @@ form {
 
   mat-form-field {
     flex: 1;
-    min-width: 120px;
+  }
+
+  fieldset.outside-fieldset {
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border-radius: 4px;
+    padding: 16px;
+    height: 42vh;
+    overflow-y: scroll;
+
+    legend {
+      font-size: 16px;
+      scale: 0.80;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    div.questions-container {
+      display: flex;
+      flex-direction: column;
+      column-gap: 32px;
+      row-gap: 22px;
+
+      legend {
+        color: rgba(0, 0, 0, 0.6);
+      }
+
+      fieldset {
+        display: flex;
+        border-radius: 4px;
+
+        .question-form-row {
+          display: inline-flex;
+          flex-flow: row wrap;
+          flex: 1;
+          justify-content: center;
+          column-gap: 16px;
+          padding-top: 16px;
+        }
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 16px;
   }
 }
 
@@ -22,7 +71,13 @@ form {
   form {
     display: flex;
     flex-direction: column;
+    flex-flow: column;
     padding: 2em;
     column-gap: 24px;
+    height: fit-content;
+
+    .form-actions {
+      margin-top: 24px;
+    }
   }
 }
