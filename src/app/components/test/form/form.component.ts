@@ -36,7 +36,7 @@ export class FormComponent implements OnInit {
 
   private _id?: number
 
-  counter = 1
+  private _counter = 1
 
   private _teacherName = ''
   private _disciplines?: Discipline[]
@@ -167,7 +167,7 @@ export class FormComponent implements OnInit {
     }
 
     const questionForm = this.fb.group({
-      id: new FormControl<number | null>(this.counter ++, Validators.required),
+      id: new FormControl<number | null>(this._counter ++, Validators.required),
       answer: new FormControl<string | null>('', Validators.required)
     });
 
@@ -177,7 +177,7 @@ export class FormComponent implements OnInit {
   removeQuestion(questionIndex: number) {
 
     const index = (this.questions.length - 1) as number
-    this.counter = this.questions.controls[index].get('id')?.value
+    this._counter = this.questions.controls[index].get('id')?.value
 
     this.questions.controls.slice(questionIndex + 1).forEach((question: any) => {
       question.get('id')?.setValue(question.get('id')?.value - 1)
@@ -185,7 +185,7 @@ export class FormComponent implements OnInit {
 
     this.questions.removeAt(questionIndex);
 
-    this.questions.length === 0 ? this.counter = 1 : null
+    this.questions.length === 0 ? this._counter = 1 : null
   }
 
   get questions() {
