@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatOptionModule } from "@angular/material/core";
@@ -35,6 +35,8 @@ const HEADERS: { [key: string]: any } = {
 export class FormComponent implements OnInit {
 
   private _id?: number
+
+  counter = 1
 
   private _teacherName = ''
   private _disciplines?: Discipline[]
@@ -84,15 +86,13 @@ export class FormComponent implements OnInit {
   startForm() {
 
     combineLatest([
-      this.fetch.all('discipline') as Observable<Discipline[]>,
       this.fetch.all('test-category') as Observable<TestCategory[]>,
       this.fetch.all('bimester') as Observable<Bimester[]>,
       this.fetch.all('year') as Observable<Year[]>,
       ]
     )
       .pipe(
-        map(([disciplines, testCategories, bimesters, years]) => {
-          this.disciplines = disciplines
+        map(([testCategories, bimesters, years]) => {
           this.testCategories = testCategories
           this.bimesters = bimesters
           this.years = years
@@ -100,7 +100,7 @@ export class FormComponent implements OnInit {
       )
       .subscribe(() => {
         let param = this.route.snapshot.params['command']
-        !(isNaN(param)) ? this.updateForm(param) : null
+        !(isNaN(param)) ? this.updateForm(param) : this.newForm()
       })
 
   }
@@ -127,14 +127,23 @@ export class FormComponent implements OnInit {
       })
   }
 
-  openOptions(formControlName: string, url?: string) {
+  newForm() {
+    this.form.controls.discipline.setValue(null);
+    this.form.controls.discipline.disable()
+  }
 
-    const popupOptions: PopupOptions = { url: url, headers: HEADERS[formControlName] }
+  openTeacherOptions() {
+
+    const popupOptions: PopupOptions = { url: 'teacher', headers: HEADERS['teacher'] }
 
     this.popupService.openPopup(popupOptions)
       .afterClosed()
       .subscribe((result: any) => {
-        if (result) { this.form.get(formControlName)?.setValue(result)}
+        if (result) {
+          this.disciplines = result.teacherDisciplines as Discipline[]
+          this.form.controls.teacher.setValue(result)
+          this.form.controls.discipline.enable()
+        }
       })
   }
 
@@ -158,8 +167,8 @@ export class FormComponent implements OnInit {
     }
 
     const questionForm = this.fb.group({
-      id: ['', Validators.required],
-      answer: ['', Validators.required]
+      id: new FormControl<number | null>(this.counter ++, Validators.required),
+      answer: new FormControl<string | null>('', Validators.required)
     });
 
     this.questions.push(questionForm);
@@ -167,7 +176,16 @@ export class FormComponent implements OnInit {
 
   removeQuestion(questionIndex: number) {
 
+    const index = (this.questions.length - 1) as number
+    this.counter = this.questions.controls[index].get('id')?.value
+
+    this.questions.controls.slice(questionIndex + 1).forEach((question: any) => {
+      question.get('id')?.setValue(question.get('id')?.value - 1)
+    })
+
     this.questions.removeAt(questionIndex);
+
+    this.questions.length === 0 ? this.counter = 1 : null
   }
 
   get questions() {

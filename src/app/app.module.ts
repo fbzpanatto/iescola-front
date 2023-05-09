@@ -17,10 +17,12 @@ import { registerLocaleData } from "@angular/common";
 import { CustomReuseStrategy } from "./shared/methods/reuseStrategy";
 import { RouteReuseStrategy } from "@angular/router";
 import { MatDialogModule } from "@angular/material/dialog";
+import { DisableControlDirective } from './shared/directives/disable-control.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DisableControlDirective
   ],
   imports: [
     BrowserModule,

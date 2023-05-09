@@ -16,7 +16,7 @@
 
   <div class="flex-break no-gap"></div>
 
-  <mat-form-field appearance="outline" (click)="openOptions('teacher', 'teacher')">
+  <mat-form-field appearance="outline" (click)="openTeacherOptions()">
     <mat-label>Professor</mat-label>
     <input required readonly matInput [value]="teacherName ?? ''">
   </mat-form-field>
@@ -63,7 +63,7 @@
 
             <mat-form-field class="no-field" appearance="fill">
               <mat-label>No</mat-label>
-              <input matInput formControlName="id">
+              <input readonly matInput formControlName="id">
             </mat-form-field>
 
             <mat-form-field class="answer-field" appearance="fill">
@@ -97,3 +97,7 @@
     </button>
   </div>
 </form>
+
+<pre>
+{{ form.value | json }}
+</pre>
