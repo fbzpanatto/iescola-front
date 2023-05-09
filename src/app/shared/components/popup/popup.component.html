@@ -1,12 +1,17 @@
-<table>
-  <thead>
+<table class="popup-table">
+  <thead class="mat-elevation-z1">
     <tr>
-      <th *ngFor="let header of headOptions">{{header['label']}}</th>
+      <th [attr.colspan]="headOptions.length">
+        <input class="input-search" placeholder="pequisar...">
+      </th>
+    </tr>
+    <tr>
+      <th *ngFor="let header of headOptions">{{header['label'] | uppercase }}</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let row of userOptions" (click)="close(row)">
-      <td *ngFor="let header of headOptions">{{row[header['key']]}}</td>
+      <td *ngFor="let header of headOptions">{{row[header['key']] }}</td>
     </tr>
   </tbody>
 </table>

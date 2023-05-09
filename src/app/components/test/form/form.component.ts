@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import { FormArray, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { FetchDataService } from "src/app/shared/services/fetch-data.service";
 import { combineLatest, map, Observable } from "rxjs";
-import {Bimester, Discipline, PopupOptions, Questions, TestCategory, Year} from "src/app/shared/interfaces/interfaces";
+import { Bimester, Discipline, PopupOptions, Questions, TestCategory, Year } from "src/app/shared/interfaces/interfaces";
 import { ActivatedRoute } from "@angular/router";
 import { PopupService } from "src/app/shared/services/popup.service";
-import {MatIconModule} from "@angular/material/icon";
-import {MatButtonModule} from "@angular/material/button";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
@@ -122,6 +122,7 @@ export class FormComponent implements OnInit {
           questions: this.updateQuestions(data.questions)
         })
 
+        this.disciplines = data.teacherDisciplines as Discipline[]
         this.teacherName = data.teacherPerson.person.name
       })
   }

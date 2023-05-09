@@ -9,7 +9,7 @@ import { GenericObjectArray } from "../../interfaces/interfaces";
   selector: 'app-popup',
   imports: [CommonModule],
   templateUrl: './popup.component.html',
-  styleUrls: ['../../styles/table.scss']
+  styleUrls: ['./popup.component.scss']
 })
 export class PopupComponent implements OnInit {
 

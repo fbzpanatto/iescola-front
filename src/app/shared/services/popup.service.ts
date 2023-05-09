@@ -18,6 +18,8 @@ export class PopupService {
 
     return this.dialog.open(PopupComponent, {
       width: '400px',
+      autoFocus: true,
+      disableClose: true,
       data: { url, headers },
     })
   }
