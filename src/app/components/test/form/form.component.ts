@@ -124,6 +124,7 @@ export class FormComponent implements OnInit {
 
         this.disciplines = data.teacherDisciplines as Discipline[]
         this.teacherName = data.teacherPerson.person.name
+        this._counter = data.questions.length + 1
       })
   }
 
