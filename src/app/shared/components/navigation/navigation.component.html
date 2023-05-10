@@ -9,7 +9,6 @@
 </mat-toolbar>
 
 <mat-toolbar class="second-mat-toolbar">
-  <div>teste</div>
   <h2 style="margin-bottom: 0">{{ title$ | async }}</h2>
   <button mat-stroked-button *ngIf="!isHome" (click)="previousPage()">
     <mat-icon [svgIcon]="'keyboard_arrow_left'" style="line-height: 0"></mat-icon>
