@@ -20,7 +20,7 @@ const CONFIG = {
   selector: 'app-test',
   imports: [CommonModule, RouterModule, FormComponent ],
   templateUrl: './test.component.html',
-  styleUrls: ['../../shared/styles/table.scss']
+  styleUrls: ['test.component.scss', '../../shared/styles/table.scss']
 })
 export class TestComponent extends BasicComponent implements OnInit {
 
