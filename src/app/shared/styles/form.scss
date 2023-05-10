@@ -74,6 +74,7 @@
 @media (max-width: 768px) {
 
   .grid-container {
+    height: auto;
     grid-template-columns: repeat(1, 1fr);
 
     .form-actions {
