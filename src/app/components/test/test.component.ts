@@ -7,6 +7,8 @@ import { NavigationService } from "../../shared/services/navigation.service";
 import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
 import { CommonModule } from "@angular/common";
 import { FormComponent } from "./form/form.component";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
 
 const CONFIG = {
   title: 'Testes',
@@ -18,7 +20,7 @@ const CONFIG = {
 @Component({
   standalone: true,
   selector: 'app-test',
-  imports: [CommonModule, RouterModule, FormComponent ],
+  imports: [CommonModule, RouterModule, FormComponent, MatButtonModule, MatIconModule],
   templateUrl: './test.component.html',
   styleUrls: ['test.component.scss', '../../shared/styles/table.scss']
 })

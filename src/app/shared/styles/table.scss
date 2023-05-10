@@ -24,6 +24,34 @@ table {
         &.school {
         }
 
+        &.table-actions{
+          padding: 32px;
+
+          .table-actions-container {
+            display: flex;
+            justify-content: space-between;
+            column-gap: 128px;
+            >div {
+              display: flex;
+              flex: 1;
+              justify-content: flex-end;
+              column-gap: 16px;
+              align-items: center;
+              input {
+                flex: 1;
+                border: 1px solid #e8e8e8;
+                border-radius: 4px;
+                color: #333;
+                padding: 16px;
+                outline: none;
+                height: 36px;
+                font-size: 16px;
+              }
+            }
+          }
+
+        }
+
         &.question {
           text-align: center;
           width: 36px;

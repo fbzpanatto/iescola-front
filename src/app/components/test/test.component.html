@@ -2,8 +2,24 @@
 <table *ngIf="!isForm; else template">
   <thead class="mat-elevation-z1">
     <tr>
-      <th [attr.colspan]="100">
-        filtros
+      <th [attr.colspan]="100" class="table-actions">
+        <div class="table-actions-container">
+          <button mat-flat-button color="primary" (click)="isForm = true">
+            <mat-icon [svgIcon]="'add'"></mat-icon>
+            Novo
+          </button>
+          <div>
+            <button mat-stroked-button>
+              <mat-icon [svgIcon]="'refresh'"></mat-icon>
+              Recarregar
+            </button>
+            <input placeholder="pesquisar...">
+            <button mat-stroked-button color="warn">
+              <mat-icon [svgIcon]="'backspace'"></mat-icon>
+              Limpar
+            </button>
+          </div>
+        </div>
       </th>
     </tr>
     <tr>
