@@ -1,4 +1,3 @@
-<!--Definir altura como toda do content-->
 <table *ngIf="!isForm; else template">
   <thead class="mat-elevation-z1">
     <tr>
@@ -9,12 +8,12 @@
             Novo
           </button>
           <div>
-            <button mat-stroked-button>
+            <button mat-stroked-button (click)="getAll()">
               <mat-icon [svgIcon]="'refresh'"></mat-icon>
               Recarregar
             </button>
-            <input placeholder="pesquisar...">
-            <button mat-stroked-button color="warn">
+            <input placeholder="pesquisar..." [formControl]="searchInput">
+            <button mat-stroked-button color="warn" (click)="clearSearch()">
               <mat-icon [svgIcon]="'backspace'"></mat-icon>
               Limpar
             </button>

@@ -7,8 +7,9 @@ import { NavigationService } from "../../shared/services/navigation.service";
 import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
 import { CommonModule } from "@angular/common";
 import { FormComponent } from "./form/form.component";
-import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
 
 const CONFIG = {
   title: 'Testes',
@@ -20,7 +21,7 @@ const CONFIG = {
 @Component({
   standalone: true,
   selector: 'app-test',
-  imports: [CommonModule, RouterModule, FormComponent, MatButtonModule, MatIconModule],
+  imports: [CommonModule, RouterModule, FormComponent, MatButtonModule, MatIconModule, ReactiveFormsModule],
   templateUrl: './test.component.html',
   styleUrls: ['test.component.scss', '../../shared/styles/table.scss']
 })
@@ -30,6 +31,8 @@ export class TestComponent extends BasicComponent implements OnInit {
   static url = CONFIG.url
   static icon = CONFIG.icon
 
+  searchInput = new FormControl('')
+
   private _tests: TestClasses[] = []
 
   constructor( router:Router, route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
@@ -38,7 +41,15 @@ export class TestComponent extends BasicComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.listSubscription = this.basicGetAll<TestClasses>()
+    this.searchInput.valueChanges.subscribe((value) => {
+      console.log(value)
+    })
+
+    this.getAll()
+  }
+
+  getAll() {
+    this.basicGetAll<TestClasses>()
       .subscribe((tests) => { this._tests = tests })
   }
 
@@ -46,5 +57,7 @@ export class TestComponent extends BasicComponent implements OnInit {
     return this._tests
   }
 
-  protected readonly CONFIG = CONFIG;
+  clearSearch() {
+    this.searchInput.setValue('')
+  }
 }
