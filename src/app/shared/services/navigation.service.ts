@@ -34,6 +34,9 @@ export class NavigationService {
   }
 
   back() {
+
+    // TODO: Review this logic
+
     this.history.pop();
 
     if (this.history.length > 0) {
