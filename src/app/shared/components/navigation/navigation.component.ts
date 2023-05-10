@@ -11,7 +11,7 @@ import { MatLineModule, MatRippleModule } from "@angular/material/core";
 import { BreakpointObserver, MediaMatcher } from "@angular/cdk/layout";
 import { CommonModule } from "@angular/common";
 
-import { Router, RouterLink, RouterLinkActive } from "@angular/router";
+import {ActivatedRoute, Router, RouterLink, RouterLinkActive} from "@angular/router";
 
 import { NavigationService } from "src/app/shared/services/navigation.service";
 import { ActiveComponent } from "src/app/shared/services/navigation.service";
@@ -62,6 +62,8 @@ const MENU_TREE = [
 })
 export class NavigationComponent implements OnInit {
 
+  isHome = true;
+  currentUrl = '';
   opened = false;
   isLargeScreen = false;
   isMediumScreen = false;
@@ -72,6 +74,7 @@ export class NavigationComponent implements OnInit {
   protected readonly MENU_TREE = MENU_TREE;
 
   constructor(
+    private route: ActivatedRoute,
     private responsive: BreakpointObserver,
     private router: Router,
     private navigationService: NavigationService,
@@ -86,7 +89,9 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit() {
 
-    this.navigationService.activeComponent$.subscribe()
+    this.navigationService.activeComponent$.subscribe(activeComponent => {
+      this.isHome = activeComponent.url === HomeComponent.url;
+    })
 
     this.setBreakpointObserver();
   }
@@ -114,5 +119,9 @@ export class NavigationComponent implements OnInit {
       .pipe(
         map((activeComponent: ActiveComponent) => activeComponent.title)
       )
+  }
+
+  previousPage() {
+    this.navigationService.back();
   }
 }

@@ -10,7 +10,7 @@
 
 <mat-toolbar class="second-mat-toolbar">
   <h3 style="margin-bottom: 0">{{ title$ | async }}</h3>
-  <button mat-button>
+  <button mat-stroked-button *ngIf="!isHome" (click)="previousPage()">
     <mat-icon [svgIcon]="'keyboard_arrow_left'" style="line-height: 0"></mat-icon>
     Voltar
   </button>
