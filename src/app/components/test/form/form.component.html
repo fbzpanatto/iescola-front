@@ -1,101 +1,110 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="grid-container">
 
-  <mat-form-field appearance="outline">
-    <mat-label>Nome</mat-label>
-    <input matInput formControlName="name">
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Categoria</mat-label>
-    <mat-select formControlName="testCategory">
-      <mat-option *ngFor="let option of testCategories" [value]="option.id">
-        {{ option.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <div class="flex-break no-gap"></div>
-
-  <mat-form-field appearance="outline" (click)="openTeacherOptions()">
-    <mat-label>Professor</mat-label>
-    <input required readonly matInput [value]="teacherName ?? ''">
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Disciplina</mat-label>
-    <mat-select formControlName="discipline">
-      <mat-option *ngFor="let option of disciplines" [value]="option.id">
-        {{ option.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <div class="flex-break no-gap"></div>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Bimestre</mat-label>
-    <mat-select formControlName="bimester">
-      <mat-option *ngFor="let option of bimesters" [value]="option.id">
-        {{ option.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Ano</mat-label>
-    <mat-select formControlName="year">
-      <mat-option *ngFor="let option of years" [value]="option.id">
-        {{ option.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <div class="flex-break no-gap"></div>
-
-  <div style="display: flex; flex: 1">
-    <fieldset class="outside-fieldset" >
-      <legend>Gabarito*</legend>
-      <div class="questions-container" formArrayName="questions" *ngIf="questions.length">
-
-        <fieldset *ngFor="let question of questions.controls; let i = index">
-          <legend>Questão</legend>
-          <div class="question-form-row" [formGroupName]="i">
-
-            <mat-form-field class="no-field" appearance="fill">
-              <mat-label>No</mat-label>
-              <input readonly matInput formControlName="id">
-            </mat-form-field>
-
-            <mat-form-field class="answer-field" appearance="fill">
-              <mat-label>Letra</mat-label>
-              <input maxlength="1" matInput formControlName="answer">
-            </mat-form-field>
-
-            <button color="warn" mat-mini-fab (click)="removeQuestion(i)">
-              <mat-icon class="add-course-btn">remove</mat-icon>
-            </button>
-          </div>
-        </fieldset>
-      </div>
-
-      <div style="margin-top: 32px; display: flex; justify-content: flex-end">
-        <button [matTooltip]="'Adicionar questão'" color="primary" mat-mini-fab (click)="addQuestion()" style="margin-right: 16px">
-          <mat-icon class="add-course-btn">add</mat-icon>
-        </button>
-      </div>
-    </fieldset>
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
   </div>
 
-  <div class="form-actions" style="display: flex; flex: 1">
-    <button mat-raised-button color="accent">
-      <mat-icon [svgIcon]="'delete'"></mat-icon>
-      Deletar
-    </button>
-    <button mat-raised-button color="primary">
-      <mat-icon [svgIcon]="'done'"></mat-icon>
-      Salvar
-    </button>
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Categoria</mat-label>
+      <mat-select formControlName="testCategory">
+        <mat-option *ngFor="let option of testCategories" [value]="option.id">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline" (click)="openTeacherOptions()">
+      <mat-label>Professor</mat-label>
+      <input required readonly matInput [value]="teacherName ?? ''">
+    </mat-form-field>
+  </div>
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Disciplina</mat-label>
+      <mat-select formControlName="discipline">
+        <mat-option *ngFor="let option of disciplines" [value]="option.id">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="fl-row">
+
+    <mat-form-field appearance="outline" (click)="openTeacherOptions()">
+      <mat-label>Aplicar em Salas</mat-label>
+      <input required readonly matInput [value]="teacherName ?? ''">
+    </mat-form-field>
+
+  </div>
+
+  <div class="fl-row">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Bimestre</mat-label>
+      <mat-select formControlName="bimester">
+        <mat-option *ngFor="let option of bimesters" [value]="option.id">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ano</mat-label>
+      <mat-select formControlName="year">
+        <mat-option *ngFor="let option of years" [value]="option.id">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="fl-row">
+
+    <div class="answers-form-field">
+      <fieldset class="outside-fieldset">
+        <legend>Gabarito</legend>
+        <div class="questions-container" formArrayName="questions" *ngIf="questions.length">
+
+          <fieldset *ngFor="let question of questions.controls; let i = index">
+            <legend>Questão</legend>
+            <div class="question-form-row" [formGroupName]="i">
+
+              <mat-form-field class="no-field" appearance="fill">
+                <mat-label>No</mat-label>
+                <input readonly matInput formControlName="id">
+              </mat-form-field>
+
+              <mat-form-field class="answer-field" appearance="fill">
+                <mat-label>Letra</mat-label>
+                <input maxlength="1" matInput formControlName="answer">
+              </mat-form-field>
+
+              <button color="warn" mat-mini-fab (click)="removeQuestion(i)">
+                <mat-icon class="add-course-btn">remove</mat-icon>
+              </button>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="add-btn">
+          <button [matTooltip]="'Adicionar questão'" color="primary" mat-mini-fab (click)="addQuestion()" style="margin-right: 16px">
+            <mat-icon class="add-course-btn">add</mat-icon>
+          </button>
+        </div>
+
+      </fieldset>
+    </div>
+
+  </div>
+
 </form>
 
 <pre>

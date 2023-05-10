@@ -1,83 +1,77 @@
-.flex-break {
-  flex-basis: 100%;
-  height: 0;
-}
-
-form {
-  display: inline-flex;
-  flex-flow: row wrap;
-  width: 100%;
-  height: calc(100vh - 96px);
-  column-gap: 32px;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   padding: 32px;
-  border-bottom: 1px solid #eaeaea;
-  background: #fff;
+  grid-column-gap: 32px;
 
-  mat-form-field {
+  .fl-row {
+    display: inline-flex;
+    flex-flow: row wrap;
     flex: 1;
-  }
+    column-gap: 16px;
 
-  fieldset.outside-fieldset {
-
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    border-radius: 4px;
-    padding: 16px;
-    height: 42vh;
-    overflow-y: scroll;
-
-    legend {
-      font-size: 16px;
-      scale: 0.80;
-      color: rgba(0, 0, 0, 0.6);
+    mat-form-field {
+      flex: 1;
     }
 
-    div.questions-container {
+    .answers-form-field {
       display: flex;
-      flex-direction: column;
-      column-gap: 32px;
-      row-gap: 22px;
+      flex: 1;
 
-      legend {
-        color: rgba(0, 0, 0, 0.6);
-      }
-
-      fieldset {
-        display: flex;
+      .outside-fieldset {
         border-radius: 4px;
+        padding: 16px;
+        height: 42vh;
+        overflow-y: scroll;
 
-        .question-form-row {
-          display: inline-flex;
-          flex-flow: row wrap;
-          flex: 1;
-          justify-content: center;
-          column-gap: 16px;
-          padding-top: 16px;
+        .questions-container {
+          display: flex;
+          flex-direction: column;
+          column-gap: 32px;
+          row-gap: 22px;
+
+          fieldset {
+            display: flex;
+            border-radius: 4px;
+
+            .question-form-row {
+              display: inline-flex;
+              flex-flow: row wrap;
+              flex: 1;
+              justify-content: center;
+              column-gap: 16px;
+              padding: 16px 16px 0 16px;
+            }
+          }
+        }
+
+        .add-btn {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: 32px;
+          margin-right: 16px;
         }
       }
     }
   }
-
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    gap: 16px;
-  }
 }
 
 @media (max-width: 768px) {
-  form {
-    display: flex;
-    flex-direction: column;
-    flex-flow: column;
-    padding: 2em;
-    column-gap: 24px;
-    height: fit-content;
 
-    .form-actions {
-      margin-top: 24px;
+  .grid-container {
+    grid-template-columns: repeat(1, 1fr);
+
+    .fl-row {
+      display: flex;
+      flex-direction: column;
+
+      .answers-form-field .outside-fieldset .questions-container fieldset .question-form-row  {
+        padding: 10px 0 0;
+      }
+
+      .answers-form-field .outside-fieldset .add-btn  {
+        margin-right: 0;
+      }
     }
   }
 }
