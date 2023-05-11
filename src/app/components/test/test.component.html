@@ -12,7 +12,7 @@
               <mat-icon [svgIcon]="'refresh'"></mat-icon>
               Recarregar
             </button>
-            <input placeholder="pesquisar..." [formControl]="searchInput">
+            <input appAutoFocus placeholder="pesquisar..." [formControl]="searchInput">
             <button mat-stroked-button color="warn" (click)="clearSearch()">
               <mat-icon [svgIcon]="'backspace'"></mat-icon>
               Limpar

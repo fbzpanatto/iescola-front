@@ -1,3 +1,15 @@
+div[mat-dialog-title] {
+  background-color: #3f51b5;
+  color: #fff;
+
+  .popup-title {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
 table.popup-table {
 
   width: 100%;
@@ -9,31 +21,33 @@ table.popup-table {
     top: 0;
     border-bottom: 1px solid #e0e0e0;
 
-    tr:first-child {
+    tr th.popup-actions {
+      padding: 32px 0;
 
-      th {
-        padding: 16px 32px;
-        .input-search {
-          outline: none;
-          padding: 8px;
-          width: 100%;
-          border: 1px solid rgba(0, 0, 0, 0.6);;
+      >div.table-actions-container {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        column-gap: 16px;
+        align-items: center;
+        input {
+          flex: 1;
+          border: 1px solid #e8e8e8;
           border-radius: 4px;
+          color: #333;
+          padding: 16px;
+          outline: none;
+          height: 36px;
+          font-size: 16px;
+
+          &:focus {
+            border: 1px solid #3f51b5;
+          }
         }
       }
     }
 
-    th {
-      padding: 10px 0;
-      font-size: 14px;
-      font-weight: 600;
-      color: #333;
 
-      &:first-child {
-        text-align: center;
-        width: 50px;
-      }
-    }
   }
 
   tbody {

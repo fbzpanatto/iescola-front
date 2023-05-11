@@ -13,6 +13,7 @@ import { PopupService } from "src/app/shared/services/popup.service";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import {AutoFocusDirective} from "../../../shared/directives/auto-focus.directive";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
@@ -28,7 +29,7 @@ const HEADERS: { [key: string]: any } = {
 @Component({
   selector: 'app-test-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatIconModule, MatButtonModule, MatTooltipModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatIconModule, MatButtonModule, MatTooltipModule, AutoFocusDirective],
   templateUrl: './form.component.html',
   styleUrls: ['../../../shared/styles/form.scss']
 })

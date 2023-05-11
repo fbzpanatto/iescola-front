@@ -33,7 +33,7 @@ import { DisableControlDirective } from './shared/directives/disable-control.dir
     MatDialogModule
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: CustomReuseStrategy }
+    {provide: RouteReuseStrategy, useClass: CustomReuseStrategy}
   ],
   bootstrap: [AppComponent]
 })

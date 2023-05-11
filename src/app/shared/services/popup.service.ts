@@ -17,7 +17,9 @@ export class PopupService {
     const { url, headers } = options
 
     return this.dialog.open(PopupComponent, {
-      width: '400px',
+      width: '50%',
+      maxWidth: '560px',
+      minWidth: '360px',
       autoFocus: true,
       disableClose: true,
       data: { url, headers },

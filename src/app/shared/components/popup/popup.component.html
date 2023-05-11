@@ -1,17 +1,32 @@
-<table class="popup-table">
-  <thead class="mat-elevation-z1">
+<div mat-dialog-title>
+  <span class="popup-title">
+    <span>{{title}}</span>
+    <mat-icon style="cursor: pointer" mat-dialog-close="{{ undefined }}" [svgIcon]="'close'"></mat-icon>
+  </span>
+</div>
+
+<div mat-dialog-content>
+  <table class="popup-table">
+    <thead>
     <tr>
-      <th [attr.colspan]="headOptions.length">
-        <input class="input-search" placeholder="pequisar...">
+      <th [attr.colspan]="headOptions.length" class="popup-actions">
+        <div class="table-actions-container">
+          <input placeholder="pesquisar..." [formControl]="searchInput" appAutoFocus>
+          <button mat-stroked-button color="warn" (click)="clearSearch()">
+            <mat-icon [svgIcon]="'backspace'"></mat-icon>
+            Limpar
+          </button>
+        </div>
       </th>
     </tr>
     <tr>
       <th *ngFor="let header of headOptions">{{header['label'] | uppercase }}</th>
     </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     <tr *ngFor="let row of userOptions" (click)="close(row)">
       <td *ngFor="let header of headOptions">{{row[header['key']] }}</td>
     </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>

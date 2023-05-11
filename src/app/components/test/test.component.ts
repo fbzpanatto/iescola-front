@@ -10,6 +10,7 @@ import { FormComponent } from "./form/form.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import {AutoFocusDirective} from "../../shared/directives/auto-focus.directive";
 
 const CONFIG = {
   title: 'Testes',
@@ -21,7 +22,7 @@ const CONFIG = {
 @Component({
   standalone: true,
   selector: 'app-test',
-  imports: [CommonModule, RouterModule, FormComponent, MatButtonModule, MatIconModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, FormComponent, MatButtonModule, MatIconModule, ReactiveFormsModule, AutoFocusDirective],
   templateUrl: './test.component.html',
   styleUrls: ['test.component.scss', '../../shared/styles/table.scss']
 })
