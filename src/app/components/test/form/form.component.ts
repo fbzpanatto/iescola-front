@@ -43,7 +43,7 @@ export class FormComponent implements OnInit {
 
   private _counter = 1
   private _teacherName = ''
-  private _classesName: string[] = [];
+  private _classesName: string = ''
 
   private _classes?: Classroom[]
   private _disciplines?: Discipline[]
@@ -61,7 +61,7 @@ export class FormComponent implements OnInit {
     discipline: ['', {
       validators: [Validators.required],
     }],
-    classes: ['', {
+    testClasses: ['', {
       validators: [Validators.required],
     }],
     year: ['', {
@@ -139,16 +139,16 @@ export class FormComponent implements OnInit {
   }
 
   newForm() {
-    this.form.controls.classes.setValue(null);
+    this.form.controls.testClasses.setValue(null);
     this.form.controls.discipline.setValue(null);
 
-    this.form.controls.classes.disable()
+    this.form.controls.testClasses.disable()
     this.form.controls.discipline.disable()
   }
 
   openClassesOptions() {
 
-    const condition = this.form.controls.classes.disabled
+    const condition = this.form.controls.testClasses.disabled
 
     if (condition) return
 
@@ -163,7 +163,9 @@ export class FormComponent implements OnInit {
       .afterClosed()
       .subscribe((result: any) => {
         if (result) {
-          console.log(result)
+          this.classesName = result.map((item: any) => item.name).join(', ')
+          let mappedResult = result.map((item: any) => item.id)
+          this.form.controls.testClasses.setValue(mappedResult)
         }
       })
   }
@@ -182,7 +184,7 @@ export class FormComponent implements OnInit {
 
           this.form.controls.teacher.setValue(result)
           this.form.controls.discipline.enable()
-          this.form.controls.classes.enable()
+          this.form.controls.testClasses.enable()
         }
       })
   }
@@ -284,7 +286,7 @@ export class FormComponent implements OnInit {
     return this._classesName
   }
 
-  set classesName(value: string[]){
+  set classesName(value: string){
     this._classesName = value
   }
 

@@ -40,7 +40,7 @@
 
     <mat-form-field appearance="outline" (click)="openClassesOptions()">
       <mat-label>Salas</mat-label>
-      <input required readonly matInput [disabled]="form.controls.classes.disabled">
+      <input required readonly matInput [disabled]="form.controls.testClasses.disabled" [value]="classesName ?? ''">
     </mat-form-field>
 
   </div>

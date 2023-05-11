@@ -46,3 +46,11 @@
     </tbody>
   </table>
 </div>
+
+<div mat-dialog-actions *ngIf="multiple">
+
+  <button mat-stroked-button color="primary" (click)="close(undefined, true, 'selected')">
+    <mat-icon [svgIcon]="'check'"></mat-icon>
+    Confirmar
+  </button>
+</div>

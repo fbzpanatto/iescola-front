@@ -55,7 +55,11 @@ export class PopupComponent implements OnInit {
     })
   }
 
-  close(element: any) {
+  close(element?: any, filter: boolean = false, filterKey: string = '') {
+    if(filter) {
+      this.dialogRef.close(this.userOptions.filter((item: any) => item[filterKey] === true))
+      return
+    }
     this.dialogRef.close(element);
   }
 

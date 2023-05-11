@@ -10,6 +10,18 @@ div[mat-dialog-title] {
   }
 }
 
+div[mat-dialog-actions] {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 16px;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 2px solid #333;
+  button {
+    min-width: 100px;
+  }
+}
+
 table.popup-table {
 
   width: 100%;
