@@ -9,7 +9,7 @@
   <table class="popup-table">
     <thead>
     <tr>
-      <th [attr.colspan]="headOptions.length" class="popup-actions">
+      <th [attr.colspan]="multiple ? headOptions.length + 1 : headOptions.length" class="popup-actions">
         <div class="table-actions-container">
           <input placeholder="pesquisar..." [formControl]="searchInput" appAutoFocus>
           <button mat-stroked-button color="warn" (click)="clearSearch()">
@@ -19,14 +19,30 @@
         </div>
       </th>
     </tr>
-    <tr>
-      <th *ngFor="let header of headOptions">{{header['label'] | uppercase }}</th>
-    </tr>
+    <ng-container *ngIf="!multiple; else elseTemplateHeader">
+      <tr>
+        <th *ngFor="let header of headOptions">{{header['label'] | uppercase }}</th>
+      </tr>
+    </ng-container>
+    <ng-template #elseTemplateHeader>
+      <tr>
+        <th><input type="checkbox" (change)="toggleSelectAll()" [checked]="selectAll"></th>
+        <th *ngFor="let header of headOptions">{{header['label'] | uppercase }}</th>
+      </tr>
+    </ng-template>
     </thead>
     <tbody>
-    <tr *ngFor="let row of userOptions" (click)="close(row)">
-      <td *ngFor="let header of headOptions">{{row[header['key']] }}</td>
-    </tr>
+      <ng-container *ngIf="!multiple; else elseTemplateBody">
+        <tr *ngFor="let row of userOptions" (click)="close(row)">
+          <td *ngFor="let header of headOptions">{{row[header['key']] }}</td>
+        </tr>
+      </ng-container>
+      <ng-template #elseTemplateBody>
+        <tr *ngFor="let row of userOptions">
+          <td><input type="checkbox" (change)="toggleItemSelection(row)" [checked]="row['selected']"></td>
+          <td *ngFor="let header of headOptions">{{row[header['key']] }}</td>
+        </tr>
+      </ng-template>
     </tbody>
   </table>
 </div>

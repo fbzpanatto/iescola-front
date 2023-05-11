@@ -46,6 +46,7 @@ export class TestComponent extends BasicComponent implements OnInit {
       console.log(value)
     })
 
+    // TODO: only do getAll if there is no params
     this.getAll()
   }
 

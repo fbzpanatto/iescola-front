@@ -21,7 +21,7 @@ const HEADERS: { [key: string]: any } = {
     { key: 'name', label: 'Professor' }
   ],
   classroom: [
-    { key: 'id', label: 'Id' },
+    { key: 'id', label: '#' },
     { key: 'name', label: 'Sala' }
   ],
   questions: [
@@ -152,7 +152,12 @@ export class FormComponent implements OnInit {
 
     if (condition) return
 
-    const popupOptions: PopupOptions = { url: 'teacher', headers: HEADERS['classroom'], fetchedData: this.classes }
+    const popupOptions: PopupOptions = {
+      url: 'teacher',
+      headers: HEADERS['classroom'],
+      fetchedData: this.classes,
+      multipleSelection: true
+    }
 
     this.popupService.openPopup(popupOptions)
       .afterClosed()
@@ -161,7 +166,6 @@ export class FormComponent implements OnInit {
           console.log(result)
         }
       })
-
   }
 
   openTeacherOptions() {
@@ -171,7 +175,7 @@ export class FormComponent implements OnInit {
     this.popupService.openPopup(popupOptions)
       .afterClosed()
       .subscribe((result: any) => {
-        if (result) {
+        if (result != undefined) {
 
           this.disciplines = result.teacherDisciplines as Discipline[]
           this.classes = result.teacherClasses as Classroom[]
