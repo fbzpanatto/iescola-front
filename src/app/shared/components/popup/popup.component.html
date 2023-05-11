@@ -20,12 +20,12 @@
       </th>
     </tr>
     <ng-container *ngIf="!multiple; else elseTemplateHeader">
-      <tr>
+      <tr style="background-color: #eeeeee; height: 60px">
         <th *ngFor="let header of headOptions">{{header['label'] | uppercase }}</th>
       </tr>
     </ng-container>
     <ng-template #elseTemplateHeader>
-      <tr>
+      <tr style="background-color: #eeeeee; height: 60px">
         <th><input type="checkbox" (change)="toggleSelectAll()" [checked]="selectAll"></th>
         <th *ngFor="let header of headOptions">{{header['label'] | uppercase }}</th>
       </tr>

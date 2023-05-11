@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="grid-container">
+<form [formGroup]="form" class="grid-container" (submit)="onSubmit()" >
 
   <div class="fl-row">
     <mat-form-field appearance="outline">
@@ -87,7 +87,7 @@
                 <input maxlength="1" matInput formControlName="answer">
               </mat-form-field>
 
-              <button color="warn" mat-mini-fab (click)="removeQuestion(i)">
+              <button type="button" color="warn" mat-mini-fab (click)="removeQuestion(i)">
                 <mat-icon class="add-course-btn">remove</mat-icon>
               </button>
             </div>
@@ -95,7 +95,7 @@
         </div>
 
         <div class="add-btn">
-          <button [matTooltip]="'Adicionar questão'" color="primary" mat-mini-fab (click)="addQuestion()" style="margin-right: 16px">
+          <button type="button" [matTooltip]="'Adicionar questão'" color="primary" mat-mini-fab (click)="addQuestion()" style="margin-right: 16px">
             <mat-icon [svgIcon]="'add'"></mat-icon>
           </button>
         </div>
@@ -109,19 +109,19 @@
     <div class="form-actions">
 
 <!--      TODO: Cancel function-->
-      <button mat-raised-button>
+      <button type="button" mat-raised-button>
         <mat-icon [svgIcon]="'close'"></mat-icon>
         Cancelar
       </button>
 
 <!--      TODO: Save function-->
-      <button mat-raised-button color="primary">
+      <button type="submit" mat-raised-button color="primary">
         <mat-icon [svgIcon]="'done'"></mat-icon>
         Salvar
       </button>
 
 <!--      TODO: Delete function-->
-      <button mat-raised-button color="accent">
+      <button (click)="delete()" type="button" mat-raised-button color="accent">
         <mat-icon [svgIcon]="'delete'"></mat-icon>
         Deletar
       </button>
@@ -130,7 +130,3 @@
   </div>
 
 </form>
-
-<pre>
-{{ form.value | json }}
-</pre>

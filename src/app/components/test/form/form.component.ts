@@ -23,10 +23,6 @@ const HEADERS: { [key: string]: any } = {
   classroom: [
     { key: 'id', label: '#' },
     { key: 'name', label: 'Sala' }
-  ],
-  questions: [
-    { key: 'id', label: 'Questão' },
-    { key: 'answer', label: 'Gabarito' }
   ]
 }
 
@@ -133,6 +129,13 @@ export class FormComponent implements OnInit {
         })
 
         this.form.controls.testClasses.setValue(data.testClasses.map((item: any) => item.id))
+
+        this.form.controls.testClasses.disable()
+        this.form.controls.discipline.disable()
+        this.form.controls.testCategory.disable()
+        this.form.controls.bimester.disable()
+        this.form.controls.year.disable()
+
 
         this.classes = data.teacherClasses as Classroom[]
         this.classesName = data.testClasses.map((item: any) => item.name).join(', ')
@@ -314,5 +317,63 @@ export class FormComponent implements OnInit {
 
   set teacherName(value: string){
     this._teacherName = value
+  }
+
+  onSubmit() {
+
+    if(this.id) {
+      console.log('update', this.id)
+      this.updateData()
+      return
+    }
+
+    this.createNewData()
+  }
+
+  createNewData() {
+    const teacherId = (this.form.value.teacher as any).id
+
+    const body = {
+      name: this.form.value.name,
+      category: { id: this.form.value.testCategory },
+      discipline: { id: this.form.value.discipline },
+      year: { id: this.form.value.year},
+      bimester: { id: this.form.value.bimester },
+      teacher: { id: teacherId },
+      questions: this.form.value.questions,
+      testClasses: this.form.value.testClasses
+    }
+
+    this.fetch.createOneData('test', body)
+      .subscribe((data: any) => {
+        if(data) {
+          this.form.reset()
+        }
+      })
+  }
+
+  private updateData() {
+    const teacherId = (this.form.value.teacher as any).id
+
+    const body = {
+      name: this.form.value.name,
+      questions: this.form.value.questions,
+    }
+
+    this.fetch.updateOneData('test', this.id as number, body)
+      .subscribe((data: any) => {
+        if(data) {
+          console.log('atualizado com sucesso')
+        }
+      })
+  }
+
+  delete() {
+    this.fetch.deleteOneData('test', this.id as number)
+      .subscribe((data: any) => {
+        if(data) {
+          console.log('deletado com sucesso')
+        }
+      })
   }
 }

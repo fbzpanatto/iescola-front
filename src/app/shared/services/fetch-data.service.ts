@@ -24,8 +24,18 @@ export class FetchDataService {
       .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T[]}))
   }
 
+  createOneData<T>(resource: string, data: T) {
+    return this.http.post('http://localhost:3333/' + resource, data)
+      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T}))
+  }
+
   updateOneData<T>(resource: string, id: number, data: T) {
     return this.http.put('http://localhost:3333/' + resource + '/' + id, data)
+      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T}))
+  }
+
+  deleteOneData<T>(resource: string, id: number) {
+    return this.http.delete('http://localhost:3333/' + resource + '/' + id)
       .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T}))
   }
 }
