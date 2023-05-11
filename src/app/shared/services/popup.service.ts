@@ -14,7 +14,7 @@ export class PopupService {
 
   openPopup(options: PopupOptions) {
 
-    const { url, headers } = options
+    const { url, headers, fetchedData } = options
 
     return this.dialog.open(PopupComponent, {
       width: '50%',
@@ -22,7 +22,7 @@ export class PopupService {
       minWidth: '360px',
       autoFocus: true,
       disableClose: true,
-      data: { url, headers },
+      data: { url, headers, fetchedData },
     })
   }
 }

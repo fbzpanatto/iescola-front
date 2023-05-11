@@ -38,9 +38,9 @@
 
   <div class="fl-row">
 
-    <mat-form-field appearance="outline" (click)="openTeacherOptions()">
+    <mat-form-field appearance="outline" (click)="openClassesOptions()">
       <mat-label>Salas</mat-label>
-      <input required readonly matInput [value]="teacherName ?? ''">
+      <input required readonly matInput [disabled]="form.controls.classes.disabled">
     </mat-form-field>
 
   </div>

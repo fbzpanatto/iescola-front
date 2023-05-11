@@ -13,7 +13,7 @@ import {AutoFocusDirective} from "../../directives/auto-focus.directive";
   selector: 'app-popup',
   imports: [CommonModule, MatButtonModule, MatIconModule, ReactiveFormsModule, MatDialogModule, AutoFocusDirective],
   templateUrl: './popup.component.html',
-  styleUrls: ['./popup.component.scss']
+  styleUrls: ['../../styles/popup.scss']
 })
 export class PopupComponent implements OnInit {
 
@@ -29,15 +29,18 @@ export class PopupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if(this.data.url) {
-      this.getAllData()
+
+    if(this.data.fetchedData) {
+      this.userOptions = this.data.fetchedData
+      return
     }
+
+    this.getAllData()
   }
 
   getAllData(){
     this.fetchDataService.all(this.data.url).subscribe((response: any) => {
       this.userOptions = response
-
     })
   }
 

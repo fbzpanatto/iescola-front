@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -7,18 +7,22 @@ import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { FetchDataService } from "src/app/shared/services/fetch-data.service";
 import { combineLatest, map, Observable } from "rxjs";
-import { Bimester, Discipline, PopupOptions, Questions, TestCategory, Year } from "src/app/shared/interfaces/interfaces";
+import { Bimester, Classroom, Discipline, PopupOptions, Questions, TestCategory, Year } from "src/app/shared/interfaces/interfaces";
 import { ActivatedRoute } from "@angular/router";
 import { PopupService } from "src/app/shared/services/popup.service";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import {AutoFocusDirective} from "../../../shared/directives/auto-focus.directive";
+import { AutoFocusDirective } from "../../../shared/directives/auto-focus.directive";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
     { key: 'id', label: 'Id' },
     { key: 'name', label: 'Professor' }
+  ],
+  classroom: [
+    { key: 'id', label: 'Id' },
+    { key: 'name', label: 'Sala' }
   ],
   questions: [
     { key: 'id', label: 'Questão' },
@@ -38,8 +42,10 @@ export class FormComponent implements OnInit {
   private _id?: number
 
   private _counter = 1
-
   private _teacherName = ''
+  private _classesName: string[] = [];
+
+  private _classes?: Classroom[]
   private _disciplines?: Discipline[]
   private _testCategories?: TestCategory[]
   private _bimesters?: Bimester[]
@@ -53,6 +59,9 @@ export class FormComponent implements OnInit {
       validators: [Validators.required],
     }],
     discipline: ['', {
+      validators: [Validators.required],
+    }],
+    classes: ['', {
       validators: [Validators.required],
     }],
     year: ['', {
@@ -130,8 +139,29 @@ export class FormComponent implements OnInit {
   }
 
   newForm() {
+    this.form.controls.classes.setValue(null);
     this.form.controls.discipline.setValue(null);
+
+    this.form.controls.classes.disable()
     this.form.controls.discipline.disable()
+  }
+
+  openClassesOptions() {
+
+    const condition = this.form.controls.classes.disabled
+
+    if (condition) return
+
+    const popupOptions: PopupOptions = { url: 'teacher', headers: HEADERS['classroom'], fetchedData: this.classes }
+
+    this.popupService.openPopup(popupOptions)
+      .afterClosed()
+      .subscribe((result: any) => {
+        if (result) {
+          console.log(result)
+        }
+      })
+
   }
 
   openTeacherOptions() {
@@ -142,9 +172,13 @@ export class FormComponent implements OnInit {
       .afterClosed()
       .subscribe((result: any) => {
         if (result) {
+
           this.disciplines = result.teacherDisciplines as Discipline[]
+          this.classes = result.teacherClasses as Classroom[]
+
           this.form.controls.teacher.setValue(result)
           this.form.controls.discipline.enable()
+          this.form.controls.classes.enable()
         }
       })
   }
@@ -178,7 +212,7 @@ export class FormComponent implements OnInit {
 
   removeQuestion(questionIndex: number) {
 
-    const index = (this.questions.length - 1) as number
+    const index = (this.questions.length - 1)
     this._counter = this.questions.controls[index].get('id')?.value
 
     this.questions.controls.slice(questionIndex + 1).forEach((question: any) => {
@@ -210,6 +244,14 @@ export class FormComponent implements OnInit {
     this._disciplines = value
   }
 
+  get classes() {
+    return this._classes
+  }
+
+  set classes(value: Classroom[] | undefined) {
+    this._classes = value
+  }
+
   get testCategories() {
     return this._testCategories
   }
@@ -232,6 +274,14 @@ export class FormComponent implements OnInit {
 
   set years(value: Year[] | undefined) {
     this._years = value
+  }
+
+  get classesName(){
+    return this._classesName
+  }
+
+  set classesName(value: string[]){
+    this._classesName = value
   }
 
   get teacherName(){

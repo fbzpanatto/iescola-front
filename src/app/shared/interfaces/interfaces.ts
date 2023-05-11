@@ -1,4 +1,5 @@
 export interface Discipline { id: number, name: string }
+export interface Classroom { id: number, name: string }
 export interface TestCategory { id: number, name: string }
 export interface Bimester { id: number, name: string }
 export interface Year { id: number, name: number }
@@ -9,4 +10,4 @@ export interface TestClass { name: string, school: string, classroomId: number, 
 export interface TestClasses { testId: number, classes: TestClass[] }
 export interface GenericObject { [key: string]: any }
 export interface GenericObjectArray extends Array<GenericObject> {}
-export interface PopupOptions { url?: string, questions?: GenericObjectArray, headers?: GenericObjectArray }
+export interface PopupOptions { url?: string, questions?: GenericObjectArray, headers?: GenericObjectArray, fetchedData?: GenericObjectArray }
