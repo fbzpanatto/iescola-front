@@ -132,8 +132,15 @@ export class FormComponent implements OnInit {
           questions: this.updateQuestions(data.questions)
         })
 
+        this.form.controls.testClasses.setValue(data.testClasses.map((item: any) => item.id))
+
+        this.classes = data.teacherClasses as Classroom[]
+        this.classesName = data.testClasses.map((item: any) => item.name).join(', ')
         this.disciplines = data.teacherDisciplines as Discipline[]
         this.teacherName = data.teacherPerson.person.name
+
+        this.selectedClasses(data.teacherClasses, data.testClasses)
+
         this._counter = data.questions.length + 1
       })
   }
@@ -144,6 +151,17 @@ export class FormComponent implements OnInit {
 
     this.form.controls.testClasses.disable()
     this.form.controls.discipline.disable()
+  }
+
+  selectedClasses(allClasses: Classroom[], selectedClasses: Classroom[]) {
+    allClasses.forEach(item1 => {
+      selectedClasses.find((item2) => {
+        if(item2.id === item1.id) {
+          item1.selected = true
+        }
+      })
+    });
+    this.classes = allClasses
   }
 
   openClassesOptions() {

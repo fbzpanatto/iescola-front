@@ -38,10 +38,7 @@ export class PopupComponent implements OnInit {
     if(this.data.fetchedData) {
       this.userOptions = this.data.fetchedData
 
-      this.userOptions = this.data.fetchedData.map((element: any) => {
-        element.selected = true
-        return element
-      })
+      this.selectAll = this.userOptions.every(item => item['selected']);
 
       return
     }
