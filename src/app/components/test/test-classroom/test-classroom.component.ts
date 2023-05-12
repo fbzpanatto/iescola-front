@@ -62,8 +62,6 @@ export class TestClassroom extends BasicComponent implements OnInit {
 
         const { test, classroom, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
 
-        console.log(classroom)
-
         for(let st of studentTests) {
           if(!st.student.test.completed) {st.student.test.score = 'Nulo'}
         }
