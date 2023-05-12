@@ -249,6 +249,21 @@ export class FormComponent implements OnInit {
     this.questions.removeAt(questionIndex);
 
     this.questions.length === 0 ? this._counter = 1 : null
+
+    let body = {
+      removeQuestion: (questionIndex + 1)
+    }
+
+    if(this.id){
+      console.log('removendo questão...')
+
+      this.fetch.updateOneData('test',  Number(this.id), body)
+        .subscribe((data: any) => {
+          if(data) {
+            console.log('questão removida com sucesso')
+          }
+        })
+    }
   }
 
   get questions() {
@@ -322,7 +337,6 @@ export class FormComponent implements OnInit {
   onSubmit() {
 
     if(this.id) {
-      console.log('update', this.id)
       this.updateData()
       return
     }
