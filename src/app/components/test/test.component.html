@@ -1,4 +1,4 @@
-<table *ngIf="!isForm; else template">
+<table *ngIf="!isForm; else formView">
   <thead class="mat-elevation-z1">
     <tr>
       <th [attr.colspan]="100" class="table-actions">
@@ -51,6 +51,6 @@
     </ng-container>
   </tbody>
 </table>
-<ng-template #template>
+<ng-template #formView>
   <app-test-form></app-test-form>
 </ng-template>

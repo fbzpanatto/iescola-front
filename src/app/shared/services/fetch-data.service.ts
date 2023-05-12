@@ -1,41 +1,45 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { map, shareReplay } from "rxjs";
+import { map } from "rxjs";
+import { GenericObject } from "../interfaces/interfaces";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FetchDataService {
 
+  apiUrl = 'http://localhost:3333/'
+  payload = 'payload'
+
   constructor(private http: HttpClient) { }
 
   all<T>(resource: string) {
-    return this.http.get('http://localhost:3333/' + resource)
-      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T[]}))
+    return this.http.get(this.apiUrl + resource)
+      .pipe(map((response: GenericObject) => { return response[this.payload] as T[]}))
   }
 
   getOneData<T>(resource: string, id: number) {
-    return this.http.get('http://localhost:3333/' + resource + '/' + id)
-      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T}))
+    return this.http.get(this.apiUrl + resource + '/' + id)
+      .pipe(map((response: GenericObject) => { return response[this.payload] as T}))
   }
 
   getQueryData<T>(resource: string, query: string) {
-    return this.http.get('http://localhost:3333/' + resource + '?' + query)
-      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T[]}))
+    return this.http.get(this.apiUrl + resource + '?' + query)
+      .pipe(map((response: GenericObject) => { return response[this.payload] as T[]}))
   }
 
   createOneData<T>(resource: string, data: T) {
-    return this.http.post('http://localhost:3333/' + resource, data)
-      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T}))
+    return this.http.post(this.apiUrl + resource, data)
+      .pipe(map((response: GenericObject) => { return response[this.payload] as T}))
   }
 
   updateOneData<T>(resource: string, id: number, data: T) {
-    return this.http.put('http://localhost:3333/' + resource + '/' + id, data)
-      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T}))
+    return this.http.put(this.apiUrl + resource + '/' + id, data)
+      .pipe(map((response: GenericObject) => { return response[this.payload] as T}))
   }
 
   deleteOneData<T>(resource: string, id: number) {
-    return this.http.delete('http://localhost:3333/' + resource + '/' + id)
-      .pipe(map((response: { [key: string]: any }) => { return response['payload'] as T}))
+    return this.http.delete(this.apiUrl + resource + '/' + id)
+      .pipe(map((response: GenericObject) => { return response[this.payload] as T}))
   }
 }

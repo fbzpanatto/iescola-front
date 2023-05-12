@@ -10,7 +10,7 @@ import { FormComponent } from "./form/form.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
-import {AutoFocusDirective} from "../../shared/directives/auto-focus.directive";
+import { AutoFocusDirective } from "../../shared/directives/auto-focus.directive";
 
 const CONFIG = {
   title: 'Testes',
@@ -46,8 +46,9 @@ export class TestComponent extends BasicComponent implements OnInit {
       console.log(value)
     })
 
-    // TODO: only do getAll if there is no params
-    this.getAll()
+    if(!this.route.snapshot.params['command']) {
+      this.getAll()
+    }
   }
 
   getAll() {

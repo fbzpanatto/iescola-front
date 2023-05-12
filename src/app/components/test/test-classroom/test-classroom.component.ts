@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { CommonModule } from "@angular/common";
-import {ActivatedRoute, Router} from "@angular/router";
-import { map, switchMap } from "rxjs";
+import { ActivatedRoute, Router} from "@angular/router";
 import { FetchDataService } from "../../../shared/services/fetch-data.service";
 import { NavigationService } from "../../../shared/services/navigation.service";
 import { BasicComponent } from "../../../shared/components/basic/basic.component";
@@ -18,10 +17,7 @@ const CONFIG = {
   standalone: true,
   selector: 'app-test-students',
   templateUrl: './test-classroom.component.html',
-  imports: [
-    CommonModule,
-    MatTooltipModule
-  ],
+  imports: [CommonModule, MatTooltipModule],
   styleUrls: ['../../../shared/styles/table.scss']
 })
 export class TestClassroom extends BasicComponent implements OnInit {
@@ -31,11 +27,11 @@ export class TestClassroom extends BasicComponent implements OnInit {
 
   private _testId: string = ''
   private _classId: string = ''
+  private _classroom: string = ''
+  private _school: string = ''
 
   private _test: { [key: string]: any } = {}
   private _studentTests: { [key: string]: any }[] = []
-  private _classroom: string = ''
-  private _school: string = ''
   private _totalByQuestion: { id: number, total: number }[] = []
   private _rateByQuestion: { id: number, rate: string }[] = []
 
@@ -46,9 +42,7 @@ export class TestClassroom extends BasicComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.start()
-
   }
 
   start() {
