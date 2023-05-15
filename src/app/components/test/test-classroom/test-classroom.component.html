@@ -6,8 +6,8 @@
           <span>ESCOLA: {{ school }}</span>
         </div>
       </th>
-      <th class="question" *ngFor="let question of test.questions"></th>
-      <th class="question total" [attr.rowspan]="1"></th>
+      <th *ngFor="let question of test.questions"></th>
+      <th [attr.rowspan]="1"></th>
     </tr>
 
     <tr>
@@ -21,8 +21,8 @@
           </ng-template>
         </div>
       </th>
-      <th class="question" *ngFor="let question of test.questions"></th>
-      <th class="question total" [attr.rowspan]="1"></th>
+      <th *ngFor="let question of test.questions"></th>
+      <th [attr.rowspan]="1"></th>
     </tr>
 
     <tr>
