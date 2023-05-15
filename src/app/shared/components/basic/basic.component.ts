@@ -72,7 +72,11 @@ export class BasicComponent {
   }
 
   protected basicUpdateOneData<T>(resource = this.url, id: number, data: T) {
-    return this.fetchData.updateOneData<T>(resource, id, data);
+    return this.fetchData.updateOneDataWithId<T>(resource, id, data);
+  }
+
+  protected basicUpdateWithBody<T>(resource: string, data: T) {
+    return this.fetchData.updateOneDataWithBody<T>(resource, data);
   }
 
   get url() {

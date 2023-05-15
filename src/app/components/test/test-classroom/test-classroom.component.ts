@@ -6,6 +6,19 @@ import { FetchDataService } from "../../../shared/services/fetch-data.service";
 import { NavigationService } from "../../../shared/services/navigation.service";
 import { BasicComponent } from "../../../shared/components/basic/basic.component";
 import { SetActiveComponentBarTitle } from "../../../shared/methods/activeComponent";
+import {PopupService} from "../../../shared/services/popup.service";
+import {PopupOptions} from "../../../shared/interfaces/interfaces";
+
+const HEADERS: { [key: string]: any } = {
+  teacher: [
+    { key: 'id', label: 'Id' },
+    { key: 'name', label: 'Professor' }
+  ],
+  classroom: [
+    { key: 'id', label: '#' },
+    { key: 'name', label: 'Sala' }
+  ]
+}
 
 const CONFIG = {
   title: 'Teste / Sala de aula',
@@ -25,19 +38,25 @@ export class TestClassroom extends BasicComponent implements OnInit {
   static title = CONFIG.title
   static url = CONFIG.url
 
-  private _testId: string = ''
-  private _classId: string = ''
+  private _testIdParam: string = ''
+  private _classIdParam: string = ''
   private _classroom: string = ''
   private _school: string = ''
 
   private _test: { [key: string]: any } = {}
+  private _testGiver: { [key: string]: any } = {}
   private _studentTests: { [key: string]: any }[] = []
   private _totalByQuestion: { id: number, total: number }[] = []
   private _rateByQuestion: { id: number, rate: string }[] = []
 
   testsCompleted: number = 0
 
-  constructor( router: Router, route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
+  constructor(
+    router: Router,
+    route: ActivatedRoute,
+    fetchData: FetchDataService,
+    navigationService: NavigationService,
+    private popupService: PopupService) {
     super(router, route, fetchData, navigationService);
   }
 
@@ -49,10 +68,10 @@ export class TestClassroom extends BasicComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       const { command, classId } = params
-      this.classId = classId
-      this.testId = command
+      this.classIdParam = classId
+      this.testIdParam = command
 
-      this.loadData({ testId: this.testId, classId: this.classId })
+      this.loadData({ testId: this.testIdParam, classId: this.classIdParam })
     })
   }
 
@@ -60,7 +79,7 @@ export class TestClassroom extends BasicComponent implements OnInit {
     this.basicGetQueryData(`${TestClassroom.url}/register-answers`, 'classroom=' + params.classId + '&' + 'test=' + params.testId)
       .subscribe((payload: any) => {
 
-        const { test, classroom, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload
+        const { test, classroom, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion, testGiver } = payload
 
         for(let st of studentTests) {
           if(!st.student.test.completed) {st.student.test.score = 'Nulo'}
@@ -73,6 +92,7 @@ export class TestClassroom extends BasicComponent implements OnInit {
         this.totalByQuestion = totalByQuestion
         this.testsCompleted = totalTestCompleted
         this.rateByQuestion = rateByQuestion
+        this.testGiver = testGiver
       })
   }
 
@@ -161,20 +181,52 @@ export class TestClassroom extends BasicComponent implements OnInit {
     return '#ffffff'
   }
 
-  get classId() {
-    return this._classId
+  addTestGiver() {
+
+    const popupOptions: PopupOptions = { url: 'teacher', headers: HEADERS['teacher'] }
+
+    this.popupService.openPopup(popupOptions)
+      .afterClosed()
+      .subscribe((payload: any) => {
+
+          if (payload.id) {
+            const { id, name: person } = payload
+
+            let body = {
+              testGiver: {
+                id: id
+              },
+              test: {
+                id: this.testIdParam
+              },
+              classroom: {
+                id: this.classIdParam
+              }
+            }
+
+            this.basicUpdateWithBody('test-classes', body)
+              .subscribe((payload: any) => {
+                this.testGiver = { id, person }
+                console.log('atualizado com sucesso')
+              })
+          }
+      })
   }
 
-  set classId(value: string) {
-    this._classId = value
+  get classIdParam() {
+    return this._classIdParam
   }
 
-  get testId() {
-    return this._testId
+  set classIdParam(value: string) {
+    this._classIdParam = value
   }
 
-  set testId(value: string) {
-    this._testId = value
+  get testIdParam() {
+    return this._testIdParam
+  }
+
+  set testIdParam(value: string) {
+    this._testIdParam = value
   }
 
   get classroom() {
@@ -223,6 +275,14 @@ export class TestClassroom extends BasicComponent implements OnInit {
 
   set rateByQuestion(param: any) {
     this._rateByQuestion = param
+  }
+
+  get testGiver() {
+    return this._testGiver
+  }
+
+  set testGiver(param: any) {
+    this._testGiver = param
   }
 
 }

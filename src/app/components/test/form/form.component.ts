@@ -255,9 +255,8 @@ export class FormComponent implements OnInit {
     }
 
     if(this.id){
-      console.log('removendo questão...')
 
-      this.fetch.updateOneData('test',  Number(this.id), body)
+      this.fetch.updateOneDataWithId('test',  Number(this.id), body)
         .subscribe((data: any) => {
           if(data) {
             console.log('questão removida com sucesso')
@@ -374,7 +373,7 @@ export class FormComponent implements OnInit {
       questions: this.form.value.questions,
     }
 
-    this.fetch.updateOneData('test', this.id as number, body)
+    this.fetch.updateOneDataWithId('test', this.id as number, body)
       .subscribe((data: any) => {
         if(data) {
           console.log('atualizado com sucesso')

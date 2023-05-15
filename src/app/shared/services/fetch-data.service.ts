@@ -33,8 +33,13 @@ export class FetchDataService {
       .pipe(map((response: GenericObject) => { return response[this.payload] as T}))
   }
 
-  updateOneData<T>(resource: string, id: number, data: T) {
+  updateOneDataWithId<T>(resource: string, id: number, data: T) {
     return this.http.put(this.apiUrl + resource + '/' + id, data)
+      .pipe(map((response: GenericObject) => { return response[this.payload] as T}))
+  }
+
+  updateOneDataWithBody<T>(resource: string, data: T) {
+    return this.http.put(this.apiUrl + resource, data)
       .pipe(map((response: GenericObject) => { return response[this.payload] as T}))
   }
 

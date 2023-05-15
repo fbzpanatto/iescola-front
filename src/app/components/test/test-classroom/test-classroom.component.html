@@ -1,26 +1,52 @@
 <table>
   <thead class="mat-elevation-z1">
-  <tr>
-    <th [attr.colspan]="100"> {{ school }} </th>
-  </tr>
-  <tr>
-    <th style="padding-right: 0" [attr.colspan]="2">
-      <div>
-        <span>SALA: {{ classroom }}</span>
-        <span>QUESTÕES:</span>
-      </div>
-    </th>
-    <th class="question" *ngFor="let question of test.questions">
-      {{ question.id }}
-    </th>
-    <th class="question total" [attr.rowspan]="2">TOT ALUNO</th>
-  </tr>
+    <tr>
+      <th [attr.colspan]="2" class="freeze">
+        <div>
+          <span>ESCOLA: {{ school }}</span>
+        </div>
+      </th>
+      <th class="question" *ngFor="let question of test.questions"></th>
+      <th class="question total" [attr.rowspan]="1"></th>
+    </tr>
+
+    <tr>
+      <th [attr.colspan]="2" class="freeze">
+        <div>
+          <ng-container *ngIf="testGiver.person; else addTemplate">
+            <span (click)="addTestGiver()" style="cursor: pointer;">{{ testGiver.person | uppercase }}</span>
+          </ng-container>
+          <ng-template #addTemplate>
+            <span (click)="addTestGiver()" style="cursor: pointer;">SELECIONE UM PROFESSOR(A)</span>
+          </ng-template>
+        </div>
+      </th>
+      <th class="question" *ngFor="let question of test.questions"></th>
+      <th class="question total" [attr.rowspan]="1"></th>
+    </tr>
+
+    <tr>
+      <th [attr.colspan]="2" class="freeze">
+        <div>
+          <span>SALA: {{ classroom }}</span>
+          <span>QUESTÕES:</span>
+        </div>
+      </th>
+      <th class="question" *ngFor="let question of test.questions">
+        {{ question.id }}
+      </th>
+      <th class="question total" [attr.rowspan]="2">TOT ALUNO</th>
+    </tr>
+
   </thead>
 
   <tbody>
   <tr *ngFor="let el of studentTests">
-    <td class="no">{{ el.student.no }}</td>
-    <td class="name">{{ el.student.person.name }}</td>
+    <td [colSpan]="2" class="freeze">
+      <div class="name">
+        <span >{{ el.student.no ?? 1 }} {{ el.student.person.name }}</span>
+      </div>
+    </td>
     <td class="answer" *ngFor="let question of el.student.test.answers">
       <input
         style="background-color: inherit"
@@ -34,7 +60,7 @@
     <td class="answer" style="font-weight: 600">{{ el.student.test.score }}</td>
   </tr>
   <tr>
-    <td [attr.colspan]="2">
+    <td [attr.colspan]="2" class="freeze">
       <div>
         <span class="bold" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ testsCompleted }}</span>
         <span class="bold" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
@@ -44,7 +70,7 @@
     <td class="answer">-</td>
   </tr>
   <tr>
-    <td class="right bold" [attr.colspan]="2">APROVEITAMENTO:</td>
+    <td class="right bold freeze" [attr.colspan]="2">APROVEITAMENTO:</td>
     <td class="answer" *ngFor="let question of rateByQuestion">
       <input class="rate bold"
              [value]=" question.rate" readonly

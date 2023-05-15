@@ -4,12 +4,20 @@ table {
   width: 100%;
   background: #fff;
 
+  .freeze {
+    position: sticky;
+    left: 0;
+    background-color: #fff;
+  }
+
   thead {
     position: sticky;
     top: 0;
+    left: 0;
     background-color: #fdfdfd;
     z-index: 99;
     tr {
+
       th {
         text-align: left;
         padding: 8px;
@@ -18,7 +26,7 @@ table {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          min-width: 250px;
+          min-width: 300px;
         }
 
         &.school {
@@ -65,7 +73,23 @@ table {
   }
 
   tbody {
+
     tr {
+
+      &:not(:first-child):not(:last-child) {
+        td {
+          &.freeze::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            width: 97%;
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.18);
+          }
+        }
+      }
+
+
 
       &.trid {
         td {
@@ -104,23 +128,15 @@ table {
           justify-content: space-between;
           align-items: center;
           min-width: 250px;
+
+          &.name {
+            gap: 16px;
+            justify-content: flex-start;
+          }
         }
 
         &.right {
           text-align: right;
-        }
-
-        &.name {
-          width: 200px;
-          overflow: hidden;
-          padding-right: 0;
-        }
-
-        &.no {
-          width: 16px;
-          text-align: center;
-          padding-right: 0;
-          font-weight: 500;
         }
 
         &.answer {
