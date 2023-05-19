@@ -34,14 +34,14 @@
       <th class="question bold" *ngFor="let question of test.questions">
         {{ question.id }}
       </th>
-      <th class="question bold" [attr.rowspan]="2">PONTOS</th>
+      <th class="question bold" [attr.rowspan]="2">PTs</th>
     </tr>
 
   </thead>
 
   <tbody>
   <tr *ngFor="let el of studentTests">
-    <td [colSpan]="2" class="freeze">
+    <td [colSpan]="2" class="freeze border-right">
       <div class="name">
         <span >{{ el.student.no ?? 1 }} {{ el.student.person.name }}</span>
       </div>
@@ -62,14 +62,14 @@
     <td [attr.colspan]="2" class="freeze">
       <div>
         <span class="bold" [matTooltip]="'Total de alunos que realizaram a prova'">FIZERAM PROVA: {{ testsCompleted }}</span>
-        <span class="bold" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
+        <span class="bold border-right" [matTooltip]="'Total de acertos por questão'">TOT ACERTOS:</span>
       </div>
     </td>
     <td class="answer bold" *ngFor="let question of totalByQuestion">{{ question.total }}</td>
     <td class="answer">-</td>
   </tr>
   <tr>
-    <td class="right bold freeze" [attr.colspan]="2">APROVEITAMENTO:</td>
+    <td class="right bold freeze border-right border-bottom" [attr.colspan]="2">APROVEITAMENTO:</td>
     <td class="answer" *ngFor="let question of rateByQuestion">
       <input class="rate"
              [value]=" question.rate" readonly
