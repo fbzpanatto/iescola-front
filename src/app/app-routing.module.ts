@@ -13,8 +13,8 @@ const routes: Routes = [
       {
         path: ':command/classroom/:classId',
         children: [
-          { path: ':answers', loadComponent: () => import('./components/test/tabs/tabs.component').then(m => m.TabsComponent) },
-          { path: ':totals', loadComponent: () => import('./components/test/tabs/tabs.component').then(m => m.TabsComponent) },
+          { path: ':tab', loadComponent: () => import('./components/test/tabs/tabs.component').then(m => m.TabsComponent) },
+          { path: '', redirectTo: '/test', pathMatch: 'full' }
         ]
       },
     ]

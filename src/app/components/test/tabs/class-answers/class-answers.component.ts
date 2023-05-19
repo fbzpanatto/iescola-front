@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, Router} from "@angular/router";
-import { FetchDataService } from "../../../shared/services/fetch-data.service";
-import { NavigationService } from "../../../shared/services/navigation.service";
-import { BasicComponent } from "../../../shared/components/basic/basic.component";
-import { SetActiveComponentBarTitle } from "../../../shared/methods/activeComponent";
-import {PopupService} from "../../../shared/services/popup.service";
-import {PopupOptions} from "../../../shared/interfaces/interfaces";
+import { FetchDataService } from "../../../../shared/services/fetch-data.service";
+import { NavigationService } from "../../../../shared/services/navigation.service";
+import { BasicComponent } from "../../../../shared/components/basic/basic.component";
+import { SetActiveComponentBarTitle } from "../../../../shared/methods/activeComponent";
+import {PopupService} from "../../../../shared/services/popup.service";
+import {PopupOptions} from "../../../../shared/interfaces/interfaces";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
@@ -28,12 +28,12 @@ const CONFIG = {
 @SetActiveComponentBarTitle(CONFIG.title, CONFIG.url)
 @Component({
   standalone: true,
-  selector: 'app-test-students',
-  templateUrl: './test-classroom.component.html',
+  selector: 'app-class-answers',
+  templateUrl: './class-answers.component.html',
   imports: [CommonModule, MatTooltipModule],
-  styleUrls: ['../../../shared/styles/table.scss']
+  styleUrls: ['../../../../shared/styles/table.scss']
 })
-export class TestClassroom extends BasicComponent implements OnInit {
+export class ClassAnswers extends BasicComponent implements OnInit {
 
   static title = CONFIG.title
   static url = CONFIG.url
@@ -76,7 +76,7 @@ export class TestClassroom extends BasicComponent implements OnInit {
   }
 
   loadData(params: {testId: string, classId: string}) {
-    this.basicGetQueryData(`${TestClassroom.url}/register-answers`, 'classroom=' + params.classId + '&' + 'test=' + params.testId)
+    this.basicGetQueryData(`${ClassAnswers.url}/register-answers`, 'classroom=' + params.classId + '&' + 'test=' + params.testId)
       .subscribe((payload: any) => {
 
         const { test, classroom, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion, testGiver } = payload
@@ -118,7 +118,7 @@ export class TestClassroom extends BasicComponent implements OnInit {
         completed: !completed
       }
 
-      this.basicUpdateOneData(TestClassroom.url, studentTestHTML.id, body)
+      this.basicUpdateOneData(ClassAnswers.url, studentTestHTML.id, body)
         .subscribe((payload: any) => {
 
           const { test, studentTests, totalByQuestion, totalTestCompleted, rateByQuestion } = payload

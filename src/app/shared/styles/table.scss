@@ -10,6 +10,12 @@ table {
     background-color: #fff;
   }
 
+  .bold {
+    color: #333;
+    font-weight: 500;
+    letter-spacing: var(--mdc-typography-button-letter-spacing, 0.0892857143em);
+  }
+
   thead {
     position: sticky;
     top: 0;
@@ -117,11 +123,6 @@ table {
       td {
         padding: 8px;
         border-bottom: solid 1px rgba(0, 0, 0, 0.18);
-
-        &.bold,
-        .bold {
-          font-weight: bold
-        }
 
         > div {
           display: flex;

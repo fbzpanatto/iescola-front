@@ -3,7 +3,7 @@
     <tr>
       <th [attr.colspan]="2" class="freeze">
         <div>
-          <span>ESCOLA: {{ school }}</span>
+          <span class="bold">ESCOLA: {{ school }}</span>
         </div>
       </th>
       <th *ngFor="let question of test.questions"></th>
@@ -14,28 +14,27 @@
       <th [attr.colspan]="2" class="freeze">
         <div>
           <ng-container *ngIf="testGiver.person; else addTemplate">
-            <span (click)="addTestGiver()" style="cursor: pointer;">{{ testGiver.person | uppercase }}</span>
+            <span class="bold" (click)="addTestGiver()" style="cursor: pointer;">{{ testGiver.person | uppercase }}</span>
           </ng-container>
           <ng-template #addTemplate>
-            <span (click)="addTestGiver()" style="cursor: pointer;">SELECIONE UM PROFESSOR(A)</span>
+            <span class="bold" (click)="addTestGiver()" style="cursor: pointer;">SELECIONE UM PROFESSOR(A)</span>
           </ng-template>
         </div>
       </th>
       <th *ngFor="let question of test.questions"></th>
       <th [attr.rowspan]="1"></th>
     </tr>
-
     <tr>
       <th [attr.colspan]="2" class="freeze">
         <div>
-          <span>SALA: {{ classroom }}</span>
-          <span>QUESTÕES:</span>
+          <span class="bold">SALA: {{ classroom }}</span>
+          <span class="bold">QUESTÕES:</span>
         </div>
       </th>
-      <th class="question" *ngFor="let question of test.questions">
+      <th class="question bold" *ngFor="let question of test.questions">
         {{ question.id }}
       </th>
-      <th class="question total" [attr.rowspan]="2">TOT ALUNO</th>
+      <th class="question bold" [attr.rowspan]="2">ACERTOS</th>
     </tr>
 
   </thead>
@@ -57,7 +56,7 @@
         [value]="question.answer.toUpperCase()"
         [ngStyle]="{ 'background-color': correctAnswer({ id: question.id, answer: input.value}) }"
       >
-    <td class="answer" style="font-weight: 600">{{ el.student.test.score }}</td>
+    <td class="answer bold">{{ el.student.test.score }}</td>
   </tr>
   <tr>
     <td [attr.colspan]="2" class="freeze">
@@ -72,7 +71,7 @@
   <tr>
     <td class="right bold freeze" [attr.colspan]="2">APROVEITAMENTO:</td>
     <td class="answer" *ngFor="let question of rateByQuestion">
-      <input class="rate bold"
+      <input class="rate"
              [value]=" question.rate" readonly
              [ngStyle]="{ 'background-color': rateColor(question.rate) }"
       >

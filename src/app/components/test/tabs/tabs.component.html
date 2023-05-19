@@ -1,6 +1,8 @@
-<mat-tab-group headerPosition="below">
-  <mat-tab label="First">
-    <app-test-students></app-test-students>
+<mat-tab-group [selectedIndex]="selectedIndex ?? 0" (selectedTabChange)="navigate($event)">
+  <mat-tab label="Respostas">
+    <app-class-answers></app-class-answers>
   </mat-tab>
-  <mat-tab label="Second"> Content 2 </mat-tab>
+  <mat-tab label="Totais">
+    <app-totals></app-totals>
+  </mat-tab>
 </mat-tab-group>

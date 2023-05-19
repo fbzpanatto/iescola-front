@@ -1,0 +1,13 @@
+:host {
+  display: inline-block;
+  width: 100%;
+  height: calc(100vh - 112px);
+
+  mat-tab-group {
+    height: inherit;
+    background-color: #ffffff !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
