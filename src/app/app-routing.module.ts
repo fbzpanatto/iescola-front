@@ -10,7 +10,13 @@ const routes: Routes = [
     children: [
       { path: '', loadComponent: () => import('./components/test/test.component').then(m => m.TestComponent) },
       { path: ':command', loadComponent: () => import('./components/test/test.component').then(m => m.TestComponent) },
-      { path: ':command/classroom/:classId', loadComponent: () => import('./components/test/test-classroom/test-classroom.component').then(m => m.TestClassroom) },
+      {
+        path: ':command/classroom/:classId',
+        children: [
+          { path: ':answers', loadComponent: () => import('./components/test/tabs/tabs.component').then(m => m.TabsComponent) },
+          { path: ':totals', loadComponent: () => import('./components/test/tabs/tabs.component').then(m => m.TabsComponent) },
+        ]
+      },
     ]
   },
 ];
