@@ -10,7 +10,7 @@ table {
     top: 0;
     right: 0;
     width: 1px;
-    height: 50px;
+    height: 40px;
     background-color: rgba(0, 0, 0, 0.18);
   }
 
@@ -177,12 +177,11 @@ table {
 
           input {
             width: 100%;
-            min-width: 36px;
+            min-width: 28px;
             height: 24px;
             text-align: center;
             text-transform: uppercase;
             border: 1px solid rgba(0, 0, 0, 0.18);
-            border-radius: 4px;
           }
         }
       }
