@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ClassAnswers } from "./class-answers/class-answers.component";
 import { TotalsComponent } from "./totals/totals.component";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-tabs',
@@ -16,7 +16,7 @@ export class TabsComponent implements OnInit {
 
   selectedIndex?: number;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
