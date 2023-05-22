@@ -40,7 +40,7 @@
       <ng-template #elseTemplateBody>
         <tr *ngFor="let row of userOptions">
           <td><input type="checkbox" (change)="toggleItemSelection(row)" [checked]="row['selected']"></td>
-          <td *ngFor="let header of headOptions">{{row[header['key']] }}</td>
+          <td *ngFor="let header of headOptions">{{row[header['key']]}} </td>
         </tr>
       </ng-template>
     </tbody>
