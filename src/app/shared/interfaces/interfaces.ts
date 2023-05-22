@@ -10,4 +10,4 @@ export interface TestClass { name: string, school: string, classroomId: number, 
 export interface TestClasses { testId: number, classes: TestClass[] }
 export interface GenericObject { [key: string]: any }
 export interface GenericObjectArray extends Array<GenericObject> {}
-export interface PopupOptions {title?: string, url?: string, questions?: GenericObjectArray, headers?: GenericObjectArray, fetchedData?: GenericObjectArray, multipleSelection?: boolean }
+export interface PopupOptions {title?: string, url?: string, questions?: GenericObjectArray, headers?: GenericObjectArray, fetchedData?: GenericObjectArray, multipleSelection?: boolean, alreadySelected?: any }

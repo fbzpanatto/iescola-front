@@ -25,6 +25,8 @@ export class PopupComponent implements OnInit {
 
   selectAll:boolean = true
 
+  localSelected: GenericObjectArray = []
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PopupOptions,
     public dialogRef: MatDialogRef<PopupComponent>,
@@ -35,8 +37,30 @@ export class PopupComponent implements OnInit {
 
     this.headOptions = this.data.headers as GenericObjectArray
 
+    this.searchInput.valueChanges.subscribe((value: string | null) => {
+      if(value === null) {return}
+
+      this.userOptions = this.data.fetchedData?.filter((item: any) => {
+        return item.name.toLowerCase().includes(value.toLowerCase())
+      }) ?? []
+
+      this.selectAll = this.userOptions.every(item => item['selected']);
+    })
+
     if(this.data.fetchedData) {
+
       this.userOptions = this.data.fetchedData
+
+      if(this.data.alreadySelected != null) {
+        for(let id of this.data.alreadySelected) {
+          const index = this.userOptions.findIndex((item: any) => item.id === id)
+
+          if(index !== -1) {
+            this.userOptions[index]['selected'] = true
+            this.localSelected.push(this.userOptions[index])
+          }
+        }
+      }
 
       this.selectAll = this.userOptions.every(item => item['selected']);
 
@@ -54,7 +78,8 @@ export class PopupComponent implements OnInit {
 
   close(element?: any, filter: boolean = false, filterKey: string = '') {
     if(filter) {
-      this.dialogRef.close(this.userOptions.filter((item: any) => item[filterKey] === true))
+
+      this.dialogRef.close(this.localSelected)
       return
     }
     this.dialogRef.close(element);
@@ -67,10 +92,46 @@ export class PopupComponent implements OnInit {
   toggleSelectAll() {
     this.selectAll = !this.selectAll;
     this.userOptions.forEach(item => item['selected'] = this.selectAll);
+
+    if(this.selectAll && this.searchInput.value === '') {
+      this.localSelected = this.data.fetchedData?.map((item: any) => {
+        item['selected'] = true;
+        return item
+      }) ?? []
+    } else if(this.selectAll && this.searchInput.value !== '') {
+      for( let option of this.userOptions ) {
+        const index = this.localSelected.findIndex((item: any) => item.id === option['id'])
+
+        if(index === -1) {
+          this.localSelected.push(option)
+        }
+      }
+    } else if (!this.selectAll && this.searchInput.value !== '') {
+      for( let option of this.userOptions ) {
+        const index = this.localSelected.findIndex((item: any) => item.id === option['id'])
+
+        if(index !== -1) {
+          this.localSelected.splice(index, 1)
+        }
+      }
+    } else if (!this.selectAll && this.searchInput.value !== '' && this.userOptions.length > 0) {
+      this.selectAll = true
+    } else {
+      this.localSelected = []
+    }
   }
 
   toggleItemSelection(item: any) {
+
     item.selected = !item.selected;
+    const index= this.localSelected.indexOf(item);
+
+    if(item.selected && index === -1) {
+      this.localSelected.push(item);
+    } else if (!item.selected && index !== -1) {
+      this.localSelected.splice(index, 1);
+    }
+
     this.selectAll = this.userOptions.every(item => item['selected']);
   }
 }

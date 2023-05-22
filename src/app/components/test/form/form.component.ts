@@ -22,7 +22,8 @@ const HEADERS: { [key: string]: any } = {
   ],
   classroom: [
     { key: 'id', label: '#' },
-    { key: 'name', label: 'Sala' }
+    { key: 'name', label: 'Sala' },
+    { key: 'school', label: 'Escola' }
   ]
 }
 
@@ -177,7 +178,8 @@ export class FormComponent implements OnInit {
       url: 'teacher',
       headers: HEADERS['classroom'],
       fetchedData: this.classes,
-      multipleSelection: true
+      multipleSelection: true,
+      alreadySelected: this.form.controls.testClasses.value
     }
 
     this.popupService.openPopup(popupOptions)
