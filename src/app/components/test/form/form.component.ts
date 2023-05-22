@@ -125,7 +125,7 @@ export class FormComponent implements OnInit {
           discipline: data.discipline.id,
           year: data.year.id,
           bimester: data.bimester.id,
-          teacher: data.teacherPerson.id,
+          teacher: data.teacher.id,
           questions: this.updateQuestions(data.questions)
         })
 
@@ -138,12 +138,12 @@ export class FormComponent implements OnInit {
         this.form.controls.year.disable()
 
 
-        this.classes = data.teacherClasses as Classroom[]
+        this.classes = data.teacher.classes as Classroom[]
         this.classesName = data.testClasses.map((item: any) => item.name).join(', ')
-        this.disciplines = data.teacherDisciplines as Discipline[]
-        this.teacherName = data.teacherPerson.person.name
+        this.disciplines = data.teacher.disciplines as Discipline[]
+        this.teacherName = data.teacher.person.name
 
-        this.selectedClasses(data.teacherClasses, data.testClasses)
+        this.selectedClasses(data.teacher.classes, data.testClasses)
 
         this._counter = data.questions.length + 1
       })
