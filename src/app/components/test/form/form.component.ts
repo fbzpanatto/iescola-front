@@ -137,7 +137,6 @@ export class FormComponent implements OnInit {
         this.form.controls.bimester.disable()
         this.form.controls.year.disable()
 
-
         this.classes = data.teacher.classes as Classroom[]
         this.classesName = data.testClasses.map((item: any) => item.name).join(', ')
         this.disciplines = data.teacher.disciplines as Discipline[]
