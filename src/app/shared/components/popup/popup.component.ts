@@ -76,7 +76,7 @@ export class PopupComponent implements OnInit {
     })
   }
 
-  close(element?: any, filter: boolean = false, filterKey: string = '') {
+  close(element?: any, filter: boolean = false) {
     if(filter) {
 
       this.dialogRef.close(this.localSelected)
