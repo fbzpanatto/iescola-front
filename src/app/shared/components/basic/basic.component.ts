@@ -38,6 +38,9 @@ export class BasicComponent {
     protected fetchData: FetchDataService,
     protected navigationService: NavigationService
   ) {
+
+    console.log('BasicComponent')
+
     const { title, url } = (this as any).constructor;
     Object.assign(this, { title, url });
     this.url = url;

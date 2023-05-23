@@ -6,8 +6,8 @@ import { FetchDataService } from "../../../../shared/services/fetch-data.service
 import { NavigationService } from "../../../../shared/services/navigation.service";
 import { BasicComponent } from "../../../../shared/components/basic/basic.component";
 import { SetActiveComponentBarTitle } from "../../../../shared/methods/activeComponent";
-import {PopupService} from "../../../../shared/services/popup.service";
-import {PopupOptions} from "../../../../shared/interfaces/interfaces";
+import { PopupService } from "../../../../shared/services/popup.service";
+import { PopupOptions } from "../../../../shared/interfaces/interfaces";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
