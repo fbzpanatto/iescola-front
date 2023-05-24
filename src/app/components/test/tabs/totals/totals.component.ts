@@ -56,25 +56,26 @@ export class TotalsComponent implements OnInit {
 
   setChart() {
 
-    for(let register in this.data) {
-      // console.log(this.data[register])
-    }
+    let mydataSets = []
 
-    console.log(this.data)
+    for(let register in this.data) {
+      console.log(this.data[register].classroom, this.data[register].testDone)
+      console.log(this.data[register].question)
+
+      mydataSets.push({
+        label: this.data[register].classroom,
+        data: this.data[register].question.map((qt: any) => qt.rate),
+        borderColor: '#cbcbcb',
+        backgroundColor: '#179be0',
+        borderWidth: 1
+      })
+    }
 
     new Chart(this.chartRef?.nativeElement, {
       type: 'bar',
       data: {
         labels: this.data.cityHall.question.map((obj: any) => obj.id),
-        datasets:[
-          {
-            label: 'MUNICIPIO',
-            data: [85, 79, 20 ,21 ,45 ,65 ,78 ,98, 65 ,45],
-            borderColor: '#333',
-            backgroundColor: '#179be0',
-            borderWidth: 1
-          },
-        ]
+        datasets: mydataSets
       }
     })
 
