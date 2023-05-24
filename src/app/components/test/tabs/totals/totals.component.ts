@@ -1,11 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart } from 'chart.js/auto'
-import { ActivatedRoute, Router } from "@angular/router";
-import { BasicComponent } from "../../../../shared/components/basic/basic.component";
+import { ActivatedRoute } from "@angular/router";
 import { FetchDataService } from "../../../../shared/services/fetch-data.service";
-import { NavigationService } from "../../../../shared/services/navigation.service";
-
 
 const CONFIG = {
   title: 'Teste / Analises',
@@ -19,7 +16,7 @@ const CONFIG = {
   templateUrl: './totals.component.html',
   styleUrls: ['./totals.component.scss']
 })
-export class TotalsComponent extends BasicComponent implements OnInit {
+export class TotalsComponent implements OnInit {
 
   static title = CONFIG.title
   static url = CONFIG.url
@@ -28,48 +25,14 @@ export class TotalsComponent extends BasicComponent implements OnInit {
 
   private _testIdParam: string = ''
   private _classIdParam: string = ''
+  private _data?: { [key: string]: any } = {}
 
-  constructor(
-    router: Router,
-    route: ActivatedRoute,
-    fetchData: FetchDataService,
-    navigationService: NavigationService) {
-    super(router, route, fetchData, navigationService);
-  }
+  constructor( private route: ActivatedRoute, private fetchData: FetchDataService) {}
 
   ngOnInit(): void {
 
     this.start()
 
-    new Chart(this.chartRef?.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12'],
-        datasets:[
-          {
-            label: 'MUNICIPIO',
-            data: [85, 79, 20 ,21 ,45 ,65 ,78 ,98, 65 ,45 ,12 ,18],
-            borderColor: '#333',
-            backgroundColor: '#179be0',
-            borderWidth: 1
-          },
-          {
-            label: '5A',
-            data: [85, 79, 20 ,21 ,45 ,65 ,78 ,98, 65 ,45 ,12 ,18],
-            borderColor: '#333',
-            backgroundColor: '#3cba9f',
-            borderWidth: 1
-          },
-          {
-            label: '5B',
-            data: [100, 102, 101 ,98 ,45 ,80 ,200 ,250, 70 ,80 ,40 ,10],
-            borderColor: '#333',
-            backgroundColor: '#ffcc00',
-            borderWidth: 1
-          }
-        ]
-      }
-    })
   }
 
   start() {
@@ -83,10 +46,47 @@ export class TotalsComponent extends BasicComponent implements OnInit {
   }
 
   loadData(params: {testId: string, classId: string}) {
-    this.basicGetQueryData(`${TotalsComponent.url}/analyzes`, 'classroom=' + params.classId + '&' + 'test=' + params.testId)
-      .subscribe((data: any) => {
-        console.log(data)
+    this.fetchData.getQueryData(`${TotalsComponent.url}/analyzes`, 'classroom=' + params.classId + '&' + 'test=' + params.testId)
+      .subscribe((response: any) => {
+        this.data = response
+
+        this.setChart()
       })
+  }
+
+  setChart() {
+
+    for(let register in this.data) {
+      // console.log(this.data[register])
+    }
+
+    console.log(this.data)
+
+    new Chart(this.chartRef?.nativeElement, {
+      type: 'bar',
+      data: {
+        labels: this.data.cityHall.question.map((obj: any) => obj.id),
+        datasets:[
+          {
+            label: 'MUNICIPIO',
+            data: [85, 79, 20 ,21 ,45 ,65 ,78 ,98, 65 ,45],
+            borderColor: '#333',
+            backgroundColor: '#179be0',
+            borderWidth: 1
+          },
+        ]
+      }
+    })
+
+
+  }
+
+  get data() {
+    return this._data
+  }
+
+  set data(response: any) {
+    this._data = response
   }
 
   get classIdParam(): string {
