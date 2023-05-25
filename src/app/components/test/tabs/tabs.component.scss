@@ -4,7 +4,7 @@
   height: calc(100vh - 112px);
 
   mat-tab-group {
-    height: inherit;
+    height: calc(100vh - 112px);
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
