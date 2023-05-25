@@ -1,4 +1,38 @@
-<div class="container">
-  <canvas #chart id="myChart"></canvas>
-
+<table style="margin-bottom: 32px" >
+  <thead class="mat-elevation-z2">
+  <tr>
+    <th [attr.colspan]="2" class="freeze">
+      <div>
+        <span class="bold">{{ school }}</span>
+      </div>
+    </th>
+    <th *ngFor="let question of questions"></th>
+  </tr>
+  <tr>
+    <th [attr.colspan]="2" class="freeze">
+      <div>
+        <span class="bold">SALAS</span>
+        <span class="bold">QUESTÕES:</span>
+      </div>
+    </th>
+    <th class="question bold" *ngFor="let question of questions">
+      {{ question }}
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let el of classrooms">
+    <td [colSpan]="2" class="freeze border-right">
+      <div class="name">
+        <span >{{ el['classroom'] }}</span>
+      </div>
+    </td>
+    <td class="answer" *ngFor="let question of el['question']">
+      {{ question.rate }}
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div style="position: sticky; left: 0; height: 250px">
+  <canvas #chart id="myChart" ></canvas>
 </div>

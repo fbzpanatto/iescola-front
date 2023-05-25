@@ -1,16 +1,5 @@
 :host {
   display: inline-block;
-  width: 100%;
-  height: calc(100vh - 170px);
-  padding: 16px;
-
-  .container {
-    display: flex;
-    flex: 1;
-    height: inherit;
-    justify-content: center;
-
-    canvas {
-    }
-  }
+  background-color: #3f51b5;
+  height: calc(100vh - 112px);
 }

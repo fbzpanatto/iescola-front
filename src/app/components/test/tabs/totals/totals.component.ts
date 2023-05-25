@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart } from 'chart.js/auto'
 import { ActivatedRoute } from "@angular/router";
@@ -14,7 +14,7 @@ const CONFIG = {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './totals.component.html',
-  styleUrls: ['./totals.component.scss']
+  styleUrls: ['../../../../shared/styles/table.scss']
 })
 export class TotalsComponent implements OnInit {
 
@@ -26,6 +26,10 @@ export class TotalsComponent implements OnInit {
   private _testIdParam: string = ''
   private _classIdParam: string = ''
   private _data?: { [key: string]: any } = {}
+  private _questions = []
+  private _school?: string
+  private _classrooms: { [key: string]: any }[] = []
+  barColors = ['#ffec80', '#81ff7d', '#7b8fff', '#ff7f7f', '#ff0026']
 
   constructor( private route: ActivatedRoute, private fetchData: FetchDataService) {}
 
@@ -40,7 +44,6 @@ export class TotalsComponent implements OnInit {
       const { command, classId } = params
       this.classIdParam = classId
       this.testIdParam = command
-
       this.loadData({ testId: this.testIdParam, classId: this.classIdParam })
     })
   }
@@ -48,7 +51,14 @@ export class TotalsComponent implements OnInit {
   loadData(params: {testId: string, classId: string}) {
     this.fetchData.getQueryData(`${TotalsComponent.url}/analyzes`, 'classroom=' + params.classId + '&' + 'test=' + params.testId)
       .subscribe((response: any) => {
+
+        let accessor = Object.keys(response).shift() as typeof response
+        this.school = response[accessor].school.name
         this.data = response
+
+        this.classrooms = Object.keys(response).map(classroom => response[classroom])
+
+        this.questions = this.data.cityHall.question.map((obj: any) => obj.id)
 
         this.setChart()
       })
@@ -59,14 +69,11 @@ export class TotalsComponent implements OnInit {
     let mydataSets = []
 
     for(let register in this.data) {
-      console.log(this.data[register].classroom, this.data[register].testDone)
-      console.log(this.data[register].question)
 
       mydataSets.push({
         label: this.data[register].classroom,
         data: this.data[register].question.map((qt: any) => qt.rate),
-        borderColor: '#cbcbcb',
-        backgroundColor: '#179be0',
+        backgroundColor: this.barColors.shift(),
         borderWidth: 1
       })
     }
@@ -76,10 +83,20 @@ export class TotalsComponent implements OnInit {
       data: {
         labels: this.data.cityHall.question.map((obj: any) => obj.id),
         datasets: mydataSets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
       }
     })
+  }
 
+  get questions() {
+    return this._questions
+  }
 
+  set questions(questions: any) {
+    this._questions = questions
   }
 
   get data() {
@@ -104,5 +121,21 @@ export class TotalsComponent implements OnInit {
 
   set testIdParam(value: string) {
     this._testIdParam = value
+  }
+
+  get school() {
+    return this._school
+  }
+
+  set school(sc: string | undefined) {
+    this._school = sc
+  }
+
+  get classrooms() {
+    return this._classrooms
+  }
+
+  set classrooms(array: { [key: string]: any }[]) {
+    this._classrooms = array
   }
 }
