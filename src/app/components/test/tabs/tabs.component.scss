@@ -1,10 +1,10 @@
 :host {
   display: inline-block;
   width: 100%;
-  height: calc(100vh - 112px);
+  height: calc(100vh - 104px);
 
   mat-tab-group {
-    height: calc(100vh - 112px);
+    height: calc(100vh - 104px);
     background-color: #ffffff;
     display: flex;
     flex-direction: column;

@@ -27,3 +27,7 @@ body {margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-drawer-side {
   border-right: none;
 }
+
+.mat-mdc-list-item.mdc-list-item--with-leading-icon.mdc-list-item--with-one-line {
+  height: 48px!important;
+}

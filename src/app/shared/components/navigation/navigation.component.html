@@ -16,7 +16,7 @@
 
       <mat-list-item #rla="routerLinkActive" matRipple *ngFor="let menu of MENU_TREE" [routerLink]="menu.url" routerLinkActive="active">
         <mat-icon id="menu-color-icon" [ngClass]="rla.isActive ? 'active': 'defaultactive'"  matListItemIcon>{{ menu.icon }}</mat-icon>
-        <div [ngClass]="rla.isActive ? 'active': 'defaultactive'" matListItemTitle style="{{ rla.isActive? 'color: #333' : 'color: #fff' }}; border-bottom: none">{{menu.title}}</div>
+        <div [ngClass]="rla.isActive ? 'active': 'defaultactive'" matListItemTitle style="{{ rla.isActive? 'color: #3f51b5' : 'color: #fff' }}; border-bottom: none">{{menu.title}}</div>
       </mat-list-item>
 
     </mat-list>
@@ -27,7 +27,7 @@
 
     <mat-toolbar class="second-mat-toolbar">
       <h3 class="bold">{{ title$ | async | uppercase }}</h3>
-      <button style="background-color: #fff" mat-stroked-button *ngIf="!isHome" (click)="previousPage()">
+      <button mat-button *ngIf="!isHome" (click)="previousPage()">
         <mat-icon [svgIcon]="'keyboard_arrow_left'" style="line-height: 0"></mat-icon>
         Voltar
       </button>
