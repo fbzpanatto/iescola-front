@@ -22,6 +22,9 @@ mat-toolbar {
 mat-toolbar.second-mat-toolbar {
   display: flex;
   justify-content: space-between;
+  position: sticky;
+  left: 0;
+  top: 0;
   height: 48px;
   z-index: 9999;
   border-bottom: ridge 1px rgba(0,0,0,.12);
