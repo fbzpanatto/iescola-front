@@ -1,19 +1,11 @@
-<mat-toolbar color="primary">
+<mat-toolbar>
 
   <div class="menu">
     <button (click)="opened = !opened" mat-icon-button matTooltip="Menu">
-      <mat-icon svgIcon="menu"></mat-icon>
+      <mat-icon style="color: #fff" svgIcon="menu"></mat-icon>
     </button>
   </div>
 
-</mat-toolbar>
-
-<mat-toolbar class="second-mat-toolbar">
-  <h2 style="margin-bottom: 0">{{ title$ | async }}</h2>
-  <button mat-stroked-button *ngIf="!isHome" (click)="previousPage()">
-    <mat-icon [svgIcon]="'keyboard_arrow_left'" style="line-height: 0"></mat-icon>
-    Voltar
-  </button>
 </mat-toolbar>
 
 <mat-sidenav-container>
@@ -22,9 +14,9 @@
 
     <mat-list>
 
-      <mat-list-item matRipple *ngFor="let menu of MENU_TREE" [routerLink]="menu.url" routerLinkActive="active">
-        <mat-icon id="menu-color-icon" matListItemIcon>{{ menu.icon }}</mat-icon>
-        <div matListItemTitle>{{menu.title}}</div>
+      <mat-list-item #rla="routerLinkActive" matRipple *ngFor="let menu of MENU_TREE" [routerLink]="menu.url" routerLinkActive="active">
+        <mat-icon id="menu-color-icon" [ngClass]="rla.isActive ? 'active': 'defaultactive'"  matListItemIcon>{{ menu.icon }}</mat-icon>
+        <div [ngClass]="rla.isActive ? 'active': 'defaultactive'" matListItemTitle style="{{ rla.isActive? 'color: #333' : 'color: #fff' }}; border-bottom: none">{{menu.title}}</div>
       </mat-list-item>
 
     </mat-list>
@@ -32,6 +24,14 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+
+    <mat-toolbar class="second-mat-toolbar">
+      <h2 style="margin-bottom: 0">{{ title$ | async }}</h2>
+      <button mat-stroked-button *ngIf="!isHome" (click)="previousPage()">
+        <mat-icon [svgIcon]="'keyboard_arrow_left'" style="line-height: 0"></mat-icon>
+        Voltar
+      </button>
+    </mat-toolbar>
 
     <ng-content></ng-content>
 
