@@ -26,8 +26,8 @@
   <mat-sidenav-content>
 
     <mat-toolbar class="second-mat-toolbar">
-      <h2 style="margin-bottom: 0">{{ title$ | async }}</h2>
-      <button mat-stroked-button *ngIf="!isHome" (click)="previousPage()">
+      <h3 class="bold">{{ title$ | async | uppercase }}</h3>
+      <button style="background-color: #fff" mat-stroked-button *ngIf="!isHome" (click)="previousPage()">
         <mat-icon [svgIcon]="'keyboard_arrow_left'" style="line-height: 0"></mat-icon>
         Voltar
       </button>

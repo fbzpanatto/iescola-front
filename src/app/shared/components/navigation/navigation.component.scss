@@ -1,5 +1,5 @@
 .active {
-  background-color: #e3e3e3;
+  background-color: #f5f5f5;
 }
 
 .defaultactive {
@@ -13,11 +13,14 @@
   z-index: 99;
   border-bottom: ridge 1px rgba(0,0,0,.12);
   background-color: #f5f5f5;
+  padding: 0 8px;
 
-  h2 {
-    color: #3f51b5;
+  .bold {
+    color: #333;
     font-weight: 500;
-    letter-spacing: 1.2px;
+    letter-spacing: var(--mdc-typography-button-letter-spacing, 0.0892857143em);
+    margin-bottom: 0;
+    font-size: 14px;
   }
 }
 
@@ -45,7 +48,7 @@ mat-sidenav-container {
 mat-sidenav {}
 
 mat-sidenav-content {
-  border-left: 8px solid #333;
+  //border-left: 8px solid #333;
 }
 
 #menu-color-icon {
