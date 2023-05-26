@@ -36,13 +36,11 @@ mat-sidenav {
 }
 
 mat-sidenav-container {
-  height: calc(100vh - 48px);
+  height: calc(100vh - 56px);
 
   background-color: #f6f6f6;
   opacity: 1;
   background: linear-gradient(135deg, #ffffff55 25%, transparent 25%) -27px 0/ 54px 54px, linear-gradient(225deg, #ffffff 25%, transparent 25%) -27px 0/ 54px 54px, linear-gradient(315deg, #ffffff55 25%, transparent 25%) 0px 0/ 54px 54px, linear-gradient(45deg, #ffffff 25%, #f6f6f6 25%) 0px 0/ 54px 54px;
-
-
 }
 
 mat-sidenav {}
