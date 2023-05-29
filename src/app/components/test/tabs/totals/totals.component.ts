@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart } from 'chart.js/auto'
 import { ActivatedRoute } from "@angular/router";
