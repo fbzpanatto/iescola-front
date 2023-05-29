@@ -18,11 +18,14 @@ import { CustomReuseStrategy } from "./shared/methods/reuseStrategy";
 import { RouteReuseStrategy } from "@angular/router";
 import { MatDialogModule } from "@angular/material/dialog";
 import { DisableControlDirective } from './shared/directives/disable-control.directive';
+import { LoadingComponent } from './shared/components/loading/loading.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
     AppComponent,
-    DisableControlDirective
+    DisableControlDirective,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,8 @@ import { DisableControlDirective } from './shared/directives/disable-control.dir
     BrowserAnimationsModule,
     NavigationComponent,
     HttpClientModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {provide: RouteReuseStrategy, useClass: CustomReuseStrategy}
