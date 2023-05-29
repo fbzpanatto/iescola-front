@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {LoadingService} from "./shared/services/loading.service";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'iescola-front';
+
+  constructor(public loadingService: LoadingService,) {
+  }
 }

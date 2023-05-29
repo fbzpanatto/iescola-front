@@ -6,7 +6,7 @@ import localePtExtra from '@angular/common/locales/extra/pt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
 import { NavigationComponent } from "./shared/components/navigation/navigation.component";
@@ -20,6 +20,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { DisableControlDirective } from './shared/directives/disable-control.directive';
 import { LoadingComponent } from './shared/components/loading/loading.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {LoadingInterceptor} from "./shared/interceptors/loading.interceptor";
 
 @NgModule({
   declarations: [
@@ -37,7 +38,12 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     MatProgressSpinnerModule
   ],
   providers: [
-    {provide: RouteReuseStrategy, useClass: CustomReuseStrategy}
+    {provide: RouteReuseStrategy, useClass: CustomReuseStrategy},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

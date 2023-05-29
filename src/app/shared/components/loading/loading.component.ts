@@ -17,7 +17,6 @@ import {
 export class LoadingComponent implements OnInit {
 
   @Input() routing: boolean = false
-
   @Input() detectRoutingOnGoing: boolean = false
 
   constructor(
@@ -45,12 +44,10 @@ export class LoadingComponent implements OnInit {
   }
 
   turnOn() {
-    console.log('ativando...')
     this.loadingService.loadingOn()
   }
 
   turOff() {
-    console.log('desativando...')
     this.loadingService.loadingOff()
   }
 }
