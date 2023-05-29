@@ -1,7 +1,5 @@
 import {
-  AfterViewInit,
   Component,
-  ComponentRef,
   OnInit,
   ViewChild,
   ViewContainerRef
@@ -10,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ClassAnswers } from "./class-answers/class-answers.component";
 import { TotalsComponent } from "./totals/totals.component";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-tabs',
@@ -19,10 +17,12 @@ import { ActivatedRoute, RouterLink } from "@angular/router";
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss']
 })
-export class TabsComponent implements OnInit, AfterViewInit {
+export class TabsComponent implements OnInit {
 
   selectedIndex?: number;
-  componentRef?: ComponentRef<any>
+  show: boolean = false
+
+  @ViewChild('myTemplateRef', { read: ViewContainerRef }) private myTemplateRef?: ViewContainerRef;
 
   @ViewChild('chartContainer', { read: ViewContainerRef }) private chartContainer?: ViewContainerRef;
 
@@ -33,14 +33,6 @@ export class TabsComponent implements OnInit, AfterViewInit {
     this.route.paramMap.subscribe(params => {
       this.selectedIndex = this.getTabIndex(params.get('tab') as string);
     });
-  }
-
-  ngAfterViewInit() {
-    this.setComponent()
-  }
-
-  setComponent () {
-    this.componentRef = this.chartContainer?.createComponent(TotalsComponent) as ComponentRef<any>
   }
 
   getTabIndex(tab: string): number {
@@ -68,13 +60,11 @@ export class TabsComponent implements OnInit, AfterViewInit {
   navigate(event: MatTabChangeEvent) {
     const path = this.getTabUrl(event.index);
 
-    if(event.index === 1) {
-      this.setComponent()
-    } else {
-      this.componentRef?.destroy()
-    }
-
     const newPath = location.pathname.slice(0, location.pathname.lastIndexOf('/') + 1);
     history.replaceState({}, '', newPath + path)
+  }
+
+  ngOnDestroy(): void {
+    this.myTemplateRef?.clear()
   }
 }
