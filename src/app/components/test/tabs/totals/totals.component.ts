@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Chart } from 'chart.js/auto'
 import { ActivatedRoute } from "@angular/router";
 import { FetchDataService } from "../../../../shared/services/fetch-data.service";
+import {TabSelectorService} from "../../tab-selector.service";
 
 const CONFIG = {
   title: 'Teste / Analises',
@@ -34,13 +35,26 @@ export class TotalsComponent implements OnInit {
   private _questions = []
   private _school?: string
   private _classrooms: { [key: string]: any }[] = []
-  barColors = ['#ffec80', '#81ff7d', '#7b8fff', '#ff7f7f', '#ff0026']
 
-  constructor( private route: ActivatedRoute, private fetchData: FetchDataService) {}
+  private chart?: Chart
+
+  constructor( private route: ActivatedRoute, private fetchData: FetchDataService, private tabSelectorService: TabSelectorService,) {}
 
   ngOnInit(): void {
 
-    this.start()
+    this.tabSelectorService.destroyChart$.subscribe(condition => {
+      if(condition) {
+        console.log('destruindo')
+        this.destroyChart()
+      }
+    })
+
+    this.tabSelectorService.tabSubject$
+      .subscribe(tab => {
+        if (tab === 1) {
+          this.start()
+        }
+      })
   }
 
   start() {
@@ -77,12 +91,11 @@ export class TotalsComponent implements OnInit {
       mydataSets.push({
         label: this.data[register].classroom,
         data: this.data[register].question.map((qt: any) => qt.rate),
-        backgroundColor: this.barColors.shift(),
         borderWidth: 1
       })
     }
 
-    new Chart(this.chartRef?.nativeElement, {
+    this.chart = new Chart(this.chartRef?.nativeElement, {
       type: 'bar',
       data: {
         labels: this.data.cityHall.question.map((obj: any) => obj.id),
@@ -93,6 +106,10 @@ export class TotalsComponent implements OnInit {
         maintainAspectRatio: false
       }
     })
+  }
+
+  destroyChart() {
+    this.chart?.destroy()
   }
 
   get questions() {

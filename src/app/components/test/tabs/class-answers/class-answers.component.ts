@@ -8,6 +8,7 @@ import { BasicComponent } from "../../../../shared/components/basic/basic.compon
 import { SetActiveComponentBarTitle } from "../../../../shared/methods/activeComponent";
 import { PopupService } from "../../../../shared/services/popup.service";
 import { PopupOptions } from "../../../../shared/interfaces/interfaces";
+import {TabSelectorService} from "../../tab-selector.service";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
@@ -56,12 +57,19 @@ export class ClassAnswers extends BasicComponent implements OnInit {
     route: ActivatedRoute,
     fetchData: FetchDataService,
     navigationService: NavigationService,
+    private tabSelectorService: TabSelectorService,
     private popupService: PopupService) {
     super(router, route, fetchData, navigationService);
   }
 
   ngOnInit(): void {
-    this.start()
+
+    this.tabSelectorService.tabSubject$
+      .subscribe(tab => {
+        if (tab === 0) {
+          this.start()
+        }
+      })
   }
 
   start() {
