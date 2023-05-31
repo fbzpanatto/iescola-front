@@ -13,6 +13,10 @@
               Recarregar
             </button>
             <input appAutoFocus placeholder="pesquisar..." [formControl]="searchInput">
+            <button mat-stroked-button [matMenuTriggerFor]="menu">{{ bimester['name'] }}</button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item *ngFor="let btn of bimester$ | async" (click)="setBimester(btn)">{{ btn['name'] }}</button>
+            </mat-menu>
           </div>
         </div>
       </th>
