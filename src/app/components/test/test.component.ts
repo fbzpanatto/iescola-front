@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Signal, signal} from '@angular/core';
+import { Component, Input, OnInit, Signal, signal } from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { BasicComponent } from "../../shared/components/basic/basic.component";
 import { ActivatedRoute, Router, RouterModule} from "@angular/router";
@@ -11,7 +11,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { AutoFocusDirective } from "../../shared/directives/auto-focus.directive";
-import { toSignal } from '@angular/core/rxjs-interop'
 import { debounceTime, distinctUntilChanged, Observable, startWith } from "rxjs";
 
 const CONFIG = {
@@ -35,21 +34,27 @@ export class TestComponent extends BasicComponent implements OnInit {
   static icon = CONFIG.icon
 
   searchInput = new FormControl('')
-  tests: Signal<TestClasses[] | undefined> = signal([])
+  tests$?: Observable<TestClasses[]>
 
   @Input() command?: string
 
   constructor( router:Router, route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
     super( router, route, fetchData, navigationService );
-
-    if(!this.command) { this.tests = toSignal(this.getAll()) }
   }
 
   ngOnInit(): void {
 
-    this.searchInput.valueChanges
-      .pipe( startWith(''), debounceTime(400), distinctUntilChanged() )
-      .subscribe((value) => { this.fetchFilteredData(value) })
+    if(!this.command) {
+      this.searchInput.valueChanges
+        .pipe( startWith(''), debounceTime(400), distinctUntilChanged() )
+        .subscribe((value) => {
+          if(!!value?.length) {
+            this.tests$ = this.fetchFilteredData(value)
+          } else {
+            this.tests$ = this.getAll()
+          }
+        })
+    }
   }
 
   getAll() {
@@ -59,7 +64,7 @@ export class TestComponent extends BasicComponent implements OnInit {
 
   fetchFilteredData(search: string | null) {
 
-    console.log(search)
+    return this.basicGetQueryData<TestClasses>(`${TestComponent.url}`, 'search=' + search)
   }
 
   clearSearch() {
