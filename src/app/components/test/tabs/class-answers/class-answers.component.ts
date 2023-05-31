@@ -215,7 +215,6 @@ export class ClassAnswers extends BasicComponent implements OnInit {
             this.basicUpdateWithBody('test-classes', body)
               .subscribe((payload: any) => {
                 this.testGiver = { id, person }
-                console.log('atualizado com sucesso')
               })
           }
       })

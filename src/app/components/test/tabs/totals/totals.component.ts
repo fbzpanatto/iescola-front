@@ -44,7 +44,6 @@ export class TotalsComponent implements OnInit {
 
     this.tabSelectorService.destroyChart$.subscribe(condition => {
       if(condition) {
-        console.log('destruindo')
         this.destroyChart()
       }
     })

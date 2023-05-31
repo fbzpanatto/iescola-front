@@ -43,7 +43,6 @@ export class TestComponent extends BasicComponent implements OnInit {
   ngOnInit(): void {
 
     this.searchInput.valueChanges.subscribe((value) => {
-      console.log(value)
     })
 
     if(!this.route.snapshot.params['command']) {

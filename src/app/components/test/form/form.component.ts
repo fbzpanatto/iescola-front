@@ -259,9 +259,7 @@ export class FormComponent implements OnInit {
 
       this.fetch.updateOneDataWithId('test',  Number(this.id), body)
         .subscribe((data: any) => {
-          if(data) {
-            console.log('questão removida com sucesso')
-          }
+          if(data) {}
         })
     }
   }
@@ -376,18 +374,14 @@ export class FormComponent implements OnInit {
 
     this.fetch.updateOneDataWithId('test', this.id as number, body)
       .subscribe((data: any) => {
-        if(data) {
-          console.log('atualizado com sucesso')
-        }
+        if(data) {}
       })
   }
 
   delete() {
     this.fetch.deleteOneData('test', this.id as number)
       .subscribe((data: any) => {
-        if(data) {
-          console.log('deletado com sucesso')
-        }
+        if(data) {}
       })
   }
 }
