@@ -34,7 +34,7 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let test of tests">
+    <ng-container *ngFor="let test of tests()">
       <tr class="trid">
         <td [attr.rowspan]="test.classes.length + 1" (click)="navigateTo([test.testId])">{{test.testId}}</td>
       </tr>

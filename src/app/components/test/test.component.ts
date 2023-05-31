@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import {Component, Input, OnInit, Signal, signal} from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { BasicComponent } from "../../shared/components/basic/basic.component";
 import { ActivatedRoute, Router, RouterModule} from "@angular/router";
@@ -11,7 +11,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { AutoFocusDirective } from "../../shared/directives/auto-focus.directive";
-import { debounceTime, startWith } from "rxjs";
+import { toObservable, toSignal } from '@angular/core/rxjs-interop'
+import { debounceTime, distinctUntilChanged, Observable, startWith } from "rxjs";
 
 const CONFIG = {
   title: 'Testes',
@@ -34,36 +35,31 @@ export class TestComponent extends BasicComponent implements OnInit {
   static icon = CONFIG.icon
 
   searchInput = new FormControl('')
+  tests: Signal<TestClasses[] | undefined> = signal([])
 
-  private _tests: TestClasses[] = []
+  @Input() command?: string
 
   constructor( router:Router, route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
     super( router, route, fetchData, navigationService );
+
+    if(!this.command) {
+      this.tests = toSignal(this.getAll())
+    }
   }
 
   ngOnInit(): void {
 
     this.searchInput.valueChanges
-      .pipe(
-        startWith(''),
-        debounceTime(400)
-      )
-      .subscribe((value) => {
-      console.log(value)
-    })
-
-    if(!this.route.snapshot.params['command']) {
-      this.getAll()
-    }
+      .pipe( startWith(''), debounceTime(400), distinctUntilChanged() )
+      .subscribe((value) => { this.fetchFilteredData(value) })
   }
 
   getAll() {
-    this.basicGetAll<TestClasses>()
-      .subscribe((tests) => { this._tests = tests })
+    return this.basicGetAll<TestClasses>()
   }
 
-  get tests() {
-    return this._tests
+  fetchFilteredData(search: string | null) {
+    console.log(search)
   }
 
   clearSearch() {
