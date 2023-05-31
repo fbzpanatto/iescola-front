@@ -11,7 +11,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { AutoFocusDirective } from "../../shared/directives/auto-focus.directive";
-import { toObservable, toSignal } from '@angular/core/rxjs-interop'
+import { toSignal } from '@angular/core/rxjs-interop'
 import { debounceTime, distinctUntilChanged, Observable, startWith } from "rxjs";
 
 const CONFIG = {
@@ -42,9 +42,7 @@ export class TestComponent extends BasicComponent implements OnInit {
   constructor( router:Router, route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
     super( router, route, fetchData, navigationService );
 
-    if(!this.command) {
-      this.tests = toSignal(this.getAll())
-    }
+    if(!this.command) { this.tests = toSignal(this.getAll()) }
   }
 
   ngOnInit(): void {
@@ -55,14 +53,17 @@ export class TestComponent extends BasicComponent implements OnInit {
   }
 
   getAll() {
+
     return this.basicGetAll<TestClasses>()
   }
 
   fetchFilteredData(search: string | null) {
+
     console.log(search)
   }
 
   clearSearch() {
+
     this.searchInput.setValue('')
   }
 }
