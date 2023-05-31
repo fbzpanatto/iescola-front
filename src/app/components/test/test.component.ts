@@ -45,6 +45,7 @@ export class TestComponent extends BasicComponent implements OnInit {
   ngOnInit(): void {
 
     if(!this.command) {
+
       this.searchInput.valueChanges
         .pipe( startWith(''), debounceTime(400), distinctUntilChanged() )
         .subscribe((value) => {
@@ -68,7 +69,11 @@ export class TestComponent extends BasicComponent implements OnInit {
   }
 
   clearSearch() {
-
     this.searchInput.setValue('')
+  }
+
+  refresh() {
+    this.clearSearch()
+    this.tests$ = this.getAll()
   }
 }

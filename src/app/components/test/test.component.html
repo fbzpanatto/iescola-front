@@ -8,15 +8,11 @@
             Novo
           </button>
           <div>
-            <button mat-stroked-button (click)="getAll()">
+            <button mat-stroked-button (click)="refresh()">
               <mat-icon [svgIcon]="'refresh'"></mat-icon>
               Recarregar
             </button>
             <input appAutoFocus placeholder="pesquisar..." [formControl]="searchInput">
-            <button mat-stroked-button color="warn" (click)="clearSearch()">
-              <mat-icon [svgIcon]="'backspace'"></mat-icon>
-              Limpar
-            </button>
           </div>
         </div>
       </th>
