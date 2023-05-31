@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { BasicComponent } from "../../shared/components/basic/basic.component";
 import { ActivatedRoute, Router, RouterModule} from "@angular/router";
@@ -11,6 +11,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { AutoFocusDirective } from "../../shared/directives/auto-focus.directive";
+import { debounceTime, startWith } from "rxjs";
 
 const CONFIG = {
   title: 'Testes',
@@ -37,12 +38,18 @@ export class TestComponent extends BasicComponent implements OnInit {
   private _tests: TestClasses[] = []
 
   constructor( router:Router, route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService) {
-    super(router, route, fetchData, navigationService);
+    super( router, route, fetchData, navigationService );
   }
 
   ngOnInit(): void {
 
-    this.searchInput.valueChanges.subscribe((value) => {
+    this.searchInput.valueChanges
+      .pipe(
+        startWith(''),
+        debounceTime(400)
+      )
+      .subscribe((value) => {
+      console.log(value)
     })
 
     if(!this.route.snapshot.params['command']) {
