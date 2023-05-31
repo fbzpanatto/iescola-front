@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { FetchDataService } from "../../services/fetch-data.service";
 import { NavigationService } from "../../services/navigation.service";
