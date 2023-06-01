@@ -23,7 +23,6 @@
       <th>TESTE</th>
       <th>SALA</th>
       <th>ESCOLA</th>
-      <th>ANO</th>
       <th>CATEGORIA</th>
       <th>NOME</th>
       <th>CRIADOR</th>
@@ -38,7 +37,6 @@
       <tr (click)="navigateTo([test.testId, 'classroom', el.classroomId, 'answers'])"  *ngFor="let el of test.classes;" class="clickable">
         <td>{{ el.classroom }}</td>
         <td>{{ el.school }}</td>
-        <td>{{ el.year }}</td>
         <td>{{ el.category }}</td>
         <td>{{ el.name }}</td>
         <td>{{ el.teacher }}</td>
