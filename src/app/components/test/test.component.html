@@ -10,13 +10,11 @@
           <div>
             <button mat-stroked-button (click)="refresh()">
               <mat-icon [svgIcon]="'refresh'"></mat-icon>
-              Recarregar
+              Todos
             </button>
             <input appAutoFocus placeholder="pesquisar..." [formControl]="searchInput">
-            <button mat-stroked-button [matMenuTriggerFor]="menu">{{ bimester['name'] }}</button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item *ngFor="let btn of bimester$ | async" (click)="setBimester(btn)">{{ btn['name'] }}</button>
-            </mat-menu>
+            <app-bimester></app-bimester>
+            <app-year></app-year>
           </div>
         </div>
       </th>
@@ -26,7 +24,6 @@
       <th>SALA</th>
       <th>ESCOLA</th>
       <th>ANO</th>
-      <th>BIMESTRE</th>
       <th>CATEGORIA</th>
       <th>NOME</th>
       <th>CRIADOR</th>
@@ -42,7 +39,6 @@
         <td>{{ el.classroom }}</td>
         <td>{{ el.school }}</td>
         <td>{{ el.year }}</td>
-        <td>{{ el.bimester }}</td>
         <td>{{ el.category }}</td>
         <td>{{ el.name }}</td>
         <td>{{ el.teacher }}</td>

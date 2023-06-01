@@ -1,0 +1,4 @@
+<button mat-stroked-button [matMenuTriggerFor]="menu">{{ bimesterSelectedOption['name'] }}</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item *ngFor="let btn of bimester" (click)="setBimester(btn)">{{ btn['name'] }}</button>
+</mat-menu>

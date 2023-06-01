@@ -1,0 +1,4 @@
+<button mat-stroked-button [matMenuTriggerFor]="menu">{{ yearSelectedOption['name'] }}</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item *ngFor="let btn of year" (click)="setYear(btn)">{{ btn['name'] }}</button>
+</mat-menu>
