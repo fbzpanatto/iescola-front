@@ -223,7 +223,7 @@ export class FormComponent implements OnInit {
     if(question) {
       const questionForm = this.fb.group({
         id: [question.id, Validators.required],
-        answer: [question.answer, Validators.required]
+        answer: [question.answer.trim(), Validators.required]
       });
 
       this.questions.push(questionForm);

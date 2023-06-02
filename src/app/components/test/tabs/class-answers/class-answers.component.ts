@@ -66,9 +66,7 @@ export class ClassAnswers extends BasicComponent implements OnInit {
 
     this.tabSelectorService.tabSubject$
       .subscribe(tab => {
-        if (tab === 0) {
-          this.start()
-        }
+        if (tab === 0) { this.start() }
       })
   }
 
@@ -156,7 +154,9 @@ export class ClassAnswers extends BasicComponent implements OnInit {
 
     if(runtimeQuestion.answer === '') return '#ffffff'
 
-    return question.answer === runtimeQuestion.answer.toUpperCase() ? '#80e5ff' : '#ff7f7f'
+    const condition = question.answer.includes(runtimeQuestion.answer.toUpperCase())
+
+    return condition ? '#80e5ff' : '#ff7f7f'
 
   }
 
