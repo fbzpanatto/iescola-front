@@ -11,7 +11,17 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { AutoFocusDirective } from "../../shared/directives/auto-focus.directive";
-import { combineLatest, debounceTime, distinctUntilChanged, filter, map, Observable, startWith, Subscription } from "rxjs";
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  startWith,
+  Subscription,
+  tap
+} from "rxjs";
 import { BimesterComponent } from "../../shared/components/bimester/bimester.component";
 import { YearComponent } from "../../shared/components/year/year.component";
 import { CurrentBimesterService } from "../../shared/services/current-bimester.service";
@@ -39,10 +49,10 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
   static url = CONFIG.url
   static icon = CONFIG.icon
 
-  clear: boolean = false
   searchInput = new FormControl()
   tests$?: Observable<TestClasses[]>
 
+  clear = false
   private bimester?: { [key: string]: any }
   private year?: { [key: string]: any }
   private textSearch: string | null = ''
@@ -60,9 +70,15 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
 
       this.combineSubscription = combineLatest([
         this.bimesterService.currBimester$
-          .pipe(map(result => result['id']), startWith(null)),
+          .pipe(
+            tap(() => this.clear = false),
+            map(result => result['id']), startWith(null)
+          ),
         this.yearService.currYear$
-          .pipe( map(result => result['id']), startWith(null)),
+          .pipe(
+            tap(() => this.clear = false),
+            map(result => result['id']), startWith(null)
+          ),
         this.searchInput.valueChanges
           .pipe(startWith(''), debounceTime(400), distinctUntilChanged())
       ])
@@ -73,8 +89,10 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
           this.year = year
           this.textSearch = search
 
-          if(!!search?.length) { this.tests$ = this.fetchFilteredData(Number(this.bimester), Number(this.year), search) }
-          else if (!this.clear) { this.tests$ = this.getAll(Number(this.bimester), Number(this.year), search) }
+          if(!this.clear) {
+            this.tests$ = this.fetchFilteredData(Number(this.bimester), Number(this.year), search)
+          }
+
           this.clear = false
         })
     }
@@ -84,13 +102,6 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
 
     this.combineSubscription?.unsubscribe()
     this.searchInputSubscription?.unsubscribe()
-  }
-
-  getAll(bimester: number, year: number, search: string | null) {
-
-    let query = 'search=' + search + '&' + 'bimester=' + bimester + '&' + 'year=' + year
-
-    return this.basicGetQueryData<TestClasses>(`${TestComponent.url}`, query)
   }
 
   fetchFilteredData(bimester: number, year: number, search: string | null) {
@@ -108,6 +119,6 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
   refresh() {
     this.clear = true
     this.clearSearch()
-    this.tests$ = this.getAll(Number(this.bimester), Number(this.year), '')
+    this.tests$ = this.fetchFilteredData(Number(this.bimester), Number(this.year), '')
   }
 }
