@@ -1,0 +1,36 @@
+<div mat-dialog-title>
+  <span class="popup-title">
+    <span>Login</span>
+    <mat-icon style="cursor: pointer" [svgIcon]="'close'" (click)="close(undefined)"></mat-icon>
+  </span>
+</div>
+
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Usuário</mat-label>
+      <input matInput formControlName="user" appAutoFocus placeholder="informe seu usuário">
+      <mat-error *ngIf="user?.errors?.['required']">
+        Nome de Usuário obrigatório
+      </mat-error>
+      <mat-error *ngIf="user?.errors?.['minlength']">
+        Mínimo {{user?.errors?.['minlength']['requiredLength']}} caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Senha</mat-label>
+      <input matInput formControlName="password" placeholder="informe sua senha">
+      <mat-error *ngIf="password?.errors?.['required']">
+        Senha obrigatória
+      </mat-error>
+      <mat-error *ngIf="password?.errors?.['minlength']">
+        Mínimo {{password?.errors?.['minlength']['requiredLength']}} caracteres
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <span>Actions</span>
+</div>

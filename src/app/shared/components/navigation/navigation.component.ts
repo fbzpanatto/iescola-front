@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatSidenavModule} from "@angular/material/sidenav";
@@ -21,6 +21,7 @@ import { map, tap } from "rxjs";
 import { HomeComponent } from "src/app/components/home/home.component";
 import { YearComponent } from "src/app/components/year/year.component";
 import { TestComponent } from "src/app/components/test/test.component";
+import {LoginModalService} from "../../services/login-modal.service";
 
 // TODO: flat tree like aero
 const MENU_TREE = [
@@ -69,11 +70,13 @@ export class NavigationComponent implements OnInit {
   isMediumScreen = false;
   isSmallScreen = true;
   mobileQuery!: MediaQueryList;
+
   private readonly _mobileQueryListener: () => void;
 
   protected readonly MENU_TREE = MENU_TREE;
 
   constructor(
+    private loginModal: LoginModalService,
     private route: ActivatedRoute,
     private responsive: BreakpointObserver,
     private router: Router,
@@ -123,5 +126,11 @@ export class NavigationComponent implements OnInit {
 
   previousPage() {
     this.navigationService.back();
+  }
+
+  doLogin() {
+    this.loginModal.openLoginModal()
+      .afterClosed()
+      .subscribe(data => console.log)
   }
 }
