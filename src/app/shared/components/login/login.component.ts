@@ -6,11 +6,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { AutoFocusDirective } from "../../directives/auto-focus.directive";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatIconModule, ReactiveFormsModule, AutoFocusDirective, MatFormFieldModule, MatInputModule],
+  imports: [CommonModule, MatDialogModule, MatIconModule, ReactiveFormsModule, AutoFocusDirective, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss', '../../styles/popup.scss']
 })

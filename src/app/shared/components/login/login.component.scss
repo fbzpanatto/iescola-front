@@ -16,3 +16,7 @@ div[mat-dialog-content] {
     }
   }
 }
+
+div[mat-dialog-actions] {
+  border-top: none!important;
+}
