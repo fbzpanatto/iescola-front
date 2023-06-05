@@ -109,7 +109,7 @@ export class ClassAnswers extends BasicComponent implements OnInit {
 
     if (!result) {
 
-      arrayOfAnswers[index].answer = runtimeQuestion.answer
+      arrayOfAnswers[index].answer = runtimeQuestion.answer.toUpperCase().trim()
 
       const completed = arrayOfAnswers.every((answer) => answer.answer === '')
 

@@ -50,11 +50,11 @@
       <input
         style="background-color: inherit"
         #input
-        (blur)="updateAnswers(el, el.student.test.answers, { id: question.id, answer: input.value.toUpperCase()})"
+        (blur)="updateAnswers(el, el.student.test.answers, { id: question.id, answer: input.value.toUpperCase().trim()})"
         maxlength="1"
         type="text"
-        [value]="question.answer.toUpperCase()"
-        [ngStyle]="{ 'background-color': correctAnswer({ id: question.id, answer: input.value}) }"
+        [value]="question.answer.toUpperCase().trim()"
+        [ngStyle]="{ 'background-color': correctAnswer({ id: question.id, answer: input.value.toUpperCase().trim()}) }"
       >
     </td>
     <td class="answer bold">{{ el.student.test.score }}</td>
