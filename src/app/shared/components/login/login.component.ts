@@ -55,6 +55,9 @@ export class LoginComponent implements OnInit {
         if(!response.error) {
           this.close(response)
         }
+        else {
+        //   TODO: credenciais inválidas
+        }
       })
   }
 
