@@ -6,7 +6,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { AutoFocusDirective } from "../../directives/auto-focus.directive";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import {MatButtonModule} from "@angular/material/button";
+import { MatButtonModule } from "@angular/material/button";
+import { FetchDataService } from "../../services/fetch-data.service";
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit {
     password: ['', {
       validators: [
         Validators.required,
-        Validators.minLength(8)
+        Validators.minLength(3)
       ]
     }]
   })
@@ -35,14 +36,30 @@ export class LoginComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<LoginComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private fetchData: FetchDataService
   ) {}
 
   ngOnInit() {
   }
 
+  login() {
+
+    const data = {
+      user: this.form.controls.user.value,
+      password: this.form.controls.user.value
+    }
+
+    this.fetchData.loginPost('login', data)
+      .subscribe((response: any) => {
+        if(!response.error) {
+          this.close(response)
+        }
+      })
+  }
+
   close(data: any) {
-    this.dialogRef.close('teste')
+    this.dialogRef.close(data)
   }
 
   get user() {

@@ -37,7 +37,7 @@
     Esqueci a senha
   </button>
 
-  <button type="submit" mat-flat-button color="primary">
+  <button type="button" (click)="login()" mat-flat-button color="primary" [disabled]="!form.valid">
     Entrar
   </button>
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { map } from "rxjs";
+import {map, share, shareReplay} from "rxjs";
 import { GenericObject } from "../interfaces/interfaces";
 
 @Injectable({
@@ -46,5 +46,13 @@ export class FetchDataService {
   deleteOneData<T>(resource: string, id: number) {
     return this.http.delete(this.apiUrl + resource + '/' + id)
       .pipe(map((response: GenericObject) => { return response[this.payload] as T}))
+  }
+
+  loginPost<T>(resource: string, data: T) {
+    return this.http.post(this.apiUrl + resource, data)
+      .pipe(
+        map((response: GenericObject) => { return response[this.payload] as T}),
+        shareReplay()
+      )
   }
 }
