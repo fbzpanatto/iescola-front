@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import { FetchDataService } from "../../services/fetch-data.service";
-import {GenericObjectArray, PopupOptions} from "../../interfaces/interfaces";
+import {ObjectLiteralArray, PopupOptions} from "../../interfaces/interfaces";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -17,15 +17,15 @@ import {AutoFocusDirective} from "../../directives/auto-focus.directive";
 })
 export class PopupComponent implements OnInit {
 
-  userOptions: GenericObjectArray = []
-  headOptions: GenericObjectArray = []
+  userOptions: ObjectLiteralArray = []
+  headOptions: ObjectLiteralArray = []
   multiple: boolean = this.data.multipleSelection ?? false
   searchInput = new FormControl('')
   title: string = this.data.title ?? 'Escolha uma opção'
 
   selectAll:boolean = true
 
-  localSelected: GenericObjectArray = []
+  localSelected: ObjectLiteralArray = []
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PopupOptions,
@@ -35,7 +35,7 @@ export class PopupComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.headOptions = this.data.headers as GenericObjectArray
+    this.headOptions = this.data.headers as ObjectLiteralArray
 
     this.searchInput.valueChanges.subscribe((value: string | null) => {
       if(value === null) {return}

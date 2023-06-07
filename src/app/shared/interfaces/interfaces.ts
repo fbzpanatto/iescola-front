@@ -8,6 +8,6 @@ export interface Teacher { id: number, person: { id: number, name: string } }
 export interface Test { id: number, name: string, questions: Questions, year: Year, bimester: Bimester, teacher: Teacher, discipline: Discipline }
 export interface TestClass { name: string, school: string, classroomId: number, classroom: string, year: number, bimester: string, category: string, teacher: string, discipline: string }
 export interface TestClasses { testId: number, classes: TestClass[] }
-export interface GenericObject { [key: string]: any }
-export interface GenericObjectArray extends Array<GenericObject> {}
-export interface PopupOptions {title?: string, url?: string, questions?: GenericObjectArray, headers?: GenericObjectArray, fetchedData?: GenericObjectArray, multipleSelection?: boolean, alreadySelected?: any }
+export interface ObjectLiteral { [key: string]: any }
+export interface ObjectLiteralArray extends Array<ObjectLiteral> {}
+export interface PopupOptions {title?: string, url?: string, questions?: ObjectLiteralArray, headers?: ObjectLiteralArray, fetchedData?: ObjectLiteralArray, multipleSelection?: boolean, alreadySelected?: any }

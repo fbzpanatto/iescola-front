@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { MatIconModule} from "@angular/material/icon";
@@ -7,7 +7,7 @@ import { AutoFocusDirective } from "../../directives/auto-focus.directive";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
-import { FetchDataService } from "../../services/fetch-data.service";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -32,12 +32,12 @@ export class LoginComponent implements OnInit {
       ]
     }]
   })
+  private authService = inject(AuthService)
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<LoginComponent>,
-    private fb: FormBuilder,
-    private fetchData: FetchDataService
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -49,14 +49,13 @@ export class LoginComponent implements OnInit {
       user: this.form.controls.user.value,
       password: this.form.controls.user.value
     }
-
-    this.fetchData.loginPost('login', data)
+    this.authService.doLogin('login', data)
       .subscribe((response: any) => {
         if(!response.error) {
           this.close(response)
-        }
-        else {
-        //   TODO: credenciais inválidas
+          // TODO: pegar a request que existia e faze-la novamente.
+        } else {
+          console.log('login.component.ts: ', 'credenciais inválidas')
         }
       })
   }

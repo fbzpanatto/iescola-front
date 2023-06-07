@@ -22,6 +22,7 @@ import { LoadingComponent } from './shared/components/loading/loading.component'
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {LoadingInterceptor} from "./shared/interceptors/loading.interceptor";
 import {AuthInterceptor} from "./shared/interceptors/auth.interceptor";
+import {AuthService} from "./shared/services/auth.service";
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import {AuthInterceptor} from "./shared/interceptors/auth.interceptor";
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useClass: AuthService,
       multi: true
     }
   ],
