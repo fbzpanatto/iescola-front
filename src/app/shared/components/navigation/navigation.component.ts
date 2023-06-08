@@ -131,6 +131,6 @@ export class NavigationComponent implements OnInit {
   doLogin() {
     this.loginModal.openLoginModal()
       .afterClosed()
-      .subscribe(data => console.log)
+      .subscribe()
   }
 }

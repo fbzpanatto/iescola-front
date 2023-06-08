@@ -7,7 +7,7 @@ import { AutoFocusDirective } from "../../directives/auto-focus.directive";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
-import { AuthService } from "../../services/auth.service";
+import {UserLoginDataService} from "../../services/user-login-data.service";
 
 @Component({
   selector: 'app-login',
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       ]
     }]
   })
-  private authService = inject(AuthService)
+  private userLoginDataService = inject(UserLoginDataService)
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -44,25 +44,11 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-
-    const data = {
-      user: this.form.controls.user.value,
-      password: this.form.controls.user.value
-    }
-
-    this.authService.doLogin('login', data)
-      .subscribe((response: any) => {
-        if(!response.error) {
-          this.close(response)
-          // TODO: pegar a request que existia e faze-la novamente.
-        } else {
-          console.log('login.component.ts: ', 'credenciais inválidas')
-        }
-      })
+    this.userLoginDataService.nextUserLoginData(this.form.value, this.dialogRef)
   }
 
-  close(data: any) {
-    this.dialogRef.close(data)
+  close() {
+    this.dialogRef.close()
   }
 
   get user() {
