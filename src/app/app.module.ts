@@ -21,7 +21,6 @@ import { DisableControlDirective } from './shared/directives/disable-control.dir
 import { LoadingComponent } from './shared/components/loading/loading.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {LoadingInterceptor} from "./shared/interceptors/loading.interceptor";
-import {AuthInterceptor} from "./shared/interceptors/auth.interceptor";
 import {AuthService} from "./shared/services/auth.service";
 
 @NgModule({
