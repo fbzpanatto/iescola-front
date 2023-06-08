@@ -1,9 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import {catchError, map, Observable, of, tap} from "rxjs";
+import {Observable} from "rxjs";
 import { UserLoginDataService } from "../services/user-login-data.service";
-import {ActivatedRoute} from "@angular/router";
-import {LoginModalService} from "../services/login-modal.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +10,17 @@ import {LoginModalService} from "../services/login-modal.service";
 export class AuthService implements HttpInterceptor {
 
   private userLoginDataService = inject(UserLoginDataService)
-  private state = inject(ActivatedRoute)
-  private popup = inject(LoginModalService)
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    const localStorageToken = localStorage.getItem('token')
+
+    if (localStorageToken) {
+      const authReq = req.clone({
+        headers: req.headers.set('Authorization', 'Bearer ' + localStorageToken)
+      })
+      return next.handle(authReq)
+    }
 
     if (this.userLoginDataService.isValidToken) {
       const token = this.userLoginDataService.token
@@ -25,14 +30,6 @@ export class AuthService implements HttpInterceptor {
       return next.handle(authReq)
     }
 
-    console.log('intercepted', req.url)
-
     return next.handle(req)
-      .pipe(
-        catchError((error: any) => {
-          this.popup.openLoginModal()
-          throw error
-        })
-      )
   }
 }

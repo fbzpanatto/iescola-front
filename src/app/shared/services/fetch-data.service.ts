@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { catchError, map } from "rxjs";
 import { ObjectLiteral } from "../interfaces/interfaces";
 import { LoginModalService } from "./login-modal.service";
-import {NavigationEnd, Router} from "@angular/router";
+import { Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -75,14 +75,14 @@ export class FetchDataService {
 
   errorHandling(error: any) {
 
-    // switch (error.status) {
-    //   case 401:
-    //     this.loginModal.openLoginModal().afterClosed().subscribe()
-    //     break
-    //   default:
-    //     this.router.navigate([''])
-    //     break
-    // }
+    switch (error.status) {
+      case 401:
+        this.loginModal.openLoginModal().afterClosed().subscribe()
+        break
+      default:
+        this.router.navigate([''])
+        break
+    }
     return error
   }
 }

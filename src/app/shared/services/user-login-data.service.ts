@@ -30,7 +30,8 @@ export class UserLoginDataService {
           await this.sessionConfigs(r)
           dialogRef.close(r)
         },
-        error: (e: any) => { console.log('dialogError', e) }
+        error: (e: any) => { console.log('dialogError', e) },
+        complete: () => { this.reloadCurrentPage() }
       })
   }
 
@@ -48,5 +49,9 @@ export class UserLoginDataService {
 
   get token() {
     return this._token
+  }
+
+  reloadCurrentPage() {
+    location.reload()
   }
 }
