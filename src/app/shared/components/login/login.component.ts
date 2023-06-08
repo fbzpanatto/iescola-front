@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit {
       user: this.form.controls.user.value,
       password: this.form.controls.user.value
     }
+
     this.authService.doLogin('login', data)
       .subscribe((response: any) => {
         if(!response.error) {
