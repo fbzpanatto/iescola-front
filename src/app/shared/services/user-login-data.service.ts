@@ -28,9 +28,9 @@ export class UserLoginDataService {
       .subscribe({
         next: async (r: Payload) => {
           await this.sessionConfigs(r)
-          dialogRef.close()
+          dialogRef.close(r)
         },
-        error: (e: any) => { console.log('error', e) }
+        error: (e: any) => { console.log('dialogError', e) }
       })
   }
 

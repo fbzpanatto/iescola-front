@@ -1,8 +1,9 @@
-import {inject, Injectable} from '@angular/core';
+import { inject, Injectable} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { catchError, map} from "rxjs";
+import { catchError, map } from "rxjs";
 import { ObjectLiteral } from "../interfaces/interfaces";
 import { LoginModalService } from "./login-modal.service";
+import {NavigationEnd, Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class FetchDataService {
   payload = 'payload'
 
   private loginModal = inject(LoginModalService)
-
-  constructor(private http: HttpClient) { }
+  private router = inject(Router)
+  private http = inject(HttpClient)
 
   all<T>(resource: string) {
     return this.http.get(this.apiUrl + resource)
@@ -73,10 +74,15 @@ export class FetchDataService {
   }
 
   errorHandling(error: any) {
-    switch (error.status) {
-      case 401:
-        this.loginModal.openLoginModal().afterClosed().subscribe()
-    }
+
+    // switch (error.status) {
+    //   case 401:
+    //     this.loginModal.openLoginModal().afterClosed().subscribe()
+    //     break
+    //   default:
+    //     this.router.navigate([''])
+    //     break
+    // }
     return error
   }
 }
