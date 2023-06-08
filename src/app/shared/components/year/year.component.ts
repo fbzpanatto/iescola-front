@@ -17,7 +17,7 @@ export class YearComponent implements OnInit, OnDestroy {
 
   private _yearSelectedOption: { [key:string]: any } = {}
   private yearSubscription?: Subscription
-  year?: {[key: string]: any}[]
+  year: any
 
   constructor(private fetchData: FetchDataService, private yearService: CurrentYearService) {}
 
@@ -26,7 +26,7 @@ export class YearComponent implements OnInit, OnDestroy {
       .pipe(
         shareReplay()
       )
-      .subscribe(result => {
+      .subscribe((result: any) => {
         this.year = result
         this.yearSelectedOption = [...result].pop()
         this.yearService.next(this.yearSelectedOption)

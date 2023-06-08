@@ -22,7 +22,7 @@ export class YearComponent implements OnInit, OnDestroy {
   static icon = 'calendar_today'
   static resource = 'year'
 
-  private _years: Year[] = []
+  private _years: any
   private _subscription: Subscription = new Subscription()
 
   form = this.fb.group({

@@ -17,13 +17,13 @@ export class BimesterComponent implements OnInit, OnDestroy {
 
   private _bimesterSelectedOption: { [key:string]: any } = {}
   private bimesterSubscription?: Subscription
-  bimester?: {[key: string]: any}[]
+  bimester?: any
 
   constructor(private fetchData: FetchDataService, private bimesterService: CurrentBimesterService) {}
 
   ngOnInit(): void {
     this.bimesterSubscription = this.getBimester<any>()
-      .subscribe(result => {
+      .subscribe((result: any) => {
         this.bimester = result
         this.bimesterSelectedOption = [...result].pop()
         this.bimesterService.next(this.bimesterSelectedOption)

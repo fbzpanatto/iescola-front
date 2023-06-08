@@ -50,7 +50,7 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
   static icon = CONFIG.icon
 
   searchInput = new FormControl()
-  tests$?: Observable<TestClasses[]>
+  tests$?: Observable<any>
 
   clear = false
   private bimester?: { [key: string]: any }
