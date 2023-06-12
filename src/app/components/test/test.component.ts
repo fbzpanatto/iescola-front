@@ -33,11 +33,13 @@ const CONFIG = {
   icon: 'quiz'
 }
 
+const ComponetImports = [CommonModule, RouterModule, FormComponent, MatButtonModule, MatIconModule, ReactiveFormsModule, AutoFocusDirective, BimesterComponent, YearComponent]
+
 @SetActiveComponentBarTitle(CONFIG.title, CONFIG.url)
 @Component({
   standalone: true,
   selector: 'app-test',
-  imports: [CommonModule, RouterModule, FormComponent, MatButtonModule, MatIconModule, ReactiveFormsModule, AutoFocusDirective, BimesterComponent, YearComponent],
+  imports: ComponetImports,
   templateUrl: './test.component.html',
   styleUrls: ['test.component.scss', '../../shared/styles/table.scss']
 })
