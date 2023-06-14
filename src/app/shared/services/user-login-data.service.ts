@@ -3,7 +3,7 @@ import { MatDialogRef } from "@angular/material/dialog";
 import { HttpClient } from "@angular/common/http";
 import { LoginComponent } from "../components/login/login.component";
 import { map } from "rxjs";
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 export interface Payload { token: string, expiresIn: number, role: number }
 

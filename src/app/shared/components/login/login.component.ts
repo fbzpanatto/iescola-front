@@ -8,6 +8,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { UserLoginDataService } from "../../services/user-login-data.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -33,6 +34,7 @@ export class LoginComponent implements OnInit {
     }]
   })
   private userLoginDataService = inject(UserLoginDataService)
+  private router = inject(Router)
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -49,6 +51,7 @@ export class LoginComponent implements OnInit {
 
   close() {
     this.dialogRef.close()
+    this.router.navigate(['/'])
   }
 
   get user() {
