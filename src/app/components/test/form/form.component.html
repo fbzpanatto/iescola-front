@@ -21,7 +21,7 @@
   <div class="fl-row">
     <mat-form-field appearance="outline" (click)="openTeacherOptions()">
       <mat-label>Professor</mat-label>
-      <input required readonly matInput [value]="teacherName ?? ''">
+      <input [ngStyle]="{'color': id ? 'rgba(0,0,0,.38)' : 'inherit' }" required readonly matInput [value]="teacherName ?? ''">
     </mat-form-field>
   </div>
 

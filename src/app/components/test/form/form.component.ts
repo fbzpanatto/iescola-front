@@ -194,6 +194,10 @@ export class FormComponent implements OnInit {
 
   openTeacherOptions() {
 
+    if(this.id) {
+      return
+    }
+
     const popupOptions: PopupOptions = { url: 'teacher', headers: HEADERS['teacher'] }
 
     this.popupService.openPopup(popupOptions)
