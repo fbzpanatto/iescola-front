@@ -77,7 +77,7 @@ export class FetchDataService {
 
     switch (error.status) {
       case 401:
-        this.loginModal.openLoginModal().afterClosed().subscribe()
+        this.loginModal.openLoginModal()
         break
       default:
         this.router.navigate([''])

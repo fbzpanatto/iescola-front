@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatSidenavModule} from "@angular/material/sidenav";
@@ -11,17 +11,17 @@ import { MatLineModule, MatRippleModule } from "@angular/material/core";
 import { BreakpointObserver, MediaMatcher } from "@angular/cdk/layout";
 import { CommonModule } from "@angular/common";
 
-import {ActivatedRoute, Router, RouterLink, RouterLinkActive} from "@angular/router";
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from "@angular/router";
 
 import { NavigationService } from "src/app/shared/services/navigation.service";
 import { ActiveComponent } from "src/app/shared/services/navigation.service";
 
-import { map, tap } from "rxjs";
+import { map } from "rxjs";
 
 import { HomeComponent } from "src/app/components/home/home.component";
-import { YearComponent } from "src/app/components/year/year.component";
 import { TestComponent } from "src/app/components/test/test.component";
-import {LoginModalService} from "../../services/login-modal.service";
+import { LoginModalService } from "../../services/login-modal.service";
+import { UserLoginDataService } from "../../services/user-login-data.service";
 
 // TODO: flat tree like aero
 const MENU_TREE = [
@@ -74,6 +74,8 @@ export class NavigationComponent implements OnInit {
   private readonly _mobileQueryListener: () => void;
 
   protected readonly MENU_TREE = MENU_TREE;
+
+  userLoginService = inject(UserLoginDataService)
 
   constructor(
     private loginModal: LoginModalService,
@@ -132,5 +134,10 @@ export class NavigationComponent implements OnInit {
     this.loginModal.openLoginModal()
       .afterClosed()
       .subscribe()
+  }
+
+  async doLogout() {
+    await this.userLoginService.clear()
+
   }
 }

@@ -1,15 +1,27 @@
 <mat-toolbar>
 
-  <div class="menu">
-    <button (click)="opened = !opened" mat-icon-button>
-      <mat-icon style="color: #fff" svgIcon="menu"></mat-icon>
-    </button>
+  <div>
+    <div class="menu">
+      <button (click)="opened = !opened" mat-icon-button>
+        <mat-icon style="color: #fff" svgIcon="menu"></mat-icon>
+      </button>
+    </div>
+
+    <h2 style="margin-bottom: 0; color: #fff">Prefeitura de Itatiba</h2>
   </div>
 
-  <h2 style="margin-bottom: 0; color: #fff">Prefeitura de Itatiba</h2>
-
-  <button mat-button (click)="doLogin()">Teste</button>
-
+  <div>
+    <button mat-button (click)="doLogin()" class="login-btn" *ngIf="!userLoginService.token; else logout">
+      <mat-icon [svgIcon]="'login'" style="line-height: 0"></mat-icon>
+      <span>Login</span>
+    </button>
+    <ng-template #logout>
+      <button mat-button (click)="doLogout()" class="login-btn">
+        <mat-icon [svgIcon]="'close'" style="line-height: 0"></mat-icon>
+        <span>Logout</span>
+      </button>
+    </ng-template>
+  </div>
 
 </mat-toolbar>
 
@@ -34,7 +46,7 @@
       <h3 class="bold">{{ title$ | async | uppercase }}</h3>
       <button mat-button *ngIf="!isHome" (click)="previousPage()">
         <mat-icon [svgIcon]="'keyboard_arrow_left'" style="line-height: 0"></mat-icon>
-        Voltar
+        <span>Voltar</span>
       </button>
     </mat-toolbar>
 
