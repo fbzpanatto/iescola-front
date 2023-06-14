@@ -1,8 +1,8 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatMenuModule, MatMenuTrigger } from "@angular/material/menu";
+import { MatMenuModule } from "@angular/material/menu";
 import { MatButtonModule } from "@angular/material/button";
-import {map, Observable, shareReplay, Subscription} from "rxjs";
+import { Subscription } from "rxjs";
 import { FetchDataService } from "../../services/fetch-data.service";
 import {CurrentBimesterService} from "../../services/current-bimester.service";
 

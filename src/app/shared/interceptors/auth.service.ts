@@ -1,15 +1,12 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { UserLoginDataService } from "../services/user-login-data.service";
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService implements HttpInterceptor {
-
-  private userLoginDataService = inject(UserLoginDataService)
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
