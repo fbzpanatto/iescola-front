@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { BasicComponent } from "../../shared/components/basic/basic.component";
 import { ActivatedRoute, Router, RouterModule} from "@angular/router";
@@ -6,7 +6,7 @@ import { FetchDataService } from "../../shared/services/fetch-data.service";
 import { NavigationService } from "../../shared/services/navigation.service";
 import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
 import { CommonModule } from "@angular/common";
-import { FormComponent } from "./form/form.component";
+import { TestFormComponent } from "./form/test-form.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
@@ -33,13 +33,13 @@ const CONFIG = {
   icon: 'quiz'
 }
 
-const ComponetImports = [CommonModule, RouterModule, FormComponent, MatButtonModule, MatIconModule, ReactiveFormsModule, AutoFocusDirective, BimesterComponent, YearComponent]
+const COMPONENTIMPORTS = [CommonModule, RouterModule, TestFormComponent, MatButtonModule, MatIconModule, ReactiveFormsModule, AutoFocusDirective, BimesterComponent, YearComponent]
 
 @SetActiveComponentBarTitle(CONFIG.title, CONFIG.url)
 @Component({
   standalone: true,
   selector: 'app-test',
-  imports: ComponetImports,
+  imports: COMPONENTIMPORTS,
   templateUrl: './test.component.html',
   styleUrls: ['test.component.scss', '../../shared/styles/table.scss']
 })
@@ -62,8 +62,11 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
   private searchInputSubscription?: Subscription
   private combineSubscription?: Subscription
 
-  constructor( router:Router, route: ActivatedRoute, fetchData: FetchDataService, navigationService: NavigationService, private bimesterService: CurrentBimesterService, private yearService: CurrentYearService) {
-    super( router, route, fetchData, navigationService );
+  private bimesterService = inject(CurrentBimesterService)
+  private yearService = inject(CurrentYearService)
+
+  constructor( router:Router, route: ActivatedRoute, fetchData: FetchDataService, navService: NavigationService) {
+    super( router, route, fetchData, navService );
   }
 
   ngOnInit(): void {

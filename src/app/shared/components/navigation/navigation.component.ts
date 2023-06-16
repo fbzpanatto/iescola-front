@@ -22,6 +22,7 @@ import { HomeComponent } from "src/app/components/home/home.component";
 import { TestComponent } from "src/app/components/test/test.component";
 import { LoginModalService } from "../../services/login-modal.service";
 import { UserLoginDataService } from "../../services/user-login-data.service";
+import { StudentsComponent } from "../../../components/students/students.component";
 
 // TODO: flat tree like aero
 const MENU_TREE = [
@@ -39,6 +40,11 @@ const MENU_TREE = [
     title: TestComponent.title,
     url: TestComponent.url,
     icon: TestComponent.icon,
+  },
+  {
+    title: StudentsComponent.title,
+    url: StudentsComponent.url,
+    icon: StudentsComponent.icon,
   }
 ]
 

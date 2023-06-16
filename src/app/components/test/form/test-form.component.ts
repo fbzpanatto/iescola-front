@@ -31,10 +31,10 @@ const HEADERS: { [key: string]: any } = {
   selector: 'app-test-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule, MatIconModule, MatButtonModule, MatTooltipModule, AutoFocusDirective],
-  templateUrl: './form.component.html',
+  templateUrl: './test-form.component.html',
   styleUrls: ['../../../shared/styles/form.scss']
 })
-export class FormComponent implements OnInit {
+export class TestFormComponent implements OnInit {
 
   private _id?: number
 

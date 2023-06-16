@@ -1,0 +1,43 @@
+<table *ngIf="!isForm; else formView">
+  <thead class="mat-elevation-z1">
+    <tr>
+      <th [attr.colspan]="100" class="table-actions">
+        <div class="table-actions-container">
+          <button mat-raised-button color="primary" routerLink="new">
+            <mat-icon [svgIcon]="'add'"></mat-icon>
+            Novo
+          </button>
+          <div>
+            <button mat-stroked-button (click)="refresh()">
+              <mat-icon [svgIcon]="'refresh'"></mat-icon>
+              Todos
+            </button>
+            <input appAutoFocus placeholder="pesquisar...">
+            <app-year></app-year>
+          </div>
+        </div>
+      </th>
+    </tr>
+    <tr>
+      <th>ID</th>
+      <th>CHAMADA</th>
+      <th>NOME</th>
+      <th>SALA</th>
+      <th>ESCOLA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let student of students$ | async">
+      <tr class="clickable" (click)="navigateTo([student.id])">
+        <td>{{ student.id }}</td>
+        <td>{{ student.order }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.classroom }}</td>
+        <td>{{ student.school }}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+<ng-template #formView>
+  <app-student-form></app-student-form>
+</ng-template>

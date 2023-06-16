@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
-import { Subscription } from "rxjs";
 
 const COMMAND = 'command'
 
@@ -30,7 +29,6 @@ export class BasicComponent {
 
   isForm: boolean = false
   private _url: string = '';
-  protected listSubscription: Subscription = new Subscription()
 
   constructor(
     protected router: Router,

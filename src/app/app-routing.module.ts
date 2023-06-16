@@ -19,6 +19,13 @@ const routes: Routes = [
       },
     ]
   },
+  {
+    path: 'student',
+    children: [
+      { path: '', loadComponent: () => import('./components/students/students.component').then(m => m.StudentsComponent) },
+      { path: ':command', loadComponent: () => import('./components/students/students.component').then(m => m.StudentsComponent) },
+    ]
+  }
 ];
 
 @NgModule({
