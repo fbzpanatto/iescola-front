@@ -227,16 +227,18 @@ export class FormComponent implements OnInit {
     if(question) {
       const questionForm = this.fb.group({
         id: [question.id, Validators.required],
-        answer: [question.answer.trim(), Validators.required]
+        answer: [question.answer, Validators.required]
       });
 
       this.questions.push(questionForm);
       return
     }
 
+    let dontAllowEmpty = /^\S+$/
+
     const questionForm = this.fb.group({
       id: new FormControl<number | null>(this._counter ++, Validators.required),
-      answer: new FormControl<string | null>('', Validators.required)
+      answer: new FormControl<string | null>('', [Validators.required, Validators.pattern(dontAllowEmpty)], )
     });
 
     this.questions.push(questionForm);

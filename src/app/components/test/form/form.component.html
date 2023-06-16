@@ -19,9 +19,9 @@
   </div>
 
   <div class="fl-row">
-    <mat-form-field appearance="outline" (click)="openTeacherOptions()">
+    <mat-form-field class="disabled" appearance="outline" (click)="openTeacherOptions()">
       <mat-label>Professor</mat-label>
-      <input [ngStyle]="{'color': id ? 'rgba(0,0,0,.38)' : 'inherit' }" required readonly matInput [value]="teacherName ?? ''">
+      <input required readonly matInput [value]="teacherName ?? ''">
     </mat-form-field>
   </div>
 
@@ -115,7 +115,7 @@
       </button>
 
 <!--      TODO: Save function-->
-      <button type="submit" mat-raised-button color="primary">
+      <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">
         <mat-icon [svgIcon]="'done'"></mat-icon>
         Salvar
       </button>
