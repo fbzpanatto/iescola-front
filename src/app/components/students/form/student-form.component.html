@@ -9,15 +9,25 @@
 
   <div class="fl-row">
     <mat-form-field appearance="outline">
-      <mat-label>Nome</mat-label>
-      <input matInput formControlName="name" appAutoFocus>
+      <mat-label>RA</mat-label>
+      <input matInput formControlName="name">
     </mat-form-field>
   </div>
 
   <div class="fl-row">
     <mat-form-field appearance="outline">
-      <mat-label>Nome</mat-label>
-      <input matInput formControlName="name" appAutoFocus>
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+  </div>
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Sala</mat-label>
+      <input matInput formControlName="name">
     </mat-form-field>
   </div>
 

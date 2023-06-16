@@ -8,13 +8,15 @@ import { combineLatest, map, Observable, Subscription } from "rxjs";
 import { AutoFocusDirective } from "../../../shared/directives/auto-focus.directive";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 @Component({
   selector: 'app-student-form',
   standalone: true,
-  imports: [CommonModule, AutoFocusDirective, FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, AutoFocusDirective, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatButtonModule, MatIconModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule],
   templateUrl: './student-form.component.html',
   styleUrls: ['../../../shared/styles/form.scss']
 })
