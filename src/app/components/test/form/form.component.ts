@@ -39,8 +39,8 @@ export class FormComponent implements OnInit {
   private _id?: number
 
   private _counter = 1
-  private _teacherName = ''
-  private _classesName: string = ''
+  private _teacherName?: string
+  private _classesName?: string
 
   private _classes?: Classroom[]
   private _disciplines?: Discipline[]
@@ -326,7 +326,7 @@ export class FormComponent implements OnInit {
     return this._classesName
   }
 
-  set classesName(value: string){
+  set classesName(value: string | undefined){
     this._classesName = value
   }
 
@@ -334,7 +334,7 @@ export class FormComponent implements OnInit {
     return this._teacherName
   }
 
-  set teacherName(value: string){
+  set teacherName(value: string | undefined){
     this._teacherName = value
   }
 
