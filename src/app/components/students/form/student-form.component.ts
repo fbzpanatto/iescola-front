@@ -28,6 +28,12 @@ export class StudentFormComponent implements OnInit, OnDestroy {
     name: ['', {
       validators: [Validators.required],
     }],
+    ra: ['', {
+      validators: [Validators.required],
+    }],
+    classroom: ['', {
+      validators: [Validators.required],
+    }],
   })
 
   private _classrooms?: {[key: string]: any}[];
@@ -83,6 +89,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
 
         this.form.patchValue({
           name: data.name,
+          ra: data.ra,
+          classroom: data.classroom,
         })
       })
 
