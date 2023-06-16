@@ -371,7 +371,6 @@ export class FormComponent implements OnInit {
   }
 
   private updateData() {
-    const teacherId = (this.form.value.teacher as any).id
 
     const body = {
       name: this.form.value.name,
