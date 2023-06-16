@@ -1,1 +1,49 @@
-<p>form works!</p>
+<form [formGroup]="form" class="grid-container" (submit)="onSubmit()">
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" appAutoFocus>
+    </mat-form-field>
+  </div>
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" appAutoFocus>
+    </mat-form-field>
+  </div>
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" appAutoFocus>
+    </mat-form-field>
+  </div>
+
+  <div class="flx-row student-form-actions">
+
+    <div class="form-actions">
+
+      <!--      TODO: Cancel function-->
+      <button type="button" mat-raised-button>
+        <mat-icon [svgIcon]="'close'"></mat-icon>
+        Cancelar
+      </button>
+
+      <!--      TODO: Save function-->
+      <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">
+        <mat-icon [svgIcon]="'done'"></mat-icon>
+        Salvar
+      </button>
+
+      <!--      TODO: Delete function-->
+      <button (click)="delete()" type="button" mat-raised-button color="accent">
+        <mat-icon [svgIcon]="'delete'"></mat-icon>
+        Deletar
+      </button>
+
+    </div>
+  </div>
+
+</form>

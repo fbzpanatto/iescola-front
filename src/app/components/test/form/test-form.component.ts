@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -6,7 +6,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { FetchDataService } from "src/app/shared/services/fetch-data.service";
-import { combineLatest, map, Observable } from "rxjs";
+import {combineLatest, map, Observable, Subscription} from "rxjs";
 import { Bimester, Classroom, Discipline, PopupOptions, Questions, TestCategory, Year } from "src/app/shared/interfaces/interfaces";
 import { ActivatedRoute } from "@angular/router";
 import { PopupService } from "src/app/shared/services/popup.service";
@@ -34,7 +34,7 @@ const HEADERS: { [key: string]: any } = {
   templateUrl: './test-form.component.html',
   styleUrls: ['../../../shared/styles/form.scss']
 })
-export class TestFormComponent implements OnInit {
+export class TestFormComponent implements OnInit, OnDestroy {
 
   private _id?: number
 
@@ -47,6 +47,8 @@ export class TestFormComponent implements OnInit {
   private _testCategories?: TestCategory[]
   private _bimesters?: Bimester[]
   private _years?: Year[]
+
+  private subscription?: Subscription
 
   form = this.fb.group({
     name: ['', {
@@ -82,6 +84,10 @@ export class TestFormComponent implements OnInit {
     private fetch: FetchDataService,
   ) {}
 
+  ngOnDestroy() {
+    this.subscription?.unsubscribe()
+  }
+
   ngOnInit(): void {
 
     this.startForm()
@@ -116,7 +122,7 @@ export class TestFormComponent implements OnInit {
 
     this.id = id
 
-    this.fetch.getOneData('test', id)
+    this.subscription = this.fetch.getOneData('test', id)
       .subscribe((data: any) => {
 
         this.form.patchValue({
