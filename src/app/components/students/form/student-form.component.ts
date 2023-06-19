@@ -128,6 +128,7 @@ export class StudentFormComponent implements OnInit, OnDestroy {
   private updateData() {
 
     const body = {
+      id: this.id,
       name: this.form.value.name,
       ra: this.form.value.ra,
       order: this.form.value.order,
