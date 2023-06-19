@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 
 import localePt from '@angular/common/locales/pt';
@@ -6,7 +6,7 @@ import localePtExtra from '@angular/common/locales/extra/pt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
 import { NavigationComponent } from "./shared/components/navigation/navigation.component";
@@ -19,9 +19,9 @@ import { RouteReuseStrategy } from "@angular/router";
 import { MatDialogModule } from "@angular/material/dialog";
 import { DisableControlDirective } from './shared/directives/disable-control.directive';
 import { LoadingComponent } from './shared/components/loading/loading.component';
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {LoadingInterceptor} from "./shared/interceptors/loading.interceptor";
-import {AuthService} from "./shared/interceptors/auth.service";
+import { MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { LoadingInterceptor} from "./shared/interceptors/loading.interceptor";
+import { AuthService} from "./shared/interceptors/auth.service";
 
 @NgModule({
   declarations: [
@@ -39,6 +39,10 @@ import {AuthService} from "./shared/interceptors/auth.service";
     MatProgressSpinnerModule
   ],
   providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt-BR'
+    },
     {
       provide: RouteReuseStrategy,
       useClass: CustomReuseStrategy
