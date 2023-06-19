@@ -133,6 +133,7 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       ra: this.form.value.ra,
       order: this.form.value.order,
       birthDate: this.form.value.birthDate,
+      classroom: { id: (this.form.value.classroom as any).id  },
     }
 
     this.fetch.updateOneDataWithId('student', this.id as number, body)
