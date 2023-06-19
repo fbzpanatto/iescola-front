@@ -2,9 +2,9 @@ import { Component,OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
-import { shareReplay, Subscription} from "rxjs";
+import { Observable } from "rxjs";
 import { FetchDataService } from "../../services/fetch-data.service";
-import {CurrentYearService} from "../../services/current-year.service";
+import { CurrentYearService } from "../../services/current-year.service";
 
 @Component({
   selector: 'app-year',
@@ -15,42 +15,22 @@ import {CurrentYearService} from "../../services/current-year.service";
 })
 export class YearComponent implements OnInit, OnDestroy {
 
-  private _yearSelectedOption: { [key:string]: any } = {}
-  private yearSubscription?: Subscription
-  year: any
+  years$?: Observable<any>
+  currentYear$?: Observable<any>
 
   constructor(private fetchData: FetchDataService, private yearService: CurrentYearService) {}
 
   ngOnInit(): void {
-    this.yearSubscription = this.getYear<any>()
-      .pipe(
-        shareReplay()
-      )
-      .subscribe((result: any) => {
-        this.year = result
-        this.yearSelectedOption = [...result].pop()
-        this.yearService.next(this.yearSelectedOption)
-      })
+
+    this.years$ = this.yearService.years$
+    this.currentYear$ = this.yearService.currYear$
+
   }
 
   ngOnDestroy(): void {
-    this.yearSubscription?.unsubscribe()
-  }
-
-  getYear<T>() {
-    return this.fetchData.all<T>('year')
   }
 
   setYear(event: {[p: string]: any}) {
-    this.yearSelectedOption = event
-    this.yearService.next(this.yearSelectedOption)
-  }
-
-  get yearSelectedOption() {
-    return this._yearSelectedOption
-  }
-
-  set yearSelectedOption(year: any) {
-    this._yearSelectedOption = year
+    this.yearService.next(event)
   }
 }
