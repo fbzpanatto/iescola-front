@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { FetchDataService } from "../../services/fetch-data.service";
-import {ObjectLiteralArray, PopupOptions} from "../../interfaces/interfaces";
-import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
-import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AutoFocusDirective} from "../../directives/auto-focus.directive";
+import { ObjectLiteralArray, PopupOptions } from "../../interfaces/interfaces";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { AutoFocusDirective } from "../../directives/auto-focus.directive";
 
 @Component({
   standalone: true,
@@ -18,6 +18,7 @@ import {AutoFocusDirective} from "../../directives/auto-focus.directive";
 export class PopupComponent implements OnInit {
 
   userOptions: ObjectLiteralArray = []
+  private originalData: any;
   headOptions: ObjectLiteralArray = []
   multiple: boolean = this.data.multipleSelection ?? false
   searchInput = new FormControl('')
@@ -38,13 +39,19 @@ export class PopupComponent implements OnInit {
     this.headOptions = this.data.headers as ObjectLiteralArray
 
     this.searchInput.valueChanges.subscribe((value: string | null) => {
-      if(value === null) {return}
 
-      this.userOptions = this.data.fetchedData?.filter((item: any) => {
-        return item.name.toLowerCase().includes(value.toLowerCase())
-      }) ?? []
+      if(value === null) { return }
 
-      this.selectAll = this.userOptions.every(item => item['selected']);
+      if(this.data.fetchedData) {
+        this.userOptions = this.data.fetchedData?.filter((item: any) => {
+          return item.name?.toLowerCase().includes(value.toLowerCase()) ||
+            item.school?.toLowerCase().includes(value.toLowerCase())
+        }) ?? []
+      }
+
+      if(this.data.multipleSelection) {
+        this.selectAll = this.userOptions.every(item => item['selected']);
+      }
     })
 
     if(this.data.fetchedData) {
@@ -72,6 +79,9 @@ export class PopupComponent implements OnInit {
 
   getAllData(){
     this.fetchDataService.all(this.data.url as string).subscribe((response: any) => {
+
+      this.originalData = response
+
       this.userOptions = response
     })
   }

@@ -11,7 +11,7 @@
     <tr>
       <th [attr.colspan]="multiple ? headOptions.length + 1 : headOptions.length" class="popup-actions">
         <div class="table-actions-container">
-          <input maxlength="1" placeholder="pesquisar..." [formControl]="searchInput" appAutoFocus>
+          <input maxlength="10" placeholder="pesquisar..." [formControl]="searchInput" appAutoFocus>
           <button mat-stroked-button color="warn" (click)="clearSearch()">
             <mat-icon [svgIcon]="'backspace'"></mat-icon>
             Limpar
