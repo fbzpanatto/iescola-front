@@ -87,7 +87,7 @@
                 <input maxlength="2" matInput formControlName="answer">
               </mat-form-field>
 
-              <button type="button" color="warn" mat-mini-fab (click)="removeQuestion(i)">
+              <button type="button" color="warn" mat-mini-fab (click)="removeQuestion(i)" [disabled]="questions.length === 1">
                 <mat-icon class="add-course-btn">remove</mat-icon>
               </button>
             </div>
