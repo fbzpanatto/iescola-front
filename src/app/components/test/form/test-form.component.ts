@@ -261,7 +261,10 @@ export class TestFormComponent implements OnInit, OnDestroy {
 
     this.questions.removeAt(questionIndex);
 
-    this.questions.length === 0 ? this._counter = 1 : null
+    if(this.questions.length === 0) {
+      this._counter = 1
+      return
+    }
 
     let body = {
       removeQuestion: (questionIndex + 1)
