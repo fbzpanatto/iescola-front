@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {Component, inject, Injectable, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule, DOCUMENT} from '@angular/common';
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { FetchDataService } from "src/app/shared/services/fetch-data.service";
-import {combineLatest, map, Observable, Subscription} from "rxjs";
+import { combineLatest, map, Observable, Subscription } from "rxjs";
 import { Bimester, Classroom, Discipline, PopupOptions, Questions, TestCategory, Year } from "src/app/shared/interfaces/interfaces";
 import { ActivatedRoute } from "@angular/router";
 import { PopupService } from "src/app/shared/services/popup.service";
@@ -14,6 +14,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { AutoFocusDirective } from "../../../shared/directives/auto-focus.directive";
+import { FormService } from "../../../shared/services/form.service";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
@@ -77,11 +78,13 @@ export class TestFormComponent implements OnInit, OnDestroy {
     })
   })
 
+  private formService: FormService = inject(FormService)
+
   constructor(
     private popupService: PopupService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private fetch: FetchDataService,
+    private fetch: FetchDataService
   ) {}
 
   ngOnDestroy() {
@@ -92,13 +95,19 @@ export class TestFormComponent implements OnInit, OnDestroy {
 
     this.startForm()
 
-    this.form.get('teacher')?.valueChanges
+    let subscription: Subscription | undefined
+
+    subscription = this.form.get('teacher')?.valueChanges
       .subscribe((value: any) => { this.teacherName = value.name ?? '' })
+
+    this.subscription?.add(subscription)
   }
 
   startForm() {
 
-    combineLatest([
+    let subscription: Subscription | undefined
+
+    subscription = combineLatest([
       this.fetch.all('test-category') as Observable<TestCategory[]>,
       this.fetch.all('bimester') as Observable<Bimester[]>,
       this.fetch.all('year') as Observable<Year[]>,
@@ -116,13 +125,16 @@ export class TestFormComponent implements OnInit, OnDestroy {
         !(isNaN(param)) ? this.updateForm(param) : this.newForm()
       })
 
+    this.subscription?.add(subscription)
   }
 
   updateForm(id: number) {
 
     this.id = id
 
-    this.subscription = this.fetch.getOneData('test', id)
+    let subscription: Subscription
+
+    subscription = this.fetch.getOneData('test', id)
       .subscribe((data: any) => {
 
         this.form.patchValue({
@@ -151,7 +163,11 @@ export class TestFormComponent implements OnInit, OnDestroy {
         this.selectedClasses(data.teacher.classes, data.testClasses)
 
         this._counter = data.questions.length + 1
+
+        this.formService.originalValues = this.form.getRawValue()
       })
+
+    this.subscription?.add(subscription)
   }
 
   newForm() {
@@ -160,6 +176,8 @@ export class TestFormComponent implements OnInit, OnDestroy {
 
     this.form.controls.testClasses.disable()
     this.form.controls.discipline.disable()
+
+    this.formService.originalValues = this.form.getRawValue()
   }
 
   selectedClasses(allClasses: Classroom[], selectedClasses: Classroom[]) {
@@ -187,7 +205,9 @@ export class TestFormComponent implements OnInit, OnDestroy {
       alreadySelected: this.form.controls.testClasses.value
     }
 
-    this.popupService.openPopup(popupOptions)
+    let subscription: Subscription
+
+    subscription = this.popupService.openPopup(popupOptions)
       .afterClosed()
       .subscribe((result: any) => {
         if (result) {
@@ -196,9 +216,13 @@ export class TestFormComponent implements OnInit, OnDestroy {
           this.form.controls.testClasses.setValue(mappedResult)
         }
       })
+
+    this.subscription?.add(subscription)
   }
 
   openTeacherOptions() {
+
+    let subscription: Subscription
 
     if(this.id) {
       return
@@ -206,7 +230,7 @@ export class TestFormComponent implements OnInit, OnDestroy {
 
     const popupOptions: PopupOptions = { url: 'teacher', headers: HEADERS['teacher'] }
 
-    this.popupService.openPopup(popupOptions)
+    subscription = this.popupService.openPopup(popupOptions)
       .afterClosed()
       .subscribe((result: any) => {
         if (result != undefined) {
@@ -219,6 +243,8 @@ export class TestFormComponent implements OnInit, OnDestroy {
           this.form.controls.testClasses.enable()
         }
       })
+
+    this.subscription?.add(subscription)
   }
 
   updateQuestions(questions: Questions[]) {
@@ -272,10 +298,14 @@ export class TestFormComponent implements OnInit, OnDestroy {
 
     if(this.id){
 
-      this.fetch.updateOneDataWithId('test',  Number(this.id), body)
+      let subscription: Subscription
+
+      subscription = this.fetch.updateOneDataWithId('test',  Number(this.id), body)
         .subscribe((data: any) => {
           if(data) {}
         })
+
+      this.subscription?.add(subscription)
     }
   }
 
@@ -358,6 +388,9 @@ export class TestFormComponent implements OnInit, OnDestroy {
   }
 
   createNewData() {
+
+    let subscription: Subscription
+
     const teacherId = (this.form.value.teacher as any).id
 
     const body = {
@@ -371,31 +404,58 @@ export class TestFormComponent implements OnInit, OnDestroy {
       testClasses: this.form.value.testClasses
     }
 
-    this.fetch.createOneData('test', body)
+    subscription = this.fetch.createOneData('test', body)
       .subscribe((data: any) => {
         if(data) {
-          this.form.reset()
+          this.cancelResetClear()
         }
       })
+
+    this.subscription?.add(subscription)
   }
 
   private updateData() {
+
+    let subscription: Subscription
 
     const body = {
       name: this.form.value.name,
       questions: this.form.value.questions,
     }
 
-    this.fetch.updateOneDataWithId('test', this.id as number, body)
+    subscription = this.fetch.updateOneDataWithId('test', this.id as number, body)
       .subscribe((data: any) => {
         if(data) {}
       })
+
+    this.subscription?.add(subscription)
   }
 
   delete() {
-    this.fetch.deleteOneData('test', this.id as number)
+
+    let subscription: Subscription
+
+    subscription = this.fetch.deleteOneData('test', this.id as number)
       .subscribe((data: any) => {
         if(data) {}
       })
+
+    this.subscription?.add(subscription)
+  }
+
+  cancelResetClear() {
+
+    window.location.reload()
+
+    // this.form.patchValue(this.formService.originalValues)
+    // this._counter = 1
+    // this.questions.clear()
+    // this.classesName = ''
+    // this.teacherName = ''
+    // this.classes = undefined
+    // this.form.controls.testClasses.reset()
+    // this.form.controls.testClasses.disable()
+    // this.form.controls.discipline.disable()
+    // this.form.reset()
   }
 }

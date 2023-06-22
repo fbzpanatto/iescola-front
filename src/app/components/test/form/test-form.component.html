@@ -109,7 +109,7 @@
     <div class="form-actions">
 
 <!--      TODO: Cancel function-->
-      <button type="button" mat-raised-button>
+      <button type="button" mat-raised-button (click)="cancelResetClear()">
         <mat-icon [svgIcon]="'close'"></mat-icon>
         Cancelar
       </button>
@@ -121,7 +121,7 @@
       </button>
 
 <!--      TODO: Delete function-->
-      <button (click)="delete()" type="button" mat-raised-button color="accent">
+      <button (click)="delete()" type="button" mat-raised-button color="accent" *ngIf="id" [disabled]="!!id">
         <mat-icon [svgIcon]="'delete'"></mat-icon>
         Deletar
       </button>
