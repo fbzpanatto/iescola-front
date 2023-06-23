@@ -52,7 +52,7 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
   static icon = CONFIG.icon
 
   searchInput = new FormControl()
-  tests$?: Observable<any>
+  tests$?: Observable<TestClasses[]>
 
   clear = false
   private bimester?: { [key: string]: any }
@@ -95,7 +95,7 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
           this.textSearch = search
 
           if(!this.clear) {
-            this.tests$ = this.fetchFilteredData(Number(this.bimester), Number(this.year), search)
+            this.tests$ = this.fetchFilteredData(Number(this.bimester), Number(this.year), search) as Observable<TestClasses[]>
           }
 
           this.clear = false
@@ -124,6 +124,6 @@ export class TestComponent extends BasicComponent implements OnInit, OnDestroy {
   refresh() {
     this.clear = true
     this.clearSearch()
-    this.tests$ = this.fetchFilteredData(Number(this.bimester), Number(this.year), '')
+    this.tests$ = this.fetchFilteredData(Number(this.bimester), Number(this.year), '') as Observable<TestClasses[]>
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { LoadingService } from "../../services/loading.service";
 import {
   NavigationCancel,
@@ -14,20 +14,28 @@ import {
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.scss']
 })
-export class LoadingComponent implements OnInit {
+export class LoadingComponent implements OnInit, OnDestroy {
 
   @Input() routing: boolean = false
   @Input() detectRoutingOnGoing: boolean = false
+
+  private subscription: any
 
   constructor(
     public loadingService: LoadingService,
     private router: Router
   ) {}
 
+  ngOnDestroy(): void {
+    if(this.detectRoutingOnGoing) {
+      this.subscription.unsubscribe()
+    }
+  }
+
   ngOnInit(): void {
 
     if(this.detectRoutingOnGoing) {
-      this.router.events
+      this.subscription = this.router.events
         .subscribe((event) => {
           if(
             event instanceof NavigationStart ||

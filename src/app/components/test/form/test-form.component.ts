@@ -165,6 +165,8 @@ export class TestFormComponent implements OnInit, OnDestroy {
         this._counter = data.questions.length + 1
 
         this.formService.originalValues = this.form.getRawValue()
+
+        console.log('this.formService.originalValues: ', this.formService.originalValues)
       })
 
     this.subscription?.add(subscription)
@@ -407,20 +409,25 @@ export class TestFormComponent implements OnInit, OnDestroy {
     subscription = this.fetch.createOneData('test', body)
       .subscribe((data: any) => {
         if(data) {
-          this.cancelResetClear()
+          this.cancel()
         }
       })
 
     this.subscription?.add(subscription)
   }
 
-  private updateData() {
+  private updateData(bodyToRestore?: { [key: string]: any }) {
 
     let subscription: Subscription
 
     const body = {
       name: this.form.value.name,
       questions: this.form.value.questions,
+    }
+
+    if(bodyToRestore) {
+      body['name'] = bodyToRestore['name']
+      body['questions'] = bodyToRestore['questions']
     }
 
     subscription = this.fetch.updateOneDataWithId('test', this.id as number, body)
@@ -443,7 +450,14 @@ export class TestFormComponent implements OnInit, OnDestroy {
     this.subscription?.add(subscription)
   }
 
-  cancelResetClear() {
+  cancel() {
+
+    if(this.id) {
+      this.updateData({
+        name: this.formService.originalValues.name,
+        questions: this.formService.originalValues.questions
+      })
+    }
 
     window.location.reload()
 
