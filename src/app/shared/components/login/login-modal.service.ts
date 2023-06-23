@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginComponent } from "../components/login/login.component";
+import { LoginComponent } from "./login.component";
 import { MatDialog } from "@angular/material/dialog";
 
 @Injectable({

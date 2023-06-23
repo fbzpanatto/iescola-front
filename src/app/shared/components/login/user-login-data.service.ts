@@ -1,7 +1,7 @@
 import { inject, Injectable} from '@angular/core';
 import { MatDialogRef } from "@angular/material/dialog";
 import { HttpClient } from "@angular/common/http";
-import { LoginComponent } from "../components/login/login.component";
+import { LoginComponent } from "./login.component";
 import { map } from "rxjs";
 import { Router } from "@angular/router";
 

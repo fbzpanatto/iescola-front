@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { PopupComponent } from "../components/popup/popup.component";
+import { PopupComponent } from "./popup.component";
 import { MatDialog } from "@angular/material/dialog";
-import { PopupOptions } from "../interfaces/interfaces";
+import { PopupOptions } from "../../interfaces/interfaces";
 
 @Injectable({
   providedIn: 'root'

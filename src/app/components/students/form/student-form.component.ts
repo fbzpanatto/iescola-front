@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PopupService } from "../../../shared/services/popup.service";
+import { PopupService } from "../../../shared/components/popup/popup.service";
 import { ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { FetchDataService } from "../../../shared/services/fetch-data.service";

@@ -4,7 +4,7 @@ import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent
 import { BasicComponent } from "../../shared/components/basic/basic.component";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
-import { NavigationService } from "../../shared/services/navigation.service";
+import { NavigationService } from "../../shared/components/navigation/navigation.service";
 import { AutoFocusDirective } from "../../shared/directives/auto-focus.directive";
 import { BimesterComponent } from "../../shared/components/bimester/bimester.component";
 import { FormsModule } from "@angular/forms";

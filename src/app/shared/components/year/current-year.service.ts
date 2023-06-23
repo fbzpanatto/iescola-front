@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {map, Observable, of, shareReplay, Subject, tap} from "rxjs";
-import {FetchDataService} from "./fetch-data.service";
+import {FetchDataService} from "../../services/fetch-data.service";
 
 @Injectable({
   providedIn: 'root'

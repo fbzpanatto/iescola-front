@@ -3,7 +3,7 @@ import { TestClasses } from "src/app/shared/interfaces/interfaces";
 import { BasicComponent } from "../../shared/components/basic/basic.component";
 import { ActivatedRoute, Router, RouterModule} from "@angular/router";
 import { FetchDataService } from "../../shared/services/fetch-data.service";
-import { NavigationService } from "../../shared/services/navigation.service";
+import { NavigationService } from "../../shared/components/navigation/navigation.service";
 import { SetActiveComponentBarTitle } from "../../shared/methods/activeComponent";
 import { CommonModule } from "@angular/common";
 import { TestFormComponent } from "./form/test-form.component";
@@ -24,8 +24,8 @@ import {
 } from "rxjs";
 import { BimesterComponent } from "../../shared/components/bimester/bimester.component";
 import { YearComponent } from "../../shared/components/year/year.component";
-import { CurrentBimesterService } from "../../shared/services/current-bimester.service";
-import { CurrentYearService } from "../../shared/services/current-year.service";
+import { CurrentBimesterService } from "../../shared/components/bimester/current-bimester.service";
+import { CurrentYearService } from "../../shared/components/year/current-year.service";
 
 const CONFIG = {
   title: 'Testes',

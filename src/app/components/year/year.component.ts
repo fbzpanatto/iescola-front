@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FetchDataService } from "src/app/shared/services/fetch-data.service";
-import { NavigationService } from "src/app/shared/services/navigation.service";
+import { NavigationService } from "src/app/shared/components/navigation/navigation.service";
 import { CommonModule } from "@angular/common";
 import { Subscription } from "rxjs";
 import { FormBuilder, Validators } from "@angular/forms";

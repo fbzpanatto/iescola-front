@@ -1,20 +1,29 @@
-import {Component, inject, Injectable, OnDestroy, OnInit} from '@angular/core';
-import {CommonModule, DOCUMENT} from '@angular/common';
-import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from "@angular/forms";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { MatOptionModule } from "@angular/material/core";
-import { MatSelectModule } from "@angular/material/select";
-import { FetchDataService } from "src/app/shared/services/fetch-data.service";
-import { combineLatest, map, Observable, Subscription } from "rxjs";
-import { Bimester, Classroom, Discipline, PopupOptions, Questions, TestCategory, Year } from "src/app/shared/interfaces/interfaces";
-import { ActivatedRoute } from "@angular/router";
-import { PopupService } from "src/app/shared/services/popup.service";
-import { MatIconModule } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
-import { MatTooltipModule } from "@angular/material/tooltip";
-import { AutoFocusDirective } from "../../../shared/directives/auto-focus.directive";
-import { FormService } from "../../../shared/services/form.service";
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
+import {FetchDataService} from "src/app/shared/services/fetch-data.service";
+import {combineLatest, map, Observable, Subscription} from "rxjs";
+import {
+  Bimester,
+  Classroom,
+  Discipline,
+  PopupOptions,
+  Questions,
+  TestCategory,
+  Year
+} from "src/app/shared/interfaces/interfaces";
+import {ActivatedRoute} from "@angular/router";
+import {PopupService} from "src/app/shared/components/popup/popup.service";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {AutoFocusDirective} from "../../../shared/directives/auto-focus.directive";
+import {FormService} from "../../../shared/services/form.service";
+import {DialogService} from "../../../shared/components/dialog/dialog.service";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
@@ -84,7 +93,8 @@ export class TestFormComponent implements OnInit, OnDestroy {
     private popupService: PopupService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private fetch: FetchDataService
+    private fetch: FetchDataService,
+    private dialogPopup: DialogService
   ) {}
 
   ngOnDestroy() {
@@ -280,6 +290,31 @@ export class TestFormComponent implements OnInit, OnDestroy {
 
   removeQuestion(questionIndex: number) {
 
+    if(!this.id){
+      this.myFunction(questionIndex)
+      return
+    }
+
+    let subscription: Subscription
+
+    subscription = this.dialogPopup.openDialog(`Deseja remover questão ${questionIndex + 1}? A ação não poderá ser desfeita. Após a exclusão todos os testes que utilizam esta questão serão afetados.`)
+      .afterClosed()
+      .subscribe((result: boolean) => {
+        if(result) {
+          let body = this.myFunction(questionIndex)
+
+          let subscription: Subscription
+
+          subscription = this.fetch.updateOneDataWithId('test',  Number(this.id), body).subscribe()
+
+          this.subscription?.add(subscription)
+        }
+      })
+    this.subscription?.add(subscription)
+  }
+
+  myFunction(questionIndex: number) {
+
     const index = (this.questions.length - 1)
     this._counter = this.questions.controls[index].get('id')?.value
 
@@ -294,21 +329,10 @@ export class TestFormComponent implements OnInit, OnDestroy {
       return
     }
 
-    let body = {
+    return {
       removeQuestion: (questionIndex + 1)
     }
 
-    if(this.id){
-
-      let subscription: Subscription
-
-      subscription = this.fetch.updateOneDataWithId('test',  Number(this.id), body)
-        .subscribe((data: any) => {
-          if(data) {}
-        })
-
-      this.subscription?.add(subscription)
-    }
   }
 
   get questions() {
@@ -452,24 +476,23 @@ export class TestFormComponent implements OnInit, OnDestroy {
 
   cancel() {
 
-    if(this.id) {
-      this.updateData({
-        name: this.formService.originalValues.name,
-        questions: this.formService.originalValues.questions
-      })
-    }
+    // if(this.id) {
+    //   this.updateData({
+    //     name: this.formService.originalValues.name,
+    //     questions: this.formService.originalValues.questions
+    //   })
+    //   return
+    // }
 
-    window.location.reload()
-
-    // this.form.patchValue(this.formService.originalValues)
-    // this._counter = 1
-    // this.questions.clear()
-    // this.classesName = ''
-    // this.teacherName = ''
-    // this.classes = undefined
-    // this.form.controls.testClasses.reset()
-    // this.form.controls.testClasses.disable()
-    // this.form.controls.discipline.disable()
-    // this.form.reset()
+    this.form.patchValue(this.formService.originalValues)
+    this._counter = 1
+    this.questions.clear()
+    this.classesName = ''
+    this.teacherName = ''
+    this.classes = undefined
+    this.form.controls.testClasses.reset()
+    this.form.controls.testClasses.disable()
+    this.form.controls.discipline.disable()
+    this.form.reset()
   }
 }

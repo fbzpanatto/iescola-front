@@ -1,0 +1,23 @@
+<div mat-dialog-title>
+  <span class="popup-title">
+    <span>{{title}}</span>
+    <mat-icon style="cursor: pointer" [svgIcon]="'close'" (click)="close(false)"></mat-icon>
+  </span>
+</div>
+
+<div  mat-dialog-content>
+  <p>{{ message }}</p>
+</div>
+
+<div mat-dialog-actions>
+
+  <button type="button" mat-raised-button (click)="close(false)">
+    <mat-icon [svgIcon]="'close'"></mat-icon>
+    Cancelar
+  </button>
+
+  <button (click)="close(true)" type="button" mat-raised-button color="accent">
+    <mat-icon [svgIcon]="'delete'"></mat-icon>
+    Deletar
+  </button>
+</div>

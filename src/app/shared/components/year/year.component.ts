@@ -4,7 +4,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { Observable } from "rxjs";
 import { FetchDataService } from "../../services/fetch-data.service";
-import { CurrentYearService } from "../../services/current-year.service";
+import { CurrentYearService } from "./current-year.service";
 
 @Component({
   selector: 'app-year',

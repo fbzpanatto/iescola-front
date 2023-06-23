@@ -7,7 +7,7 @@ import { AutoFocusDirective } from "../../directives/auto-focus.directive";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
-import { UserLoginDataService } from "../../services/user-login-data.service";
+import { UserLoginDataService } from "./user-login-data.service";
 import {Router} from "@angular/router";
 
 @Component({

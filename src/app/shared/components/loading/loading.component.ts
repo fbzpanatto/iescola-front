@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import { LoadingService } from "../../services/loading.service";
+import { LoadingService } from "./loading.service";
 import {
   NavigationCancel,
   NavigationEnd,

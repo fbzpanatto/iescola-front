@@ -3,10 +3,10 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, Router} from "@angular/router";
 import { FetchDataService } from "../../../../shared/services/fetch-data.service";
-import { NavigationService } from "../../../../shared/services/navigation.service";
+import { NavigationService } from "../../../../shared/components/navigation/navigation.service";
 import { BasicComponent } from "../../../../shared/components/basic/basic.component";
 import { SetActiveComponentBarTitle } from "../../../../shared/methods/activeComponent";
-import { PopupService } from "../../../../shared/services/popup.service";
+import { PopupService } from "../../../../shared/components/popup/popup.service";
 import { PopupOptions } from "../../../../shared/interfaces/interfaces";
 import {TabSelectorService} from "../../tab-selector.service";
 

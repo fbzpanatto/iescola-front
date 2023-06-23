@@ -13,15 +13,15 @@ import { CommonModule } from "@angular/common";
 
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from "@angular/router";
 
-import { NavigationService } from "src/app/shared/services/navigation.service";
-import { ActiveComponent } from "src/app/shared/services/navigation.service";
+import { NavigationService } from "src/app/shared/components/navigation/navigation.service";
+import { ActiveComponent } from "src/app/shared/components/navigation/navigation.service";
 
 import { map } from "rxjs";
 
 import { HomeComponent } from "src/app/components/home/home.component";
 import { TestComponent } from "src/app/components/test/test.component";
-import { LoginModalService } from "../../services/login-modal.service";
-import { UserLoginDataService } from "../../services/user-login-data.service";
+import { LoginModalService } from "../login/login-modal.service";
+import { UserLoginDataService } from "../login/user-login-data.service";
 import { StudentsComponent } from "../../../components/students/students.component";
 
 // TODO: flat tree like aero

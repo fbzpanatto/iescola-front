@@ -4,7 +4,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { MatButtonModule } from "@angular/material/button";
 import { Subscription } from "rxjs";
 import { FetchDataService } from "../../services/fetch-data.service";
-import {CurrentBimesterService} from "../../services/current-bimester.service";
+import {CurrentBimesterService} from "./current-bimester.service";
 
 @Component({
   selector: 'app-bimester',

@@ -2,7 +2,7 @@ import { inject, Injectable} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { catchError, map } from "rxjs";
 import { ObjectLiteral } from "../interfaces/interfaces";
-import { LoginModalService } from "./login-modal.service";
+import { LoginModalService } from "../components/login/login-modal.service";
 import { Router} from "@angular/router";
 
 @Injectable({
