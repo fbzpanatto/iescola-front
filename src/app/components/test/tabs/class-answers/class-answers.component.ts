@@ -121,7 +121,8 @@ export class ClassAnswers extends BasicComponent implements OnInit {
           id: this.test.id
         },
         studentAnswers: arrayOfAnswers,
-        completed: !completed
+        completed: !completed,
+        registeredInClass: { id: this.classIdParam }
       }
 
       this.basicUpdateOneData(ClassAnswers.url, studentTestHTML.id, body)
