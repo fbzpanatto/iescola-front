@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PopupService } from "../../../shared/components/popup/popup.service";
 import { ActivatedRoute } from "@angular/router";
@@ -13,6 +13,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { PopupOptions } from "../../../shared/interfaces/interfaces";
+import {FormService} from "../../../shared/services/form.service";
 
 const HEADERS: { [key: string]: any } = {
   classroom: [
@@ -54,6 +55,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
   private _classrooms?: {[key: string]: any}[];
   private subscription?: Subscription
   private _className?: string;
+
+  private formService = inject(FormService)
 
   constructor(
     private popupService: PopupService,
@@ -127,14 +130,31 @@ export class StudentFormComponent implements OnInit, OnDestroy {
 
   private updateData() {
 
-    const body = {
-      id: this.id,
-      name: this.form.value.name,
-      ra: this.form.value.ra,
-      order: this.form.value.order,
-      birthDate: this.form.value.birthDate,
-      classroom: { id: (this.form.value.classroom as any).id  },
+    interface Body {
+      id: number,
+      name: string,
+      ra: string,
+      order: string,
+      birthDate: string,
+      classroom?: { id: number },
     }
+
+    const body: Body = {
+      id: this.id as number,
+      name: this.form.value.name as string,
+      ra: this.form.value.ra as string,
+      order: this.form.value.order as string,
+      birthDate: this.form.value.birthDate as string,
+      classroom: { id: (this.form.value.classroom as any).id } as { id: number },
+    }
+
+    if(Number(this.formService.originalValues.classroom.id) === Number(body.classroom?.id)) {
+      delete body.classroom
+    } else {
+      this.formService.originalValues.classroom = body.classroom
+    }
+
+    console.log(body)
 
     this.fetch.updateOneDataWithId('student', this.id as number, body)
       .subscribe((data: any) => {
@@ -150,6 +170,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
 
     subscription = this.fetch.getOneData('student', id)
       .subscribe((data: any) => {
+
+        this.formService.originalValues = data
 
         this.form.patchValue({
           name: data.name,
