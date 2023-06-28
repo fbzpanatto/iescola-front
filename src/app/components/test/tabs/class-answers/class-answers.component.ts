@@ -114,15 +114,11 @@ export class ClassAnswers extends BasicComponent implements OnInit {
       const completed = arrayOfAnswers.every((answer) => answer.answer === '')
 
       let body = {
-        student: {
-          id: studentTestHTML.student.id
-        },
-        test: {
-          id: this.test.id
-        },
+        test: { id: this.test.id },
+        studentTest: { id: studentTestHTML.id },
+        registeredInClass: { id: this.classIdParam },
         studentAnswers: arrayOfAnswers,
         completed: !completed,
-        registeredInClass: { id: this.classIdParam }
       }
 
       this.basicUpdateOneData(ClassAnswers.url, studentTestHTML.id, body)
