@@ -42,20 +42,18 @@
 
     <div class="form-actions">
 
-      <!--      TODO: Cancel function-->
-      <button type="button" mat-raised-button>
+      <button type="button" (click)="resetForm()" mat-raised-button [disabled]="form.pristine">
         <mat-icon [svgIcon]="'close'"></mat-icon>
         Cancelar
       </button>
 
-      <!--      TODO: Save function-->
-      <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">
+      <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid || form.pristine">
         <mat-icon [svgIcon]="'done'"></mat-icon>
         Salvar
       </button>
 
       <!--      TODO: Delete function-->
-      <button (click)="delete()" type="button" mat-raised-button color="accent">
+      <button (click)="delete()" type="button" mat-raised-button color="accent" *ngIf="id" [disabled]="!!id">
         <mat-icon [svgIcon]="'delete'"></mat-icon>
         Deletar
       </button>

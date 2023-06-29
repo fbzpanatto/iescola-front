@@ -1,8 +1,8 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PopupService } from "../../../shared/components/popup/popup.service";
 import { ActivatedRoute } from "@angular/router";
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormBuilder, FormGroupDirective, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { FetchDataService } from "../../../shared/services/fetch-data.service";
 import { combineLatest, map, Observable, Subscription } from "rxjs";
 import { AutoFocusDirective } from "../../../shared/directives/auto-focus.directive";
@@ -13,7 +13,9 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { PopupOptions } from "../../../shared/interfaces/interfaces";
-import {FormService} from "../../../shared/services/form.service";
+import { FormService } from "../../../shared/services/form.service";
+
+const COMPONENT_IMPORTS = [CommonModule, AutoFocusDirective, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatButtonModule, MatIconModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule]
 
 const HEADERS: { [key: string]: any } = {
   classroom: [
@@ -26,7 +28,7 @@ const HEADERS: { [key: string]: any } = {
 @Component({
   selector: 'app-student-form',
   standalone: true,
-  imports: [CommonModule, AutoFocusDirective, FormsModule, MatFormFieldModule, ReactiveFormsModule, MatButtonModule, MatIconModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule],
+  imports: COMPONENT_IMPORTS,
   templateUrl: './student-form.component.html',
   styleUrls: ['../../../shared/styles/form.scss']
 })
@@ -57,6 +59,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
   private _className?: string;
 
   private formService = inject(FormService)
+
+  @ViewChild(FormGroupDirective) private formDir!: FormGroupDirective
 
   constructor(
     private popupService: PopupService,
@@ -123,9 +127,18 @@ export class StudentFormComponent implements OnInit, OnDestroy {
     this.fetch.createOneData('student', body)
       .subscribe((data: any) => {
         if(data) {
-          this.form.reset()
+          this.resetForm()
         }
       })
+  }
+
+  resetForm() {
+    if(this.id) {
+      this.formDir.resetForm(this.formService.originalValues);
+      return
+    }
+    this.className = ''
+    this.formDir.resetForm(this.formService.originalValues);
   }
 
   private updateData() {
@@ -153,8 +166,6 @@ export class StudentFormComponent implements OnInit, OnDestroy {
     } else {
       this.formService.originalValues.classroom = body.classroom
     }
-
-    console.log(body)
 
     this.fetch.updateOneDataWithId('student', this.id as number, body)
       .subscribe((data: any) => {
@@ -203,12 +214,14 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         if (data) {
           this.form.controls.classroom.setValue(data)
+          this.form.controls.classroom.markAsDirty()
+          this.form.controls.classroom.markAsTouched()
         }
       })
   }
 
   private newForm() {
-  //   TODO: include category on body before send
+    this.formService.originalValues = this.form.value
   }
 
   get id() {
