@@ -1,6 +1,6 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroupDirective, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatOptionModule} from "@angular/material/core";
@@ -59,6 +59,8 @@ export class TestFormComponent implements OnInit, OnDestroy {
   private _years?: Year[]
 
   private subscription?: Subscription
+
+  @ViewChild(FormGroupDirective) private formDir!: FormGroupDirective
 
   form = this.fb.group({
     name: ['', {
@@ -175,8 +177,6 @@ export class TestFormComponent implements OnInit, OnDestroy {
         this._counter = data.questions.length + 1
 
         this.formService.originalValues = this.form.getRawValue()
-
-        console.log('this.formService.originalValues: ', this.formService.originalValues)
       })
 
     this.subscription?.add(subscription)
@@ -432,9 +432,7 @@ export class TestFormComponent implements OnInit, OnDestroy {
 
     subscription = this.fetch.createOneData('test', body)
       .subscribe((data: any) => {
-        if(data) {
-          this.cancel()
-        }
+        if(data) { this.resetForm() }
       })
 
     this.subscription?.add(subscription)
@@ -474,17 +472,19 @@ export class TestFormComponent implements OnInit, OnDestroy {
     this.subscription?.add(subscription)
   }
 
-  cancel() {
+  resetForm() {
 
-    // if(this.id) {
-    //   this.updateData({
-    //     name: this.formService.originalValues.name,
-    //     questions: this.formService.originalValues.questions
-    //   })
-    //   return
-    // }
+    if(this.id) {
+      let teacherName = this.teacherName
 
-    this.form.patchValue(this.formService.originalValues)
+      this.formDir.resetForm(this.formService.originalValues);
+
+      this.teacherName = teacherName
+
+      return
+    }
+
+    this.formDir.resetForm(this.formService.originalValues);
     this._counter = 1
     this.questions.clear()
     this.classesName = ''
@@ -493,6 +493,5 @@ export class TestFormComponent implements OnInit, OnDestroy {
     this.form.controls.testClasses.reset()
     this.form.controls.testClasses.disable()
     this.form.controls.discipline.disable()
-    this.form.reset()
   }
 }

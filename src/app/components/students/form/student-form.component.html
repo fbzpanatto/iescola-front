@@ -42,7 +42,7 @@
 
     <div class="form-actions">
 
-      <button type="button" (click)="resetForm()" mat-raised-button [disabled]="form.pristine">
+      <button type="button" mat-raised-button (click)="resetForm()"  [disabled]="form.pristine">
         <mat-icon [svgIcon]="'close'"></mat-icon>
         Cancelar
       </button>
@@ -52,7 +52,6 @@
         Salvar
       </button>
 
-      <!--      TODO: Delete function-->
       <button (click)="delete()" type="button" mat-raised-button color="accent" *ngIf="id" [disabled]="!!id">
         <mat-icon [svgIcon]="'delete'"></mat-icon>
         Deletar
@@ -60,11 +59,6 @@
 
     </div>
   </div>
-
-<!--  <pre>-->
-<!--{{form.value | json}}-->
-<!--</pre>-->
-
 </form>
 
 

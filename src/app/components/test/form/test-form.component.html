@@ -108,14 +108,14 @@
   <div class="flx-row">
     <div class="form-actions">
 
-      <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">
-        <mat-icon [svgIcon]="'done'"></mat-icon>
-        Salvar
-      </button>
-
-      <button type="button" mat-raised-button (click)="cancel()" [disabled]="!!id">
+      <button type="button" mat-raised-button (click)="resetForm()"  [disabled]="form.pristine">
         <mat-icon [svgIcon]="'close'"></mat-icon>
         Cancelar
+      </button>
+
+      <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid || form.pristine">
+        <mat-icon [svgIcon]="'done'"></mat-icon>
+        Salvar
       </button>
 
       <button (click)="delete()" type="button" mat-raised-button color="accent" *ngIf="id" [disabled]="!!id">
@@ -125,5 +125,4 @@
 
     </div>
   </div>
-
 </form>

@@ -79,7 +79,11 @@ export class FetchDataService {
       case 401:
         this.loginModal.openLoginModal()
         break
+      case 409:
+        alert('Já existe um registro com esses dados')
+        break
       default:
+        alert('Algo deu errado, tente novamente mais tarde')
         this.router.navigate([''])
         break
     }

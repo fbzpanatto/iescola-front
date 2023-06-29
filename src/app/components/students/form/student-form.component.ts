@@ -209,7 +209,9 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       fetchedData: this.classrooms,
     }
 
-    this.popupService.openPopup(popupOptions)
+    let subscription: Subscription
+
+     subscription = this.popupService.openPopup(popupOptions)
       .afterClosed()
       .subscribe((data: any) => {
         if (data) {
@@ -218,6 +220,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
           this.form.controls.classroom.markAsTouched()
         }
       })
+
+    this.subscription?.add(subscription)
   }
 
   private newForm() {
