@@ -454,7 +454,9 @@ export class TestFormComponent implements OnInit, OnDestroy {
 
     subscription = this.fetch.updateOneDataWithId('test', this.id as number, body)
       .subscribe((data: any) => {
-        if(data) {}
+        if(data) {
+          this.formService.originalValues = this.form.value
+        }
       })
 
     this.subscription?.add(subscription)

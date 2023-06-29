@@ -169,7 +169,9 @@ export class StudentFormComponent implements OnInit, OnDestroy {
 
     this.fetch.updateOneDataWithId('student', this.id as number, body)
       .subscribe((data: any) => {
-        if(data) {}
+        if(data) {
+          this.formService.originalValues = this.form.value
+        }
       })
   }
 

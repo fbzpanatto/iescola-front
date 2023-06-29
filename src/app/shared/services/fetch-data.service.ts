@@ -81,6 +81,10 @@ export class FetchDataService {
       case 401:
         this.loginModal.openLoginModal()
         break
+      case 403:
+        alert('Você não tem permissão editar esse registro')
+        this.router.navigate([''])
+        break
       case 409:
         alert('Já existe um registro com esses dados')
         break
