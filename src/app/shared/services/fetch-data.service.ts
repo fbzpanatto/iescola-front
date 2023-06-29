@@ -75,6 +75,8 @@ export class FetchDataService {
 
   errorHandling(error: any) {
 
+    // TODO: improve error handling with an popup
+
     switch (error.status) {
       case 401:
         this.loginModal.openLoginModal()
