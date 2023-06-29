@@ -8,7 +8,7 @@ import { BasicComponent } from "../../../../shared/components/basic/basic.compon
 import { SetActiveComponentBarTitle } from "../../../../shared/methods/activeComponent";
 import { PopupService } from "../../../../shared/components/popup/popup.service";
 import { PopupOptions } from "../../../../shared/interfaces/interfaces";
-import {TabSelectorService} from "../../tab-selector.service";
+import { TabSelectorService } from "../../tab-selector.service";
 
 const HEADERS: { [key: string]: any } = {
   teacher: [
@@ -22,7 +22,7 @@ const HEADERS: { [key: string]: any } = {
 }
 
 const CONFIG = {
-  title: 'Teste / Sala de aula',
+  title: 'Avaliações e Comparativos',
   url: 'student-tests'
 }
 

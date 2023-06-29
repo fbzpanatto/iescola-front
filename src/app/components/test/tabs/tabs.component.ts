@@ -1,15 +1,10 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ClassAnswers } from "./class-answers/class-answers.component";
 import { TotalsComponent } from "./totals/totals.component";
-import {ActivatedRoute, NavigationEnd, Router, RouterLink} from "@angular/router";
-import {TabSelectorService} from "../tab-selector.service";
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from "@angular/router";
+import { TabSelectorService } from "../tab-selector.service";
 
 @Component({
   selector: 'app-tabs',

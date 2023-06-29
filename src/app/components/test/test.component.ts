@@ -28,7 +28,7 @@ import { CurrentBimesterService } from "../../shared/components/bimester/current
 import { CurrentYearService } from "../../shared/components/year/current-year.service";
 
 const CONFIG = {
-  title: 'Testes',
+  title: 'Avaliações',
   url: 'test',
   icon: 'quiz'
 }

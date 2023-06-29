@@ -10,7 +10,7 @@
     <h2 style="margin-bottom: 0; color: #fff">Prefeitura de Itatiba</h2>
   </div>
 
-  <div>
+  <div *ngIf="true">
     <button mat-button (click)="doLogin()" class="login-btn" *ngIf="!userLoginService.token; else logout">
       <mat-icon [svgIcon]="'login'" style="line-height: 0"></mat-icon>
       <span>Login</span>
