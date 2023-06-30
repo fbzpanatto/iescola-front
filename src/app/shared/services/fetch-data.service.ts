@@ -85,6 +85,9 @@ export class FetchDataService {
         alert('Você não tem permissão editar esse registro')
         this.router.navigate([''])
         break
+      case 404:
+        alert(error.error.payload ?? 'Registro não encontrado')
+        break
       case 409:
         alert('Já existe um registro com esses dados')
         break

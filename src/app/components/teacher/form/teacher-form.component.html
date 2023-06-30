@@ -1,0 +1,56 @@
+<form [formGroup]="form" class="grid-container" (submit)="onSubmit()">
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" appAutoFocus>
+    </mat-form-field>
+  </div>
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Data de nascimento</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthDate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+  </div>
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Salas de Aula</mat-label>
+      <input matInput formControlName="teacherClasses">
+    </mat-form-field>
+  </div>
+
+  <div class="fl-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Disciplinas</mat-label>
+      <input matInput formControlName="teacherDisciplines">
+    </mat-form-field>
+  </div>
+
+  <div class="flx-row teacher-form-actions">
+
+    <div class="form-actions">
+
+      <button type="button" mat-raised-button (click)="resetForm()"  [disabled]="form.pristine">
+        <mat-icon [svgIcon]="'close'"></mat-icon>
+        Cancelar
+      </button>
+
+      <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid || form.pristine">
+        <mat-icon [svgIcon]="'done'"></mat-icon>
+        Salvar
+      </button>
+
+      <button (click)="delete()" type="button" mat-raised-button color="accent" *ngIf="id" [disabled]="!!id">
+        <mat-icon [svgIcon]="'delete'"></mat-icon>
+        Deletar
+      </button>
+
+    </div>
+  </div>
+
+</form>

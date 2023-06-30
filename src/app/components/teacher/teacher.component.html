@@ -1,0 +1,37 @@
+<table *ngIf="!isForm; else formView">
+  <thead class="mat-elevation-z1">
+  <tr>
+    <th [attr.colspan]="100" class="table-actions">
+      <div class="table-actions-container">
+        <button mat-raised-button color="primary" routerLink="new">
+          <mat-icon [svgIcon]="'add'"></mat-icon>
+          Novo
+        </button>
+        <div>
+          <button mat-stroked-button (click)="refresh()">
+            <mat-icon [svgIcon]="'refresh'"></mat-icon>
+            Todos
+          </button>
+          <input appAutoFocus placeholder="pesquisar..." [formControl]="searchInput">
+          <!--            <app-year></app-year>-->
+        </div>
+      </div>
+    </th>
+  </tr>
+  <tr>
+    <th>ID</th>
+    <th>NOME</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let teacher of teachers$ | async">
+    <tr class="clickable" (click)="navigateTo([teacher.id])">
+      <td>{{ teacher.id }}</td>
+      <td>{{ teacher.name }}</td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>
+<ng-template #formView>
+  <app-teacher-form></app-teacher-form>
+</ng-template>

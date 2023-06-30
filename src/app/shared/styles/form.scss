@@ -83,6 +83,10 @@
   .student-form-actions {
     grid-area: 3 / 1 / span 1 / span 2;
   }
+
+  .teacher-form-actions {
+    grid-area: 3 / 1 / span 1 / span 2;
+  }
 }
 
 @media (max-width: 768px) {
@@ -111,7 +115,7 @@
       }
     }
 
-    .student-form-actions {
+    .student-form-actions, .teacher-form-actions {
       grid-area: auto;
     }
   }

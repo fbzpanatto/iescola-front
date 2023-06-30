@@ -20,6 +20,13 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'teacher',
+    children: [
+      { path: '', loadComponent: () => import('./components/teacher/teacher.component').then(m => m.TeacherComponent) },
+      { path: ':command', loadComponent: () => import('./components/teacher/teacher.component').then(m => m.TeacherComponent) },
+    ]
+  },
+  {
     path: 'student',
     children: [
       { path: '', loadComponent: () => import('./components/students/students.component').then(m => m.StudentsComponent) },
