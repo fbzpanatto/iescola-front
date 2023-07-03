@@ -58,25 +58,35 @@ export class PopupComponent implements OnInit {
     if(this.data.fetchedData) {
       this.originalData = [...this.data.fetchedData]
       this.userOptions = [...this.data.fetchedData]
-    }
 
-    if(this.data.alreadySelected) {
-      this.localSelected = [...this.data.alreadySelected] as number[]
+      if(this.data.alreadySelected) {
+        this.localSelected = [...this.data.alreadySelected] as number[]
 
-      this.userOptions.forEach(item => {
-        item['selected'] = this.localSelected.includes(item['id']);
-      })
-
-      if(this.data.multipleSelection) {
-        this.selectAll = this.userOptions.every(item => item['selected']);
-
-        this.userOptions.sort((a, b) => {
-          if(a['selected'] && !b['selected']) { return -1 }
-          else if(!a['selected'] && b['selected']) { return 1 }
-          else { return 0 }
+        this.userOptions.forEach(item => {
+          item['selected'] = this.localSelected.includes(item['id']);
         })
+
+        if(this.data.multipleSelection) {
+          this.selectAll = this.userOptions.every(item => item['selected']);
+
+          this.userOptions.sort((a, b) => {
+            if(a['selected'] && !b['selected']) { return -1 }
+            else if(!a['selected'] && b['selected']) { return 1 }
+            else { return 0 }
+          })
+        }
       }
+
+      return
     }
+
+    this.fetchOptions(this.data.url as string)
+  }
+
+  fetchOptions(url: string) {
+    this.fetchDataService.all(url).subscribe((response: any) => {
+      this.userOptions = response
+    })
   }
 
   toggleSelectAll() {
