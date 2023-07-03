@@ -3,7 +3,7 @@
   <div class="fl-row">
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="name" appAutoFocus>
+      <input matInput formControlName="name">
     </mat-form-field>
   </div>
 
@@ -14,22 +14,22 @@
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-
   </div>
 
   <div class="fl-row">
-    <mat-form-field appearance="outline">
-      <mat-label>Salas de Aula</mat-label>
-      <input matInput formControlName="teacherClasses">
+    <mat-form-field appearance="outline" (click)="openClassesOptions()">
+      <mat-label>Salas</mat-label>
+      <input readonly matInput [value]="classesName ?? ''">
     </mat-form-field>
   </div>
 
   <div class="fl-row">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" (click)="openDisciplinesOptions()">
       <mat-label>Disciplinas</mat-label>
-      <input matInput formControlName="teacherDisciplines">
+      <input readonly matInput [value]="disciplinesName ?? ''">
     </mat-form-field>
   </div>
+
 
   <div class="flx-row teacher-form-actions">
 

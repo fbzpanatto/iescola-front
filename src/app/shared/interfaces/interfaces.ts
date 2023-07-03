@@ -1,4 +1,4 @@
-export interface Discipline { id: number, name: string }
+export interface Discipline { id: number, name: string, selected?: boolean }
 export interface Classroom { id: number, name: string, selected?: boolean }
 export interface TestCategory { id: number, name: string }
 export interface Bimester { id: number, name: string }
