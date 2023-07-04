@@ -105,7 +105,7 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
     )
       .subscribe(() => {
         let param = this.route.snapshot.params['command']
-        !(isNaN(param)) ? this.updateForm(param) : this.newForm()
+        !(isNaN(param)) ? this.pathFormValues(param) : this.newForm()
       })
 
     this.subscription?.add(subscription)
@@ -229,7 +229,7 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
     this._classesName = value
   }
 
-  private updateForm(id: number) {
+  private pathFormValues(id: number) {
 
     this.id = id
 
@@ -264,14 +264,15 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
       const body = {
         name: this.form.controls.name.value,
         birthDate: this.form.controls.birthDate.value,
-        // teacherClasses: this.form.controls.teacherClasses.value,
-        // teacherDisciplines: this.form.controls.teacherDisciplines.value,
+        teacherClasses: this.form.controls.teacherClasses.value,
+        teacherDisciplines: this.form.controls.teacherDisciplines.value,
       }
 
       subscription = this.fetch.updateOneDataWithId('teacher', this.id as number, body)
         .subscribe((data: any) => {
           if(data) {
             this.formService.originalValues = this.form.value
+            this.formDir.resetForm(this.formService.originalValues)
             this.classesNameBefore = this.classesName
             this.disciplinesNameBefore = this.disciplinesName
           }
