@@ -135,18 +135,14 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
 
   openDisciplinesOptions() {
 
-    let teste = [...this.disciplines]
+    let selectedDisciplines: any = this.form.value.teacherDisciplines
 
-    let selectedDisciplines = this.form.get('teacherDisciplines')?.value
-
-    if(!selectedDisciplines?.length) {
-      selectedDisciplines = null
-    }
+    if(!selectedDisciplines?.length) { selectedDisciplines = [] }
 
     const popupOptions: PopupOptions = {
       url: 'discipline',
       headers: HEADERS['discipline'],
-      fetchedData: teste,
+      fetchedData: [...this.disciplines],
       multipleSelection: true,
       alreadySelected: selectedDisciplines
     }
@@ -268,8 +264,8 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
       const body = {
         name: this.form.controls.name.value,
         birthDate: this.form.controls.birthDate.value,
-        teacherClasses: this.form.controls.teacherClasses.value,
-        teacherDisciplines: this.form.controls.teacherDisciplines.value,
+        // teacherClasses: this.form.controls.teacherClasses.value,
+        // teacherDisciplines: this.form.controls.teacherDisciplines.value,
       }
 
       subscription = this.fetch.updateOneDataWithId('teacher', this.id as number, body)
