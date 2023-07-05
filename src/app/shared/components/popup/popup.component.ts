@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { FetchDataService } from "../../services/fetch-data.service";
@@ -7,6 +7,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AutoFocusDirective } from "../../directives/auto-focus.directive";
+import { Subscription } from "rxjs";
 
 @Component({
   standalone: true,
@@ -15,7 +16,7 @@ import { AutoFocusDirective } from "../../directives/auto-focus.directive";
   templateUrl: './popup.component.html',
   styleUrls: ['../../styles/popup.scss']
 })
-export class PopupComponent implements OnInit {
+export class PopupComponent implements OnInit, OnDestroy {
 
   userOptions: ObjectLiteralArray = []
   private originalData: any;
@@ -23,6 +24,7 @@ export class PopupComponent implements OnInit {
   multiple: boolean = this.data.multipleSelection ?? false
   searchInput = new FormControl('')
   title: string = this.data.title ?? 'Escolha uma opção'
+  subscription?: Subscription
 
   selectAll:boolean = false
 
@@ -34,12 +36,20 @@ export class PopupComponent implements OnInit {
     private fetchDataService: FetchDataService,
   ) {}
 
+  ngOnDestroy(): void {
+
+    this.subscription?.unsubscribe()
+
+  }
+
   ngOnInit() {
+
+    let subscription
 
     this.headOptions = this.data.headers as ObjectLiteralArray
     this.localSelected = []
 
-    this.searchInput.valueChanges.subscribe((value: string | null) => {
+    subscription = this.searchInput.valueChanges.subscribe((value: string | null) => {
 
       if(value === null) { return }
 
@@ -56,6 +66,8 @@ export class PopupComponent implements OnInit {
 
       this.sortBySelected()
     })
+
+    this.subscription?.add(subscription)
 
     if(this.data.fetchedData !== undefined) {
       this.originalData = [...this.data.fetchedData]
@@ -81,62 +93,57 @@ export class PopupComponent implements OnInit {
   }
 
   fetchOptions(url: string) {
-    this.fetchDataService.all(url).subscribe((response: any) => {
-      this.userOptions = response
-    })
+
+    let subscription
+
+    subscription = this.fetchDataService.all(url).subscribe((response: any) => { this.userOptions = response })
+    this.subscription?.add(subscription)
   }
 
   toggleSelectAll() {
+
     this.selectAll = !this.selectAll
 
-    this.userOptions.forEach(item => {
-      item['selected'] = this.selectAll;
-    })
+    for(let option of this.userOptions) { option['selected'] = this.selectAll }
 
     if(this.selectAll && this.searchInput.value === '') {
       this.localSelected = this.userOptions.map(item => item['id'])
-    } else if (this.selectAll && this.searchInput.value !== '') {
+    }
+    else if (this.selectAll && this.searchInput.value !== '') {
       for(let option of this.userOptions) {
         if(!this.localSelected.includes(option['id'])) {
           this.localSelected.push(option['id'])
         }
       }
-    } else if (!this.selectAll && this.searchInput.value !== '') {
+    }
+    else if (!this.selectAll && this.searchInput.value !== '') {
       for(let option of this.userOptions) {
         if(this.localSelected.includes(option['id'])) {
           this.localSelected.splice(this.localSelected.indexOf(option['id']), 1)
         }
       }
-    } else {
-      this.localSelected = []
     }
+    else { this.localSelected = [] }
   }
 
   toggleItemSelection(element: { [key: string]: any }) {
+
     const index = this.userOptions.findIndex(item => item['id'] === element['id'])
+
     this.userOptions[index]['selected'] = !this.userOptions[index]['selected']
 
-    if(this.userOptions[index]['selected']) {
-      this.localSelected.push(element['id'])
-    } else {
+    this.userOptions[index]['selected'] ?
+      this.localSelected.push(element['id']) :
       this.localSelected.splice(this.localSelected.indexOf(element['id']), 1)
-    }
 
-    if(this.data.multipleSelection) {
-      this.selectAll = this.userOptions.every(item => item['selected']);
-    }
+    if(this.data.multipleSelection) { this.selectAll = this.userOptions.every(item => item['selected'])}
   }
 
   close(element?: ObjectLiteral) {
 
-    if (element) {
-      this.dialogRef.close(element)
-      return
-    }
+    if (element) { return this.dialogRef.close(element)}
 
-    let result = this.originalData.filter((item: any) => this.localSelected.includes(item['id']))
-
-    this.dialogRef.close(result)
+    this.dialogRef.close(this.originalData.filter((item: any) => this.localSelected.includes(item['id'])))
   }
 
   clearSearch() {
