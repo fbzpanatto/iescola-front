@@ -99,7 +99,6 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
       .pipe(
       map(([classrooms, disciplines]) => {
         this.classes = classrooms
-
         this.disciplines = disciplines
       })
     )
@@ -123,14 +122,6 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
 
   delete() {
 
-  }
-
-  get id() {
-    return this._id
-  }
-
-  set id(value: number | undefined) {
-    this._id = value
   }
 
   openDisciplinesOptions() {
@@ -161,24 +152,6 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
 
     this.subscription?.add(subscription)
 
-  }
-
-  resetForm() {
-
-    if(this.id) {
-      this.disciplinesName = this.disciplinesNameBefore
-      this.classesName = this.classesNameBefore
-      this.formDir.resetForm(this.formService.originalValues);
-
-      return
-    }
-
-    this.classesName = ''
-    this.disciplinesName = ''
-    this.form.reset()
-    this.form.controls.teacherClasses.reset()
-    this.form.controls.teacherDisciplines.reset()
-    this.formDir.resetForm(this.formService.originalValues);
   }
 
   openClassesOptions() {
@@ -213,20 +186,22 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
     this.subscription?.add(subscription)
   }
 
-  get disciplinesName(){
-    return this._disciplinesName
-  }
+  resetForm() {
 
-  set disciplinesName(value: string | undefined){
-    this._disciplinesName = value
-  }
+    if(this.id) {
+      this.disciplinesName = this.disciplinesNameBefore
+      this.classesName = this.classesNameBefore
+      this.formDir.resetForm(this.formService.originalValues);
 
-  get classesName(){
-    return this._classesName
-  }
+      return
+    }
 
-  set classesName(value: string | undefined){
-    this._classesName = value
+    this.classesName = ''
+    this.disciplinesName = ''
+    this.form.reset()
+    this.form.controls.teacherClasses.reset()
+    this.form.controls.teacherDisciplines.reset()
+    this.formDir.resetForm(this.formService.originalValues);
   }
 
   private pathFormValues(id: number) {
@@ -259,26 +234,26 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
 
   updateData() {
 
-      let subscription: Subscription
+    let subscription: Subscription
 
-      const body = {
-        name: this.form.controls.name.value,
-        birthDate: this.form.controls.birthDate.value,
-        teacherClasses: this.form.controls.teacherClasses.value,
-        teacherDisciplines: this.form.controls.teacherDisciplines.value,
-      }
+    const body = {
+      name: this.form.controls.name.value,
+      birthDate: this.form.controls.birthDate.value,
+      teacherClasses: this.form.controls.teacherClasses.value,
+      teacherDisciplines: this.form.controls.teacherDisciplines.value,
+    }
 
-      subscription = this.fetch.updateOneDataWithId('teacher', this.id as number, body)
-        .subscribe((data: any) => {
-          if(data) {
-            this.formService.originalValues = this.form.value
-            this.formDir.resetForm(this.formService.originalValues)
-            this.classesNameBefore = this.classesName
-            this.disciplinesNameBefore = this.disciplinesName
-          }
-        })
+    subscription = this.fetch.updateOneDataWithId('teacher', this.id as number, body)
+      .subscribe((data: any) => {
+        if(data) {
+          this.formService.originalValues = this.form.value
+          this.formDir.resetForm(this.formService.originalValues)
+          this.classesNameBefore = this.classesName
+          this.disciplinesNameBefore = this.disciplinesName
+        }
+      })
 
-      this.subscription?.add(subscription)
+    this.subscription?.add(subscription)
   }
 
   private newForm() {
@@ -303,5 +278,34 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
       })
 
     this.subscription?.add(subscription)
+  }
+
+  get disciplinesName(){
+    return this._disciplinesName
+  }
+
+  set disciplinesName(value: string | undefined){
+    this._disciplinesName = value
+  }
+
+  get classesName(){
+    return this._classesName
+  }
+
+  set classesName(value: string | undefined){
+    this._classesName = value
+  }
+
+  get id() {
+    return this._id
+  }
+
+  set id(value: number | undefined) {
+    this._id = value
+  }
+
+  //TODO: include className and disciplineName in the form
+  myFunction() {
+    //include className and disciplineName in the form
   }
 }
