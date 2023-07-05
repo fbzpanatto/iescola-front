@@ -53,9 +53,11 @@ export class PopupComponent implements OnInit {
       if(this.data.multipleSelection) {
         this.selectAll = this.userOptions.every(item => item['selected']);
       }
+
+      this.sortBySelected()
     })
 
-    if(this.data.fetchedData) {
+    if(this.data.fetchedData !== undefined) {
       this.originalData = [...this.data.fetchedData]
       this.userOptions = [...this.data.fetchedData]
 
@@ -69,18 +71,13 @@ export class PopupComponent implements OnInit {
         if(this.data.multipleSelection) {
           this.selectAll = this.userOptions.every(item => item['selected']);
 
-          this.userOptions.sort((a, b) => {
-            if(a['selected'] && !b['selected']) { return -1 }
-            else if(!a['selected'] && b['selected']) { return 1 }
-            else { return 0 }
-          })
+          this.sortBySelected()
+
         }
       }
-
-      return
+    } else {
+      this.fetchOptions(this.data.url as string)
     }
-
-    this.fetchOptions(this.data.url as string)
   }
 
   fetchOptions(url: string) {
@@ -96,8 +93,20 @@ export class PopupComponent implements OnInit {
       item['selected'] = this.selectAll;
     })
 
-    if(this.selectAll) {
+    if(this.selectAll && this.searchInput.value === '') {
       this.localSelected = this.userOptions.map(item => item['id'])
+    } else if (this.selectAll && this.searchInput.value !== '') {
+      for(let option of this.userOptions) {
+        if(!this.localSelected.includes(option['id'])) {
+          this.localSelected.push(option['id'])
+        }
+      }
+    } else if (!this.selectAll && this.searchInput.value !== '') {
+      for(let option of this.userOptions) {
+        if(this.localSelected.includes(option['id'])) {
+          this.localSelected.splice(this.localSelected.indexOf(option['id']), 1)
+        }
+      }
     } else {
       this.localSelected = []
     }
@@ -125,12 +134,20 @@ export class PopupComponent implements OnInit {
       return
     }
 
-    let result = this.userOptions.filter(item => item['selected'])
+    let result = this.originalData.filter((item: any) => this.localSelected.includes(item['id']))
 
     this.dialogRef.close(result)
   }
 
   clearSearch() {
     this.searchInput.setValue('')
+  }
+
+  sortBySelected() {
+    this.userOptions.sort((a, b) => {
+      if(a['selected'] && !b['selected']) { return -1 }
+      else if(!a['selected'] && b['selected']) { return 1 }
+      else { return 0 }
+    })
   }
 }

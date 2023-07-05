@@ -1,9 +1,11 @@
 import { inject, Injectable} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { catchError, map } from "rxjs";
+import {catchError, map, Observable} from "rxjs";
 import { ObjectLiteral } from "../interfaces/interfaces";
 import { LoginModalService } from "../components/login/login-modal.service";
 import { Router} from "@angular/router";
+
+const PAYLOAD = 'payload'
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +28,11 @@ export class FetchDataService {
   }
 
   getOneData<T>(resource: string, id: number) {
-    return this.http.get(this.apiUrl + resource + '/' + id)
+    return this.http.get<T>(this.apiUrl + resource + '/' + id)
       .pipe(
-        map((response: ObjectLiteral) => { return response[this.payload] as T}),
+        map((response: T) => { return response[PAYLOAD as keyof T]}),
         catchError((error: any) => this.errorHandling(error))
-      )
+      ) as Observable<T>
   }
 
   getQueryData<T>(resource: string, query: string) {

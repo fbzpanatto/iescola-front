@@ -30,6 +30,15 @@ const HEADERS: { [key: string]: any } = {
   ]
 }
 
+const ID = 'id'
+
+interface DATA {
+  birthDate: string,
+  name: string,
+  teacherClasses: any,
+  teacherDisciplines: any
+}
+
 @Component({
   selector: 'app-teacher-form',
   standalone: true,
@@ -41,15 +50,11 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
 
   private _id?: number
 
-  private classes: any[] = []
-  private disciplines: any[] = []
-
-  private _classesName?: string
-  private _disciplinesName?: string
-
-  formService = inject(FormService)
+  private classes: Classroom[] = []
+  private disciplines: Discipline[] = []
 
   @ViewChild(FormGroupDirective) private formDir!: FormGroupDirective
+  formService = inject(FormService)
 
   private subscription?: Subscription
 
@@ -60,6 +65,12 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
     birthDate: ['', {
       validators: [Validators.required],
     }],
+    disciplinesName: ['', {
+      validators: [Validators.required],
+    }],
+    classesName: ['', {
+      validators: [Validators.required],
+    }],
     teacherClasses: ['', {
       validators: [Validators.required],
     }],
@@ -67,8 +78,6 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
       validators: [Validators.required],
     }],
   })
-  private classesNameBefore: string | undefined;
-  private disciplinesNameBefore: string | undefined;
 
   constructor(
     private popupService: PopupService,
@@ -113,7 +122,7 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
   onSubmit() {
 
     if(this.id) {
-      this.updateData()
+      this.sendDataToDB()
       return
     }
 
@@ -121,7 +130,7 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-
+    //TODO: implementar
   }
 
   openDisciplinesOptions() {
@@ -134,8 +143,8 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
       url: 'discipline',
       headers: HEADERS['discipline'],
       fetchedData: [...this.disciplines],
+      alreadySelected: [...selectedDisciplines],
       multipleSelection: true,
-      alreadySelected: selectedDisciplines
     }
 
     let subscription: Subscription
@@ -143,10 +152,11 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
     subscription = this.popupService.openPopup(popupOptions)
       .afterClosed()
       .subscribe((result: any) => {
-        if (result) {
-          this.disciplinesName = result.map((item: any) => item.name).join(', ')
-          let mappedResult = result.map((item: any) => item.id)
-          this.form.controls.teacherDisciplines.patchValue(mappedResult)
+
+        if (result !== undefined) {
+
+          this.setInputValue('disciplinesName', result)
+          this.form.controls.teacherDisciplines.patchValue(result.map((item: { [key: string]: any }) => item[ID]))
         }
       })
 
@@ -176,31 +186,31 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
 
         if (result !== undefined) {
 
-          this.classesName = result.map((item: any) => item.name).join(', ')
-          let mappedResult = result.map((item: any) => item.id)
+          this.setInputValue('classesName', result)
+          this.form.controls.teacherClasses.patchValue(result.map((item: { [key: string]: any }) => item[ID]))
 
-          this.form.controls.teacherClasses.patchValue(mappedResult)
+          // const selectedClasses = result.map((item: { [key: string]: any }) => item[ID])
+          // const selectedFormClasses = this.formService.originalValues.teacherClasses
+          //
+          // if(selectedClasses.length > 0 && !selectedClasses.every((item: any) => selectedFormClasses.includes(item)) ) {
+          //   this.setInputValue('classesName', result)
+          //   this.form.controls.teacherClasses.patchValue(result.map((item: { [key: string]: any }) => item[ID]))
+          // }
         }
       })
 
     this.subscription?.add(subscription)
   }
 
+  setInputValue(inputName: string, data: any) {
+    const control = this.form.get(inputName)
+
+    control?.patchValue(data.map((item: any) => item.name).join(', '))
+    control?.markAsDirty()
+    control?.markAsTouched()
+  }
+
   resetForm() {
-
-    if(this.id) {
-      this.disciplinesName = this.disciplinesNameBefore
-      this.classesName = this.classesNameBefore
-      this.formDir.resetForm(this.formService.originalValues);
-
-      return
-    }
-
-    this.classesName = ''
-    this.disciplinesName = ''
-    this.form.reset()
-    this.form.controls.teacherClasses.reset()
-    this.form.controls.teacherDisciplines.reset()
     this.formDir.resetForm(this.formService.originalValues);
   }
 
@@ -210,21 +220,21 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
 
     let subscription: Subscription
 
-    subscription = this.fetch.getOneData('teacher', id)
-      .subscribe((data: any) => {
+    subscription = this.fetch.getOneData<DATA>('teacher', id)
+      .subscribe((data: DATA) => {
 
         this.form.patchValue({
           name: data.name,
           birthDate: data.birthDate,
-          teacherClasses: data.teacherClasses.map((item: any) => item.id),
-          teacherDisciplines: data.teacherDisciplines.map((item: any) => item.id)
+          teacherClasses: data.teacherClasses.map((item: Classroom) => item.id),
+          teacherDisciplines: data.teacherDisciplines.map((item: Discipline) => item.id)
         })
 
-        this.classesName = data.teacherClasses.map((item: any) => item.name).join(', ')
-        this.disciplinesName = data.teacherDisciplines.map((item: any) => item.name).join(', ')
+        this.setInputValue('classesName', data.teacherClasses)
+        this.setInputValue('disciplinesName', data.teacherDisciplines)
 
-        this.classesNameBefore = this.classesName
-        this.disciplinesNameBefore = this.disciplinesName
+        this.form.markAsPristine()
+        this.form.markAsUntouched()
 
         this.formService.originalValues = this.form.value
       })
@@ -232,7 +242,7 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
     this.subscription?.add(subscription)
   }
 
-  updateData() {
+  sendDataToDB() {
 
     let subscription: Subscription
 
@@ -248,8 +258,6 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
         if(data) {
           this.formService.originalValues = this.form.value
           this.formDir.resetForm(this.formService.originalValues)
-          this.classesNameBefore = this.classesName
-          this.disciplinesNameBefore = this.disciplinesName
         }
       })
 
@@ -280,32 +288,11 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
     this.subscription?.add(subscription)
   }
 
-  get disciplinesName(){
-    return this._disciplinesName
-  }
-
-  set disciplinesName(value: string | undefined){
-    this._disciplinesName = value
-  }
-
-  get classesName(){
-    return this._classesName
-  }
-
-  set classesName(value: string | undefined){
-    this._classesName = value
-  }
-
   get id() {
     return this._id
   }
 
   set id(value: number | undefined) {
     this._id = value
-  }
-
-  //TODO: include className and disciplineName in the form
-  myFunction() {
-    //include className and disciplineName in the form
   }
 }

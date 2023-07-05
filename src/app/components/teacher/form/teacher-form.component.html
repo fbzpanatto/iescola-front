@@ -19,14 +19,14 @@
   <div class="fl-row">
     <mat-form-field appearance="outline" (click)="openClassesOptions()">
       <mat-label>Salas</mat-label>
-      <input readonly matInput [value]="classesName ?? ''">
+      <input readonly matInput formControlName="classesName">
     </mat-form-field>
   </div>
 
   <div class="fl-row">
     <mat-form-field appearance="outline" (click)="openDisciplinesOptions()">
       <mat-label>Disciplinas</mat-label>
-      <input readonly matInput [value]="disciplinesName ?? ''">
+      <input readonly matInput formControlName="disciplinesName">
     </mat-form-field>
   </div>
 
@@ -54,3 +54,7 @@
   </div>
 
 </form>
+
+<pre>
+{{form.value | json}}
+</pre>
