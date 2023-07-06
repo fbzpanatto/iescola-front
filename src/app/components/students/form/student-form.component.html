@@ -9,13 +9,6 @@
 
   <div class="fl-row">
     <mat-form-field appearance="outline">
-      <mat-label>RA</mat-label>
-      <input matInput formControlName="ra">
-    </mat-form-field>
-  </div>
-
-  <div class="fl-row">
-    <mat-form-field appearance="outline">
       <mat-label>Data de nascimento</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="birthDate">
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -25,15 +18,32 @@
   </div>
 
   <div class="fl-row">
-
-    <mat-form-field appearance="outline">
-      <mat-label>Número</mat-label>
-      <input matInput formControlName="order">
+    <mat-form-field appearance="outline" class="flx-2">
+      <mat-label>RA</mat-label>
+      <input matInput formControlName="ra">
     </mat-form-field>
 
-    <mat-form-field appearance="outline" (click)="openClassesOptions()">
+    <mat-form-field appearance="outline">
+      <mat-label>Dígito</mat-label>
+      <input matInput formControlName="dv" maxlength="1" minlength="1">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <input matInput formControlName="state" maxlength="2" minlength="2">
+    </mat-form-field>
+  </div>
+
+  <div class="fl-row">
+
+    <mat-form-field appearance="outline">
+      <mat-label>No.</mat-label>
+      <input matInput formControlName="order" maxlength="2" minlength="1">
+    </mat-form-field>
+
+    <mat-form-field class="flx-3" appearance="outline" (click)="openClassesOptions()">
       <mat-label>Sala</mat-label>
-      <input required readonly matInput [value]="className ?? ''">
+      <input required readonly matInput formControlName="className">
     </mat-form-field>
 
   </div>
@@ -60,5 +70,9 @@
     </div>
   </div>
 </form>
+
+<pre>
+{{form.value | json}}
+</pre>
 
 

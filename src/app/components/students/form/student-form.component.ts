@@ -4,7 +4,7 @@ import { PopupService } from "../../../shared/components/popup/popup.service";
 import { ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroupDirective, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { FetchDataService } from "../../../shared/services/fetch-data.service";
-import { combineLatest, map, Observable, Subscription } from "rxjs";
+import {catchError, combineLatest, map, Observable, of, Subscription} from "rxjs";
 import { AutoFocusDirective } from "../../../shared/directives/auto-focus.directive";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -43,11 +43,20 @@ export class StudentFormComponent implements OnInit, OnDestroy {
     ra: ['', {
       validators: [Validators.required],
     }],
+    dv: ['', {
+      validators: [Validators.required, Validators.minLength(1), Validators.maxLength(1)],
+    }],
+    state: ['', {
+      validators: [Validators.required, Validators.minLength(2), Validators.maxLength(2)],
+    }],
     classroom: ['', {
       validators: [Validators.required],
     }],
-    order: ['', {
+    className: ['', {
       validators: [Validators.required],
+    }],
+    order: ['', {
+      validators: [Validators.required, Validators.minLength(1), Validators.maxLength(2)],
     }],
     birthDate: ['', {
       validators: [Validators.required],
@@ -56,7 +65,6 @@ export class StudentFormComponent implements OnInit, OnDestroy {
 
   private _classrooms?: {[key: string]: any}[];
   private subscription?: Subscription
-  private _className?: string;
 
   private formService = inject(FormService)
 
@@ -75,14 +83,7 @@ export class StudentFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    let subscription: Subscription | undefined
-
     this.startForm()
-
-    subscription = this.form.get('classroom')?.valueChanges
-      .subscribe((value: any) => { this.className = `${value.name + ' ' + value.school.slice(0, 20)}` ?? '' })
-
-    this.subscription?.add(subscription)
   }
 
   startForm() {
@@ -145,6 +146,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       order: string,
       birthDate: string,
       classroom?: { id: number },
+      dv: string,
+      state: string,
     }
 
     const body: Body = {
@@ -154,6 +157,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       order: this.form.value.order as string,
       birthDate: this.form.value.birthDate as string,
       classroom: { id: (this.form.value.classroom as any).id } as { id: number },
+      dv: this.form.value.dv as string,
+      state: this.form.value.state as string,
     }
 
     if(Number(this.formService.originalValues.classroom.id) === Number(body.classroom?.id)) {
@@ -163,10 +168,21 @@ export class StudentFormComponent implements OnInit, OnDestroy {
     }
 
     this.fetch.updateOneDataWithId('student', this.id as number, body)
-      .subscribe((data: any) => {
-        if(data) {
-          this.formService.originalValues = this.form.value
-          this.formDir.resetForm(this.formService.originalValues)
+      .pipe(
+        catchError((err: any) => {
+          console.log('err', err)
+          return of(null)
+        }),
+      )
+      .subscribe({
+        next: (data: any) => {
+          if(data) {
+            this.formService.originalValues = this.form.value
+            this.formDir.resetForm(this.formService.originalValues)
+          }
+        },
+        error: (err: any) => {
+          console.log(err)
         }
       })
   }
@@ -180,20 +196,23 @@ export class StudentFormComponent implements OnInit, OnDestroy {
     subscription = this.fetch.getOneData('student', id)
       .subscribe((data: any) => {
 
-        this.formService.originalValues = data
-
         this.form.patchValue({
           name: data.name,
           ra: data.ra,
           order: data.order,
           birthDate: data.birthDate,
+          dv: data.dv,
+          state: data.state,
         })
 
         this.classrooms?.find((classroom: any) => {
           if (classroom.id === data.classroom.id) {
-            this.form.controls.classroom.setValue(classroom)
+            this.form.controls.classroom.patchValue(classroom)
+            this.form.controls.className.patchValue(`${classroom.name + ' ' + classroom.school.slice(0, 30)}` ?? '')
           }
         })
+
+        this.formService.originalValues = this.form.value
       })
 
     this.subscription?.add(subscription)
@@ -213,6 +232,9 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       .afterClosed()
       .subscribe((data: any) => {
         if (data) {
+
+          this.form.controls.className.patchValue(`${data.name + ' ' + data.school.slice(0, 30)}` ?? '')
+
           this.form.controls.classroom.setValue(data)
           this.form.controls.classroom.markAsDirty()
           this.form.controls.classroom.markAsTouched()
@@ -240,14 +262,6 @@ export class StudentFormComponent implements OnInit, OnDestroy {
 
   set classrooms(value: {[key: string]: any}[] | undefined) {
     this._classrooms = value
-  }
-
-  get className(){
-    return this._className
-  }
-
-  set className(value: string | undefined){
-    this._className = value
   }
 
   delete() {
