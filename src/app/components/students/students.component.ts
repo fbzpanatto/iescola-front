@@ -73,8 +73,7 @@ export class StudentsComponent extends BasicComponent implements OnInit, OnDestr
         this.yearService.currYear$
           .pipe(
             tap(() => this.clear = false),
-            // change startWith to null to fetch all data
-            map(result => result['id']), startWith(1)
+            map(result => result['id']), startWith(null)
           ),
         this.searchInput.valueChanges
           .pipe(startWith(''), debounceTime(400), distinctUntilChanged())
