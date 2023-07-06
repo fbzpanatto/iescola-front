@@ -4,6 +4,9 @@ import {catchError, map, Observable} from "rxjs";
 import { ObjectLiteral } from "../interfaces/interfaces";
 import { LoginModalService } from "../components/login/login-modal.service";
 import { Router} from "@angular/router";
+import {
+  SystemDialogMessagesServiceService
+} from "../components/system-dialog-messages/system-dialog-messages-service.service";
 
 const PAYLOAD = 'payload'
 
@@ -18,6 +21,8 @@ export class FetchDataService {
   private loginModal = inject(LoginModalService)
   private router = inject(Router)
   private http = inject(HttpClient)
+
+  private systemDialogService = inject(SystemDialogMessagesServiceService)
 
   all<T>(resource: string) {
     return this.http.get(this.apiUrl + resource)
@@ -77,27 +82,34 @@ export class FetchDataService {
 
   errorHandling(error: any) {
 
-    // TODO: improve error handling with an popup
+    const { payload, resource } = error.error
+    const { message } = payload
 
     switch (error.status) {
       case 401:
         this.loginModal.openLoginModal()
         break
       case 403:
-        alert('Você não tem permissão editar esse registro')
-        this.router.navigate([''])
+        this.systemDialog({ title: 'Acesso negado', message: message, navigateTo: resource })
         break
       case 404:
-        alert(error.error.payload ?? 'Registro não encontrado')
+        this.systemDialog({ title: 'Não encontrado', message: 'Não foi possível encontrar o registro solicitado.', navigateTo: resource })
         break
       case 409:
-        alert('Já existe um registro com esses dados')
+        this.systemDialog({ title: 'Conflito', message: 'Já existe um registro com o dado informado.', navigateTo: resource })
         break
       default:
-        alert('Algo deu errado, tente novamente mais tarde')
+        this.systemDialog({ title: 'Erro', message: 'Ocorreu um erro inesperado.', navigateTo: resource })
         this.router.navigate([''])
         break
     }
     return error
+  }
+
+  systemDialog(options: { title: string, message: string, navigateTo?: string}) {
+    const { title, message } = options
+    return this.systemDialogService.openPopup({ title, message })
+      .afterClosed()
+      .subscribe(() => this.router.navigate([options.navigateTo || '']))
   }
 }

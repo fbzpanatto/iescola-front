@@ -1,0 +1,17 @@
+<div mat-dialog-title>
+  <span class="popup-title">
+    <span>{{title}}</span>
+    <mat-icon style="cursor: pointer" [svgIcon]="'close'" (click)="close()"></mat-icon>
+  </span>
+</div>
+
+<div mat-dialog-content>
+  <div class="popup-content">
+    <span>{{message}}</span>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+<!--  <button mat-button mat-dialog-close>Cancel</button>-->
+  <button color="primary" mat-flat-button [mat-dialog-close]="true">Ok</button>
+</div>

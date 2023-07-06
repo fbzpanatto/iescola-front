@@ -266,7 +266,6 @@ export class TeacherFormComponent implements OnInit, OnDestroy {
 
   private newForm() {
     this.formDir.resetForm(this.formService.originalValues)
-    this.form.reset()
   }
 
   createNewData() {

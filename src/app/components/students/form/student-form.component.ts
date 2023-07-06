@@ -133,11 +133,6 @@ export class StudentFormComponent implements OnInit, OnDestroy {
   }
 
   resetForm() {
-    if(this.id) {
-      this.formDir.resetForm(this.formService.originalValues);
-      return
-    }
-    this.className = ''
     this.formDir.resetForm(this.formService.originalValues);
   }
 
@@ -171,6 +166,7 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         if(data) {
           this.formService.originalValues = this.form.value
+          this.formDir.resetForm(this.formService.originalValues)
         }
       })
   }
