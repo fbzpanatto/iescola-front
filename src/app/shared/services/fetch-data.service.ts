@@ -84,14 +84,12 @@ export class FetchDataService {
 
     const { resource } = error.error
 
-    const errorMessage = error.error.payload.message ?? error.error.message ?? error.message ?? 'Ocorreu um erro inesperado.'
-
     switch (error.status) {
       case 401:
         this.loginModal.openLoginModal()
         break
       case 403:
-        this.systemDialog({ title: 'Acesso negado', message: errorMessage, navigateTo: resource ?? '' })
+        this.systemDialog({ title: 'Acesso negado', message: error.error.payload.message, navigateTo: resource ?? '' })
         break
       case 404:
         this.systemDialog({ title: 'Não encontrado', message: 'Não foi possível encontrar o registro solicitado.', navigateTo: resource ?? '' })
