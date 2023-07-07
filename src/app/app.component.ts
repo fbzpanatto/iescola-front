@@ -11,9 +11,9 @@ const TOKEN_KEY = 'token'
 export class AppComponent {
   title = 'iescola-front';
 
-  @HostListener('window:beforeunload', ['$event']) clearLocalStorage(event: any) {
-    localStorage.removeItem(TOKEN_KEY)
-  }
+  // @HostListener('window:beforeunload', ['$event']) clearLocalStorage(event: any) {
+  //   localStorage.removeItem(TOKEN_KEY)
+  // }
 
   constructor(public loadingService: LoadingService,) {}
 }

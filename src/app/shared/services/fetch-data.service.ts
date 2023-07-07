@@ -98,6 +98,9 @@ export class FetchDataService {
         this.systemDialog({ title: 'Conflito', message: 'Já existe um registro com o dado informado.', navigateTo: resource ?? '' })
         break
       default:
+
+        console.log(error)
+
         this.systemDialog({ title: 'Erro', message: 'Ocorreu um erro inesperado.', navigateTo: resource ?? '' })
         this.router.navigate([''])
         break

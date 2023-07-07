@@ -94,6 +94,8 @@ export class PopupComponent implements OnInit, OnDestroy {
 
   fetchOptions(url: string) {
 
+    console.log('fetching options')
+
     let subscription
 
     subscription = this.fetchDataService.all(url).subscribe((response: any) => { this.userOptions = response })

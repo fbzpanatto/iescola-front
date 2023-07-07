@@ -122,6 +122,8 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       ra: this.form.value.ra,
       order: this.form.value.order,
       birthDate: this.form.value.birthDate,
+      dv: this.form.value.dv,
+      state: this.form.value.state,
       classroom: { id: classroom },
     }
 
