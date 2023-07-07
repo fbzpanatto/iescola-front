@@ -26,11 +26,10 @@ export class UserLoginDataService {
       )
       .subscribe({
         next: async (r: Payload) => {
-          await this.sessionConfigs(r)
+          await this.reloadCurrentPage(r)
           dialogRef.close(r)
         },
-        error: (e: any) => { console.log('dialogError', e) },
-        complete: () => { this.reloadCurrentPage() }
+        error: (e: any) => { console.log('loginError', e) }
       })
   }
 
@@ -43,8 +42,9 @@ export class UserLoginDataService {
     return localStorage.getItem('token')
   }
 
-  reloadCurrentPage() {
+  async reloadCurrentPage(r: Payload) {
     window.location.reload()
+    await this.sessionConfigs(r)
   }
 
   async clear() {

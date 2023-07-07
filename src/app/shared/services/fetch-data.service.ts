@@ -82,24 +82,25 @@ export class FetchDataService {
 
   errorHandling(error: any) {
 
-    const { payload, resource } = error.error
-    const { message } = payload
+    const { resource } = error.error
+
+    const errorMessage = error.error.payload.message ?? error.error.message ?? error.message ?? 'Ocorreu um erro inesperado.'
 
     switch (error.status) {
       case 401:
         this.loginModal.openLoginModal()
         break
       case 403:
-        this.systemDialog({ title: 'Acesso negado', message: message, navigateTo: resource })
+        this.systemDialog({ title: 'Acesso negado', message: errorMessage, navigateTo: resource ?? '' })
         break
       case 404:
-        this.systemDialog({ title: 'Não encontrado', message: 'Não foi possível encontrar o registro solicitado.', navigateTo: resource })
+        this.systemDialog({ title: 'Não encontrado', message: 'Não foi possível encontrar o registro solicitado.', navigateTo: resource ?? '' })
         break
       case 409:
-        this.systemDialog({ title: 'Conflito', message: 'Já existe um registro com o dado informado.', navigateTo: resource })
+        this.systemDialog({ title: 'Conflito', message: 'Já existe um registro com o dado informado.', navigateTo: resource ?? '' })
         break
       default:
-        this.systemDialog({ title: 'Erro', message: 'Ocorreu um erro inesperado.', navigateTo: resource })
+        this.systemDialog({ title: 'Erro', message: 'Ocorreu um erro inesperado.', navigateTo: resource ?? '' })
         this.router.navigate([''])
         break
     }

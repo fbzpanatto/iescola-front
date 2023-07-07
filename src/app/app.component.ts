@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { LoadingService } from "./shared/components/loading/loading.service";
+
+const TOKEN_KEY = 'token'
 
 @Component({
   selector: 'app-root',
@@ -9,6 +11,9 @@ import { LoadingService } from "./shared/components/loading/loading.service";
 export class AppComponent {
   title = 'iescola-front';
 
-  constructor(public loadingService: LoadingService,) {
+  @HostListener('window:beforeunload', ['$event']) clearLocalStorage(event: any) {
+    localStorage.removeItem(TOKEN_KEY)
   }
+
+  constructor(public loadingService: LoadingService,) {}
 }
