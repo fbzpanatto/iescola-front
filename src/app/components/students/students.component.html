@@ -22,8 +22,10 @@
       <th>ID</th>
       <th>CHAMADA</th>
       <th>NOME</th>
+      <th>INÍCIO</th>
       <th>SALA</th>
       <th>ESCOLA</th>
+      <th>SITUAÇÃO ATUAL</th>
     </tr>
   </thead>
   <tbody>
@@ -32,8 +34,10 @@
         <td>{{ student.id }}</td>
         <td>{{ student.order }}</td>
         <td>{{ student.name }}</td>
+        <td>{{ student.startedAt }}</td>
         <td>{{ student.classroom }}</td>
         <td>{{ student.school }}</td>
+        <td>{{ student.endedAt }}</td>
       </tr>
     </ng-container>
   </tbody>

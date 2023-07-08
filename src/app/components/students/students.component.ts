@@ -15,7 +15,7 @@ import { debounceTime, distinctUntilChanged, filter, map, Observable, startWith,
 import { StudentFormComponent } from "./form/student-form.component";
 import { CurrentYearService } from "../../shared/components/year/current-year.service";
 
-interface Student { id: string, order: string, name: string, classroom: string, school: string }
+interface Student { id: string, order: string, name: string, classroom: string, school: string, startedAt: string, endedAt: string }
 
 const COMPONENT_IMPORTS = [CommonModule, ReactiveFormsModule, AutoFocusDirective, BimesterComponent, MatButtonModule, MatIconModule, RouterLink, YearComponent, StudentFormComponent]
 
