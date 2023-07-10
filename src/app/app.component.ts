@@ -1,5 +1,7 @@
-import { Component, HostListener } from '@angular/core';
+import {AfterViewInit, Component, HostListener, inject, OnDestroy} from '@angular/core';
 import { LoadingService } from "./shared/components/loading/loading.service";
+import {FetchDataService} from "./shared/services/fetch-data.service";
+import {Subscription} from "rxjs";
 
 const TOKEN_KEY = 'token'
 
@@ -8,12 +10,19 @@ const TOKEN_KEY = 'token'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit, OnDestroy {
   title = 'iescola-front';
 
-  // @HostListener('window:beforeunload', ['$event']) clearLocalStorage(event: any) {
-  //   localStorage.removeItem(TOKEN_KEY)
-  // }
+  private subscription: Subscription | undefined
+  private fetchService = inject(FetchDataService)
+  loadingService = inject(LoadingService)
 
-  constructor(public loadingService: LoadingService,) {}
+  ngAfterViewInit(): void {
+
+    this.subscription = this.fetchService.checkToken<any>().subscribe()
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe()
+  }
 }

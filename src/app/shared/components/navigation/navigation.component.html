@@ -11,7 +11,7 @@
   </div>
 
   <div *ngIf="true">
-    <button mat-button (click)="doLogin()" class="login-btn" *ngIf="!userLoginService.token; else logout">
+    <button mat-button (click)="doLogin()" class="login-btn" *ngIf="!userLoginService.tokenIsValid; else logout">
       <mat-icon [svgIcon]="'login'" style="line-height: 0"></mat-icon>
       <span>Login</span>
     </button>

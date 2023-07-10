@@ -1,12 +1,13 @@
 import { inject, Injectable} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import {catchError, map, Observable} from "rxjs";
+import {catchError, map, Observable, tap} from "rxjs";
 import { ObjectLiteral } from "../interfaces/interfaces";
 import { LoginModalService } from "../components/login/login-modal.service";
 import { Router} from "@angular/router";
 import {
   SystemDialogMessagesServiceService
 } from "../components/system-dialog-messages/system-dialog-messages-service.service";
+import {UserLoginDataService} from "../components/login/user-login-data.service";
 
 const PAYLOAD = 'payload'
 
@@ -21,8 +22,20 @@ export class FetchDataService {
   private loginModal = inject(LoginModalService)
   private router = inject(Router)
   private http = inject(HttpClient)
+  private userLoginDataService = inject(UserLoginDataService)
 
   private systemDialogService = inject(SystemDialogMessagesServiceService)
+
+  checkToken<T>(checkTokenUrl = 'check-token') {
+    return this.http.get(this.apiUrl + checkTokenUrl)
+      .pipe(
+        map((response: ObjectLiteral) => {
+          this.userLoginDataService.tokenIsValid = true
+          return response as T
+        }),
+        catchError((error: any) => this.errorHandling(error))
+      ) as Observable<T>
+  }
 
   all<T>(resource: string) {
     return this.http.get(this.apiUrl + resource)
@@ -86,6 +99,7 @@ export class FetchDataService {
 
     switch (error.status) {
       case 401:
+        this.userLoginDataService.tokenIsValid = false
         this.loginModal.openLoginModal()
         break
       case 403:

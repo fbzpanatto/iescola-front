@@ -2,8 +2,9 @@ import { inject, Injectable} from '@angular/core';
 import { MatDialogRef } from "@angular/material/dialog";
 import { HttpClient } from "@angular/common/http";
 import { LoginComponent } from "./login.component";
-import { map } from "rxjs";
+import {catchError, map} from "rxjs";
 import { Router } from "@angular/router";
+import {FetchDataService} from "../../services/fetch-data.service";
 
 export interface Payload { token: string, expiresIn: number, role: number }
 
@@ -15,8 +16,9 @@ export class UserLoginDataService {
   private http = inject(HttpClient)
   private apiUrl = 'http://localhost:3333/'
   private payload = 'payload'
-
   private router = inject(Router)
+
+  private _tokenIsValid = false
 
   nextUserLoginData(data: any, dialogRef: MatDialogRef<LoginComponent>) {
 
@@ -26,6 +28,7 @@ export class UserLoginDataService {
       )
       .subscribe({
         next: async (r: Payload) => {
+          this.tokenIsValid = true
           await this.reloadCurrentPage(r)
           dialogRef.close(r)
         },
@@ -50,5 +53,13 @@ export class UserLoginDataService {
   async clear() {
     localStorage.removeItem('token')
     await this.router.navigate(['/'])
+  }
+
+  get tokenIsValid() {
+    return this._tokenIsValid
+  }
+
+  set tokenIsValid(value: boolean) {
+    this._tokenIsValid = value
   }
 }
